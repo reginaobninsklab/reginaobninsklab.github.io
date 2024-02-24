@@ -5,22 +5,32 @@ description: |
   "Блог лаборатории анализа данных Regina Lab (Обнинск)."
 output_dir: "."
 base_url: https://reginaobninsklab.github.io
-google_analytics: ""
+google_analytics: "G-8004C939GN"
 rss:
-  full_content: true
+  full_content: false
 navbar:
   right:
     - text: "Блог"
       href: index.html
     - text: "Данные"
       href: sources.html
-    - text: "О нас"
+    - text: "О проекте"
       href: about.html
+    - icon: fa-brands fa-telegram
+      href: https://t.me/regina_lab
+    - icon: fa-regular fa-envelope
+      href: mailto:regina.obninsk@gmail.com
     - icon: fa fa-rss
       href: index.xml
+cookie_consent:
+  style: simple
+  type: express
+  palette: light
+  lang: ru
+  cookies_policy: url
 collections:
   posts:
       authors_metadata: false
-      feed_items_max: false
+      feed_items_max: 20
       share: [twitter]
 output: distill::distill_article

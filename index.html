@@ -2642,12 +2642,24 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id="></script>
-  <script type="text/javascript" cookie-consent="tracking">
+  <script type="text/javascript" src="https://www.cookieconsent.com/releases/3.1.0/cookie-consent.js"></script>
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+  cookieconsent.run({
+  'notice_banner_type':'simple',
+  'consent_type': 'express',
+  'palette': 'light',
+  'language': 'ru',
+  'website_name': 'ReginaBlog',
+  'cookies_policy_url': 'url',
+  'change_preferences_selector':'#CookiePreferences'
+  });});</script>
+  <script type="text/plain" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-8004C939GN"></script>
+  <script type="text/plain" cookie-consent="tracking">
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', '');
+  gtag('config', 'G-8004C939GN');
   </script>
   <!--/radix_placeholder_site_in_header-->
 
@@ -2673,7 +2685,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="nav-right">
 <a href="index.html">Блог</a>
 <a href="sources.html">Данные</a>
-<a href="about.html">О нас</a>
+<a href="about.html">О проекте</a>
+<a href="https://t.me/regina_lab">
+<i class="fa fa-brands fa-telegram" aria-hidden="true"></i>
+</a>
+<a href="mailto:regina.obninsk@gmail.com">
+<i class="fa fa-regular fa-envelope" aria-hidden="true"></i>
+</a>
 <a href="index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
