@@ -1,0 +1,15 @@
+---
+title: "Данные проекта Regina Lab"
+description: |
+  В разделе приведены ссылки на данные, доступные в сети Интернет, или собранные нами самостоятельно. Если считаете, что публикация данных нарушает ваши права или общественный порядок, уведомите нас посредством [regina.obninsk@gmail.com](mailto:regina.obninsk@gmail.com).
+creative_commons: CC BY
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
