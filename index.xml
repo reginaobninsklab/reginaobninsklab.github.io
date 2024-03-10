@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
   <channel>
-    <title>Regina Lab (Обнинск)</title>
+    <title>Regina Lab</title>
     <link>https://reginaobninsklab.github.io</link>
     <atom:link href="https://reginaobninsklab.github.io/index.xml" rel="self" type="application/rss+xml"/>
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 24 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Открытый рейтинг школ Калужской области (часть 1)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</link>
+      <description>Попытка оценить эффективность образовательных учреждений по результатам сдачи ЕГЭ в 2019-2023 гг. Материал содержит интерактивные таблицы с показателями школ и рейтингами.</description>
+      <category>школы</category>
+      <category>ЕГЭ</category>
+      <category>ГИА</category>
+      <category>образование</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</guid>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/../../../ODCity/alumnis/obninsk_school_combo.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
   </channel>
 </rss>

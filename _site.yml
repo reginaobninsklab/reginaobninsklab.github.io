@@ -1,5 +1,5 @@
 name: "ReginaBlog"
-title: "Regina Lab (Обнинск)"
+title: "Regina Lab"
 theme: css.css
 description: |
   "Блог лаборатории анализа данных Regina Lab (Обнинск)."
@@ -32,5 +32,4 @@ collections:
   posts:
       authors_metadata: false
       feed_items_max: 20
-      share: [twitter]
 output: distill::distill_article
