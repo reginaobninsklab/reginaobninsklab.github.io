@@ -17,6 +17,7 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
+preview: images/school_rank_map.png
 draft: null
 citation: false
 ---
@@ -37,6 +38,8 @@ library(ggplot2)
 options(readr.show_col_types = FALSE)
 
 dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/alumnis/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
 
 options(DT.options = list(pageLength = 5, lengthMenu = c(5, 10, 20), 
                           dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
@@ -185,7 +188,7 @@ table4blog |> filter(cat=="C") |>
 Различия между группами достаточно наглядны -- диаграмма ниже показывает доли выпускников, набравших определенное количество баллов в каждой группе.           
 
 ```{r echo=FALSE}
-chart_file <- paste0(dir, "school_groups_bars.png")
+chart_file <- paste0(dir_charts, "school_groups_bars.png")
 if(!file.exists(chart_file)){
   source(paste0(Sys.getenv("OneDrive"), "/ODCity/chart_styles.R"), encoding = "utf8")
 
@@ -346,7 +349,7 @@ paste0(dir,"kaluga_open_data_207.xls") |> readxl::read_xls() |>
 Наукоград прекрасно представлен в первой десятке обоих рейтингов (А и Б), но не все школы одинаковы. На иллюстрации показаны школы из групп А и Б и их места в рейтингах А и Б (рейтинг устроен таким образом, что одно место могут занимать несколько школ Калужской области, поэтому 40-е место в рейтинге не означает, что впереди 39 школ, их может быть больше).  
 
 ```{r, preview=TRUE}
-chart_schools <- paste0(dir, "obninsk_school_combo.png")
+chart_schools <- paste0(dir_charts, "school_rank_map.png")
 knitr::include_graphics(chart_schools)
 ```
 
