@@ -7,7 +7,18 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 17 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Такси Калужской области (часть 2)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-taxi-part2</link>
+      <description>На массиве данных о собственных поездках по Калужской области (приложение Яндекс Go) мы измерили отражение машин и перевозчиков в федеральном реестре такси (ФГИС "Такси").</description>
+      <category>такси</category>
+      <category>яндекс</category>
+      <category>реестры</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-taxi-part2</guid>
+      <pubDate>Thu, 21 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/images/chart2x_reg.png" medium="image" type="image/png" width="1965" height="1058"/>
+    </item>
     <item>
       <title>Такси Калужской области (часть 1)</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-taxi-part1</link>
@@ -16,7 +27,7 @@
       <category>мигранты</category>
       <category>реестры</category>
       <guid>https://reginaobninsklab.github.io/posts/kaluga-taxi-part1</guid>
-      <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate>
       <media:content url="https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/images/chart1_reg.png" medium="image" type="image/png" width="2116" height="1058"/>
     </item>
     <item>

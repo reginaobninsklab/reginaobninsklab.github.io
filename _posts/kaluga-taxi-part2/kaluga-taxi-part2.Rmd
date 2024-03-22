@@ -1,0 +1,273 @@
+---
+title: "Такси Калужской области (часть 2)"
+description: |
+  На массиве данных о собственных поездках по Калужской области (приложение Яндекс Go) мы измерили отражение машин и перевозчиков в федеральном реестре такси (ФГИС "Такси").           
+date: 2024-03-22
+categories:
+  - такси
+  - яндекс
+  - реестры
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/chart2x_reg.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/taxi/")
+dir2 <- paste0(Sys.getenv("OneDrive"), "/taxi/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 5, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Продолжаем исследование такси Калужской области...
+
+Нас прежде всего интересует, как повлиял на сектор такси [Федеральный Закон № 580 от от 29.12.2022](http://publication.pravo.gov.ru/Document/View/0001202212290039), вступивший в силу 01 сентября 2023 г.
+
+```{r}
+yd <- paste0(Sys.getenv("OneDrive"),"/taxi/data4export_w_sc.gz") |>
+  read_csv(col_types = cols(.default = col_character(), 
+                            carrier_sc = col_number(), 
+                            driver_sc = col_number(), 
+                            partner_sc = col_number())) |> 
+  mutate(trip_date = strptime(created_at, "%Y-%m-%d")) |> 
+  mutate(trip_date2 = strptime(created_at, "%Y-%m")) |> 
+  arrange(trip_date2) |>
+  filter(trip_date >= strptime("2023-03-01", "%Y-%m-%d"))
+```
+
+В [первой части](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/){target="_blank"} мы исследовали, какая доля ИП и ООО, регистрирующихся с основным ОКВЭД 49.32 присутствует в федеральном реестре [(ФГИС "Такси")](https://sicmt.ru/fgis-taksi){target="_blank"}. Но данные о регистрации ООО и ИП -- это одно, реальные перевозки -- иное. 
+
+Участники проекта Regina Lab объединили данные о собственных поездках в период с 01.03.2023 по 10.03.2024 и получили массив из **`r n_distinct(yd$id)`** поездок, совершенных по Калужской области.
+
+### Данные о поездках
+
+Пользователи приложения Яндекс Go могут скачать с сайта детальную историю своих поездок (cм. инструкцию ниже). История очень детальная -- координаты, коэффициенты цен, сведения о машине, перевозчике, парке, водителе. Одним словом, подарок для любителей анализа данных.
+
+> ВАЖНО! История поездок содержит персональные данные водителей, поэтому в оригинальном виде их ни в коем случае нельзя распространять. Для выполнения данного анализа участники проекта Regina Lab выгрузили данные о собственных  поездках из личных кабинетов Яндекс Go и перед объединением в общий массив удалили все ФИО и контактную информацию!
+
+### География перевозчиков
+
+На долю перевозчиков, зарегистрированных в Калужской области, в нашей выборке пришлось лишь **`r scales::percent(n_distinct(yd$id[yd$carrier_region=="Калужская"])/n_distinct(yd$id))`** поездок. Кто бы мог подумать, что гастролёры отнимают так много?
+
+
+```{r}
+yd |> count(carrier_region) |>
+  mutate(carrier_region = ifelse(carrier_region=="другое", "Сведения отсутствуют", carrier_region)) |> 
+  mutate(share = n/sum(n)) |> 
+  arrange(-n) |> 
+  rename(`Регион перевозчика` = carrier_region, 
+         `Количество поездок` = n, `Доля, %` = share) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. Регионы, в которых зарегистрированы компании-перевозчики, обслуживавшие поездки по Калужской области на такси участников проекта Regina Lab в период с 01 марта 2023 г. по 10 марта 2024 г.  (данные из Яндекс Go), всего - ',n_distinct(yd$id) ,' поездок. Для 6 поездок сведения о регионе перевозчика и партнера отсутствуют, они отнесены в группу "Сведения отсутствуют".')), 
+            options = list(columnDefs = list(
+              list(width = '350px', targets = c(0:1)),
+              list(className = 'dt-center', targets = c(2))))) |> 
+  DT::formatPercentage(columns = 'Доля, %')
+  
+```
+
+### Присутствие в ФГИС "Такси"
+
+На иллюстрации для каждого месяца показано количество поездок (над столбцом) и доля машин и перевозчиков, которые по состоянию на 13 марта 2024 года присутствуют в ФГИС "Такси". Показаны только поездки по Калужской области, совершенные перевозчиками, зарегистрированными в Калужской области.
+
+```{r message=FALSE, warning=FALSE, out.height='90%', out.width='90%', fig.align='center'}
+ch0_filename <- paste0(dir, "chart2x_reg.png")
+ch0_blogfile <- paste0(dir_charts, "chart2x_reg.png")
+if(!file.exists(ch0_blogfile)){ s<- file.copy(from = ch0_filename, to = ch0_blogfile, overwrite = T) }
+knitr::include_graphics(ch0_blogfile)
+```
+
+### Краткие итоги
+
+>- 40% поездок были выполнены перевозчиками не из Калужской области
+>
+- из транспортных средств, которые достоверно были задействованы в оказании услуг такси в 2024 году на территории Калужской области, доля присутствующих в федеральном реестре на 13 марта 2024 года не превышала 50%
+>
+- аналогичный показатель для перевозчиков составила менее 20%
+>
+- ФЗ № 580 от 29.12.2022, вступивший в силу с 1 сентября 2023 года, пока не обеспечивает должной прозрачности такси перевозок.
+
+### Таксистам
+
+Всех водителей, операторов и организаторов служб такси, которые соблюдают законодательство Российской Федерации и уважают ПДД, мы от всей души поздравляем с международным днем таксиста. Желаем Вам хороших дорог, надёжных машин, зелёных светофоров и благодарных пассажиров!
+
+### Пассажирам
+
+1. Согласно новому ФЗ в салоне такси должны быть сведения о машине, водителе, перевозчике, номера телефонов для приёма жалоб и предложений, а также информация о тарифах. Поищите глазами QR-код, попробуйте его проверить. 
+
+2. Если QR-кода нет, скопируйте номер машины (это несложно сделать в приложении Яндекс Go), перейдите на сайт ФГИС "Такси" ([https://www.sicmt.ru/fgis-taksi?type=car](https://www.sicmt.ru/fgis-taksi?type=car){target="_blank"}) и проверьте присутствие ТС в соответствующем реестре.
+
+Что делать в случае, если Вы уже в машине перевозчика, который игнорирует соблюдение Федерального закона? 
+
+Этот вопрос мы задали руководителю Управления административно-технического контроля Калужской области ([ТГ-канал "Станислав Орехов информирует"](https://t.me/uatk_Orekhov_SP){target="_blank"}) и получили [следующий ответ](https://t.me/uatk_Orekhov_SP/2332?comment=2156){target="_blank"}:
+
+>\-- "Если к вам приехало нелегальное такси, вы можете отказаться от услуги этого такси, сообщить об этом в службу заказа и попросить заменить автомобиль. Также вы можете официально направить заявление с указанием нарушения и информацией об автомобиле в наше управление по адресу: г. Калуга, ул. Плеханова, 45."
+
+Мы планируем продолжить изучение собственных поездок.
+
+- [Задать вопрос авторам](mailto:regina.obninsk@gmail.com?subject=taxi_part1).  
+
+### Инструкция по выгрузке данных из Yandex
+
+Убедитесь, что... 
+
+- у Вас есть приложение Яндекс-Такси (Яндекс Go)
+
+- Вы точно совершали хотя бы 1 поездку через приложение
+
+- Вы помните (или готовы потратить время, чтобы вспомнить) пароль от Яндекса
+
+Описанные ниже действия не требуют знания программирования (мы даже Excel открывать не будем).
+
+Официальная [инструкция](https://yandex.ru/support/id/data.html) от Яндекса суховата, поэтому мы добавили несколько деталей. 
+
+- войдите на https://id.yandex.ru/ и авторизуйтесь (если у Вас несколько почтовых адресов, указывать надо тот логин (аккаунт), к которому привязано приложение Такси) 
+
+- в разделе Данные выбираем "Управлять данными"
+
+- доступ к данным дают только после подверждения своей личности. Введите присланный в смс код и попадете на страницу "Управление данными" https://id.yandex.ru/personal/data
+
+- в длинном списке сервисов выберите "Такси"
+
+- в открывшемся окне в секции "Скачать данные" выбираем "Заказать новый" (если уже заказывали, то "Скачать архив").
+
+- Яндекс информирует, что подготовка архива займёт какое-то время. Обычно архив собирается за несколько часов, но пишут, что максимальное время —- до 30 дней. Когда архив будет готов, вы получите письмо на почту yandex.
+
+- После получения письма о готовности данных, войдите снова в раздел "Управлять данными" (https://id.yandex.ru/personal/data). 
+
+- Над списком сервисов будет заголовок "Архивы с данными", под которым будет ссылка "1 архив готов". 
+
+- Выберите "Такси", но (важно!) в выпадающем окне  нажмите "показать пароль" (обязательно скопируйте!), потом "скачать архив".
+
+- Скачанный файл, не откладывая, разархивируйте, используя скопированный пароль.
+
+- Ваши поездки в файле **ridehistory.json** (он самый большой по размеру).
+
+>**ВАЖНО!** Файл ridehistory.json содержит информацию о всех поездках с указанием точного времени, адресов маршрута, тарифного плана, стоимости и т.д. Вероятнее всего, вы не захотите, чтобы эти сведения попали в руки другим людям, поэтому примите меры, чтобы этого не произошло. Ни в коем случае НЕ ОТПРАВЛЯЙТЕ никому этот файл в его оригинальном виде!
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Такси Калужской области (часть 2) // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/. - Дата публикации: 22 марта 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+
+
