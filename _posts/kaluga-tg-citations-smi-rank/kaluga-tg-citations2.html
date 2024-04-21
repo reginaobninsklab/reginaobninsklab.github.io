@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Telegram Калужской области. Часть 2. Кто цитирует СМИ?</title>
+
+  <meta property="description" itemprop="description" content="Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-04-15"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-04-15"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Telegram Калужской области. Часть 2. Кто цитирует СМИ?"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Telegram Калужской области. Часть 2. Кто цитирует СМИ?"/>
+  <meta property="twitter:description" content="Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","categories","output","preview","draft","citation"]}},"value":[{"type":"character","attributes":{},"value":["Telegram Калужской области. Часть 2. Кто цитирует СМИ?"]},{"type":"character","attributes":{},"value":["Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг.\n"]},{"type":"character","attributes":{},"value":["2024-04-15"]},{"type":"character","attributes":{},"value":["сми","телеграм","рейтинг","цитирования"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","highlight","highlight_downlit","toc","toc_depth","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["kate"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["dir_charts/cit_sm_vl.png"]},{"type":"NULL"},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["images/cit_sm_mb.png","images/cit_sm_mu.png","images/cit_sm_ob.png","images/cit_sm_sm_drl.png","images/cit_sm_vl.png","kaluga-tg-citations2_files/anchor-4.2.2/anchor.min.js","kaluga-tg-citations2_files/bowser-1.9.3/bowser.min.js","kaluga-tg-citations2_files/crosstalk-1.2.0/css/crosstalk.min.css","kaluga-tg-citations2_files/crosstalk-1.2.0/js/crosstalk.js","kaluga-tg-citations2_files/crosstalk-1.2.0/js/crosstalk.js.map","kaluga-tg-citations2_files/crosstalk-1.2.0/js/crosstalk.min.js","kaluga-tg-citations2_files/crosstalk-1.2.0/js/crosstalk.min.js.map","kaluga-tg-citations2_files/crosstalk-1.2.0/scss/crosstalk.scss","kaluga-tg-citations2_files/datatables-binding-0.32/datatables.js","kaluga-tg-citations2_files/datatables-css-0.0.0/datatables-crosstalk.css","kaluga-tg-citations2_files/distill-2.2.21/template.v2.js","kaluga-tg-citations2_files/dt-core-1.13.6/css/jquery.dataTables.extra.css","kaluga-tg-citations2_files/dt-core-1.13.6/css/jquery.dataTables.min.css","kaluga-tg-citations2_files/dt-core-1.13.6/js/jquery.dataTables.min.js","kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css","kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js","kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.html5.min.js","kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.print.min.js","kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js","kaluga-tg-citations2_files/header-attrs-2.22/header-attrs.js","kaluga-tg-citations2_files/htmlwidgets-1.6.2/htmlwidgets.js","kaluga-tg-citations2_files/jquery-3.6.0/jquery-3.6.0.js","kaluga-tg-citations2_files/jquery-3.6.0/jquery-3.6.0.min.js","kaluga-tg-citations2_files/jquery-3.6.0/jquery-3.6.0.min.map","kaluga-tg-citations2_files/jszip-1.13.6/jszip.min.js","kaluga-tg-citations2_files/popper-2.6.0/popper.min.js","kaluga-tg-citations2_files/tippy-6.2.7/tippy-bundle.umd.min.js","kaluga-tg-citations2_files/tippy-6.2.7/tippy-light-border.css","kaluga-tg-citations2_files/tippy-6.2.7/tippy.css","kaluga-tg-citations2_files/tippy-6.2.7/tippy.umd.min.js","kaluga-tg-citations2_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="kaluga-tg-citations2_files/header-attrs-2.22/header-attrs.js"></script>
+  <script src="kaluga-tg-citations2_files/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="kaluga-tg-citations2_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+  <script src="kaluga-tg-citations2_files/datatables-binding-0.32/datatables.js"></script>
+  <script src="kaluga-tg-citations2_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="kaluga-tg-citations2_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link href="kaluga-tg-citations2_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+  <script src="kaluga-tg-citations2_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="kaluga-tg-citations2_files/jszip-1.13.6/jszip.min.js"></script>
+  <link href="kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+  <script src="kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+  <script src="kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+  <script src="kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+  <script src="kaluga-tg-citations2_files/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+  <link href="kaluga-tg-citations2_files/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+  <script src="kaluga-tg-citations2_files/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+  <script src="kaluga-tg-citations2_files/popper-2.6.0/popper.min.js"></script>
+  <link href="kaluga-tg-citations2_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="kaluga-tg-citations2_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="kaluga-tg-citations2_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="kaluga-tg-citations2_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="kaluga-tg-citations2_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="kaluga-tg-citations2_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="kaluga-tg-citations2_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Telegram Калужской области. Часть 2. Кто цитирует СМИ?","description":"Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг.","authors":[],"publishedDate":"2024-04-15T00:00:00.000+03:00"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Telegram Калужской области. Часть 2. Кто цитирует СМИ?</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">рейтинг</div>
+<div class="dt-tag">цитирования</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг.</p></p>
+</div>
+
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#сми-власть">СМИ-ВЛАСТЬ</a></li>
+<li><a href="#сми-общзак">СМИ-ОБЩЗАК</a></li>
+<li><a href="#сми-муниципалы">СМИ-МУНИЦИПАЛЫ</a></li>
+<li><a href="#сми-молбиз">СМИ-МОЛБИЗ</a></li>
+<li><a href="#сми-остальные">СМИ-ОСТАЛЬНЫЕ</a></li>
+<li><a href="#общий-рейтинг">ОБЩИЙ РЕЙТИНГ</a></li>
+<li><a href="#забытые-сми">Забытые СМИ</a></li>
+<li><a href="#размышления">РАЗМЫШЛЕНИЯ</a>
+<ul>
+<li><a href="#поделиться">Поделиться</a></li>
+<li><a href="#ссылка-для-цитирования">Ссылка для цитирования</a></li>
+<li><a href="#права">Права</a></li>
+<li><a href="#отказ-от-ответственности">Отказ от ответственности</a></li>
+<li><a href="#софт">Софт</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<p>Продолжаем <a href="https://reginaobninsklab.github.io/posts/kaluga-tg-citations/" target="_blank">наше исследование</a> влиятельности Телеграм-каналов (далее – ТГК, канал, каналы) Калужской области и в этой части мы завершаем сравнение ТГК СМИ. Рейтинг, построенный на цитированиях СМИ друг друга (см. <a href="https://reginaobninsklab.github.io/posts/kaluga-tg-citations/" target="_blank">Часть 1. Царь горы</a>), конечно, кое-что говорит об уважении со стороны коллег, но полноценное признание узнается по цитированиям в официальных каналах субъектов публичной власти и органов общественного надзора.</p>
+<p>Попробуем взглянуть на калужские СМИ (Таблица 1) с этой стороны.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5664e7ab4b919d63555d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5664e7ab4b919d63555d">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 1. ТГК СМИ Калужской области. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывают количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ"],["Калужские новости","⚡️ Калуга 24","kp40.ru - Калуга, Обнинск и Калужская область. Новости","ES! - канал Евгения Серкина","Караульный. Калуга","Калужская Неделя","РИЦ | Боровский район","Обнинск сити","Народ Обнинска","Типичный Обнинск","НИКА","ОБНИНСК 040","Калуга Сегодня","Газета \"Балабаново\"","Типичная Калуга","Обнинск, вперёд!","Жуковский вестник","ПроходяМиМо","КП Калужская область. Новости региона","Типичный Малоярославец ❤️","Калуга","Перископ Обнинска","Организатор_медиа_Сухиничи","КГВ","Маэстро Горбатин","Мосальская газета","Киров Калужской области Pesochnya40.com","Калужский мечтатель","Плохие Новости | Калуга","КО_лужа","Моя Калуга","Козельск здесь и сейчас","Информцентр | МАЯК","На районе – Думиничи","Наш Боровский район","Сорок_А","Людиновский рабочий","ЧП Калуга","Спас новости","Настоящий Обнинск","Сухарик лайф","Мосальская тележка","Юхнов. Про настоящее","Бабынинский информер","Прогулки по Обнинску","Калуга, внимание","В Дзержинском районе","Киров40 на связи","Перемышль здесь","Боровская стенгазета","Износки. Срочно и точно","Мещовские куранты","Людиновский стандарт","🔥Наш Обнинск","Жуковский район - и точка","Калужские дебри","Медынь: коротко о главном","Чистый Обнинск","Жиздра 40","Жизнь ВМалом","Просто Жуковский район","ЧП Обнинск","Таруса здесь и сейчас","Твое Ферзиково","Привет, Барятино!","Юхновские вести","Козельск Live","«Знамя труда» | Киров 40","Типичный ЮХНОВ","Милая Калуга","Хвастовичи сегодня","Газета \"Ферзиковские вести\"📰","Куйбышевский обозреватель","Бетлица","Людиново.ру","Бетлицкий вестник","Калуга | Север","В Обнинске","Новости п.Воротынск","ШОК","!Газета Думиничские вести","[В] Обнинске","Ермолинское обозрение | Новости | Калужская область","Инцидент | Обнинск","Калуга вечерняя","[В] Малоярославце","Союз журналистов - Калуга","Типичное Кривское"],[53061,42273,34874,28979,18260,17024,15029,14404,13363,9298,8750,8135,8089,7878,6947,6476,6341,6017,5577,5563,5516,5283,5128,5121,5109,5053,4808,4665,4610,4606,4603,4552,4103,4053,3766,3712,3690,3403,3356,3282,3129,3084,2867,2825,2735,2704,2666,2605,2502,2491,2442,2287,2257,2176,1993,1942,1916,1883,1875,1847,1803,1677,1635,1588,1579,1556,1395,1341,1201,977,937,893,805,779,750,690,600,555,516,440,438,289,274,216,194,149,70,44],[445,255,980,632,5964,898,85,55,73,498,155,354,120,420,187,61,80,1046,1,59,11,62,344,40,207,58,22,77,0,2081,14,912,556,42,385,281,111,25,38,24,73,48,80,338,1270,7,64,101,141,37,35,334,136,61,49,30,26,373,28,60,17,49,132,56,56,164,53,266,182,0,125,13,24,22,0,7,8,6,0,1,92,0,0,16,3,0,11,0],[52964,41794,34518,28188,17856,13925,13705,9267,13173,8918,8580,7923,7850,6579,6715,6448,6036,4415,5562,4552,5447,5229,4416,5036,5032,4225,4371,4654,4548,4354,4489,3687,3826,3814,3628,3513,3168,3328,3238,3153,2900,2971,2771,2485,2464,2684,2472,2367,2334,2422,2274,2117,2125,2105,1895,1757,1742,1738,1725,1693,1697,1592,1400,1504,1408,1472,1329,1111,1101,934,870,709,753,693,676,647,593,537,489,417,424,287,184,212,186,149,67,44],[52567,29905,26147,11486,17387,6692,7948,2933,843,3923,8150,2199,2066,1000,1725,408,3778,1530,944,975,5417,633,1484,5059,4856,3865,2725,1873,192,2071,3130,918,507,2828,407,2028,406,2531,545,205,713,237,123,431,1336,2679,92,581,123,205,1415,333,831,309,672,1042,736,939,810,195,279,902,184,962,93,915,111,548,472,926,375,99,297,71,603,265,92,114,307,192,188,32,87,29,11,15,38,2],[13128,4778,11697,7004,5537,708,4141,809,784,3987,7524,762,5107,541,664,232,4885,195,3569,1702,5404,3758,456,4744,17,1596,270,58,3048,706,3489,1123,1064,3596,589,410,77,2600,2454,1754,2388,2569,1523,1685,555,2555,1304,2254,1778,1744,2123,1520,1398,986,820,1659,1568,1170,1646,1148,1268,988,1167,1221,1171,341,323,561,571,809,706,556,465,190,2,184,461,192,259,307,158,129,81,26,25,98,48,20],[88,323,44,218,1745,319,92,5673,64,68,103,274,324,835,50,25,210,102,0,362,5,39,56,57,5,98,5,24,132,134,85,350,31,526,12,9,58,27,22,8,152,38,59,138,265,138,183,1836,779,29,46,74,102,537,187,1375,1707,82,38,44,137,0,1199,27,30,87,13,103,691,522,37,17,5,24,642,15,2,0,0,0,52,273,1,0,4,148,2,42]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<h2 id="сми-власть">СМИ-ВЛАСТЬ</h2>
+<p>В группу ВЛАСТЬ мы включили <strong>36</strong> ТГК, которые ведут сотрудники Администрации Губернатора и Правительства Калужской области, руководители региональных министерств и некоторых подведомственных организаций. В таблице 2 перечислены ТГК из группы ВЛАСТЬ и их характеристики.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3ff41fce8935d5185856" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3ff41fce8935d5185856">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 2. ТГК Калужской области, включенные в группу ВЛАСТЬ. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывано количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ","ВЛАСТЬ"],["Владислав Шапша","КАЛУГИН","Минспорта Калужской области","Министерство цифрового развития Калужской области","Правительство Калужской области","Вячеслав Лежнин","Министерство строительства и ЖКХ Калужской области","Минприроды Калужской области","Министерство культуры и туризма Калужской области","Минобрнауки Калужской области","Минтруда и соцзащиты Калужской области","Министерство конкурентной политики Калужской области","Министерство здравоохранения Калужской области","МЧС Калужской области","Олег Сердюков","Министерство экономического развития и промышленности КО","Это Зенов","Министерство финансов Калужской области","Администрация Губернатора 40","Павел Суслов","Александр Аникеев","Владимир Попов","Минтранс 40","Министерство внутренней политики Калужской области","Разумовский с вами","Валентина Авдеева","Константин Пахоменко","ЦУР Калужской области","Николай Владимиров","V4️⃣0️⃣ - Варвара Антохина","Владимир Жипа","Ольга Иванова","Волочай Владимир Викторович","Александр Ефремов","Александр Шпиренко","Представительство Правительства Калужской области при Правительстве Российской Федерации"],[6720,5960,3356,2778,2670,2342,2045,1788,1779,1688,1548,1517,1347,1289,1277,1208,1162,1075,1054,1004,995,938,868,826,796,772,758,734,507,476,467,256,245,163,130,95],[12,1843,15,16,196,469,60,31,26,135,65,9,63,225,14,26,234,162,315,24,14,36,42,58,115,3,8,35,41,73,12,18,13,1,0,0],[5490,4822,2928,2573,2249,1997,1893,1553,1544,1525,1351,1063,1231,1128,917,1088,1133,895,982,794,838,842,782,654,685,609,607,682,452,416,408,239,232,125,110,66],[935,1602,449,1223,553,330,361,635,563,546,695,222,361,431,56,364,663,287,642,203,201,340,155,190,195,115,97,162,97,154,129,70,29,10,34,4],[2538,872,2711,1242,940,1314,1614,742,1260,965,1007,428,414,1095,846,1007,216,604,782,748,227,469,264,290,333,401,230,213,89,299,100,59,11,106,2,2],[266,2328,1716,1245,1596,264,1236,579,379,761,1235,791,184,221,885,647,39,209,46,85,349,363,188,507,272,136,150,104,46,84,17,4,33,4,4,0]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<p>В таблице 3 для каждого из каналов группы ВЛАСТЬ приведен перечень процитированных ТГК группы СМИ с дополнительными метриками (см. пояснения в подписи).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e117763511e804672c91" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e117763511e804672c91">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 3. Цитирования ТГК СМИ в постах ТГК группы ВЛАСТЬ в период с 2023.01 по 2024.03. Процит.каналов - количество процитированных СМИ, Всего цитат - суммарное количество упоминаний всех СМИ. Сумма - количество цитирований СМИ. Сумма2 - количество цитирований, суммированное с удельным весом ссылок. Доля,%(ВЛАСТЬ) = \"Сумма\" / \"Всего цитат\". Доля,%(СМИ) = \"Сумма\" / (сумма цитирований указанного канала во всех ТГК группы ВЛАСТЬ).<\/caption>","data":[["V4️⃣0️⃣ - Варвара Антохина","V4️⃣0️⃣ - Варвара Антохина","Администрация Губернатора 40","Александр Аникеев","Александр Ефремов","Александр Ефремов","Валентина Авдеева","Владимир Жипа","Владимир Жипа","Владислав Шапша","Вячеслав Лежнин","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","КАЛУГИН","Министерство внутренней политики Калужской области","Министерство внутренней политики Калужской области","Министерство внутренней политики Калужской области","Министерство здравоохранения Калужской области","Министерство здравоохранения Калужской области","Министерство финансов Калужской области","Минобрнауки Калужской области","Минприроды Калужской области","Минспорта Калужской области","Минспорта Калужской области","Правительство Калужской области","Правительство Калужской области","Разумовский с вами","Это Зенов","Это Зенов","Это Зенов","Это Зенов","Это Зенов","Это Зенов","Это Зенов","Это Зенов"],[2,2,1,1,2,2,1,2,2,1,1,9,9,9,9,9,9,9,9,9,3,3,3,2,2,1,1,1,2,2,2,2,1,8,8,8,8,8,8,8,8],[11,11,2,3,3,3,2,2,2,3,5,49,49,49,49,49,49,49,49,49,4,4,4,3,3,1,1,1,3,3,5,5,3,41,41,41,41,41,41,41,41],["ES! - канал Евгения Серкина","Наш Боровский район","Калужская Неделя","ES! - канал Евгения Серкина","НИКА","ES! - канал Евгения Серкина","НИКА","ES! - канал Евгения Серкина","НИКА","НИКА","ES! - канал Евгения Серкина","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужская Неделя","⚡️ Калуга 24","КГВ","Калужские новости","Перископ Обнинска","НИКА","Народ Обнинска","Союз журналистов - Калуга","Калужская Неделя","КГВ","⚡️ Калуга 24","Калуга Сегодня","НИКА","НИКА","Сухарик лайф","ES! - канал Евгения Серкина","НИКА","Калуга Сегодня","НИКА","Союз журналистов - Калуга","ES! - канал Евгения Серкина","НИКА","КГВ","ES! - канал Евгения Серкина","Калуга Сегодня","Калужская Неделя","Калужский мечтатель","КО_лужа","Моя Калуга"],[10,1,2,3,2,1,2,1,1,3,5,12,10,10,6,5,3,1,1,1,2,1,1,2,1,1,1,1,2,1,4,1,3,24,6,3,2,2,2,1,1],[10,1,0.4,3,2,1,2,1,1,3,5,11.1,9.1,10,6,4.1,2.1,1,1,1,2,1,1,2,1,1,1,1,2,1,4,1,3,15.5,4.7,2,1.3,1.3,1.5,1,1],[0.91,0.09,1,1,0.67,0.33,1,0.5,0.5,1,1,0.24,0.2,0.2,0.12,0.1,0.06,0.02,0.02,0.02,0.5,0.25,0.25,0.67,0.33,1,1,1,0.67,0.33,0.8,0.2,1,0.59,0.15,0.07000000000000001,0.05,0.05,0.05,0.02,0.02],[0.37,1,0.12,0.11,0.05,0.04,0.05,0.04,0.02,0.07000000000000001,0.19,1,0.62,0.91,0.46,1,1,0.02,1,0.5,0.12,0.08,0.09,0.4,0.02,0.02,1,0.04,0.05,0.2,0.1,0.5,0.11,0.59,0.46,0.11,0.4,0.12,1,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Кто цитирует (ВЛАСТЬ)<\/th>\n      <th>Процит.<br/>каналов<\/th>\n      <th>Всего<br/>цитат<\/th>\n      <th>Кого цитируют (СМИ)<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n      <th>Доля,%<br/>(ВЛАСТЬ)<\/th>\n      <th>Доля,%<br/>(СМИ)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"width":"250px","targets":[0,3]},{"width":"90px","targets":[6,7]},{"className":"dt-center","targets":[1,2,4,5,6,7]},{"name":"Кто цитирует (ВЛАСТЬ)","targets":0},{"name":"Процит.<br/>каналов","targets":1},{"name":"Всего<br/>цитат","targets":2},{"name":"Кого цитируют (СМИ)","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5},{"name":"Доля,%<br/>(ВЛАСТЬ)","targets":6},{"name":"Доля,%<br/>(СМИ)","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Пример прочтения таблицы 3. В канале Варвары Антохиной мы обнаружили 11 цитирований 2-х ТГК группы СМИ – 10 цитирований (91%) канала “ES! - канал Евгения Серкина” и 1 цитирование (9%) канала “Наш Боровский район”. Для первого канала цитирования Варвары Антохиной составили 37% от всех цитирований в ТГК группы ВЛАСТЬ, а для второго канала это единственное упоминание (100%).</p>
+</blockquote>
+<p>На иллюстрации показаны обнаруженные цитирования.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/cit_sm_vl.png" width="1058" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e86bdf38fe0835522dd7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e86bdf38fe0835522dd7">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 4. Рейтинг ТГК СМИ Калужской области на основании цитирований и упоминаний в виде прямых ссылок в ТГК группы ВЛАСТЬ в период с 2023.01 по 2024.03. N_цит_ТГК - количество ТГК группы ВЛАСТЬ, которые цитировали посты исследуемого канала СМИ. N_цит_ТГК5 - количество ТГК группы ВЛАСТЬ, которые цитировали посты исследуемого канала СМИ не менее 5 раз. h-index - Индекс Хирша. Сумма - количество цитирований и упоминаний в виде ссылки. Сумма2 - количество цитирований, суммированное с удельным весом ссылок.)<\/caption>","data":[["НИКА","ES! - канал Евгения Серкина","Калужская Неделя","КГВ","Калуга Сегодня","⚡️ Калуга 24","Союз журналистов - Калуга","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужские новости","Перископ Обнинска","Калужский мечтатель","Наш Боровский район","КО_лужа","Моя Калуга","Сухарик лайф","Народ Обнинска"],[10,8,4,3,3,2,2,1,1,1,1,1,1,1,1,1],[1,2,1,2,0,1,0,1,1,0,0,0,0,0,0,0],[3,3,2,2,2,1,1,1,1,1,1,1,1,1,1,1],[41,27,16,13,5,11,2,12,5,3,2,1,1,1,1,1],[32.5,26,12.8,11.7,4.3,11,2,11.1,4.1,2.1,1.5,1,1,1,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>ТГ-канал<\/th>\n      <th>N_цит_ТГК<\/th>\n      <th>N_цит_ТГК5<\/th>\n      <th>h-index<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"width":"400px","targets":0},{"className":"dt-center","targets":[1,2,3,4,5]},{"name":"ТГ-канал","targets":0},{"name":"N_цит_ТГК","targets":1},{"name":"N_цит_ТГК5","targets":2},{"name":"h-index","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Строки отсортированы по убыванию N_цит_ТГК, но в интерактивной таблице выше, нажав на название столбца, можно пересортировать строки по значениям любого другого столбца.</p>
+<p><strong>Наблюдения</strong>:</p>
+<ul>
+<li><p>ТГК группы ВЛАСТЬ слабо цитируют ТГК СМИ – из 88 ТГК СМИ, включенных в исследование, цитировались лишь 16.</p></li>
+<li><p>по совокупности показателей можно говорить о лидерстве канала “Ника”, за которым следует “ES! - канал Евгения Серкина” (оба имеют самое высокое по группе значение индекса Хирша).</p></li>
+</ul>
+<hr />
+<h2 id="сми-общзак">СМИ-ОБЩЗАК</h2>
+<p>В группу ОБЩЗАК были отнесены <strong>13</strong> ТГК, которые ведут представители Законодательного собрания КО, Общественной палаты КО, общественных советов, а также уполномоченные по правам. Если взаимоотношения СМИ с представителями группы ВЛАСТЬ регулируются федеральными законами, в том числе антимонопольного характера, то “общественники” при выборе, какое СМИ процитировать, на наш взгляд, могут руководствоваться личными симпатиями, сложившимися отношениями или рекомендациями со стороны. Это наше оценочное суждение, возможно, для некоторых организаций взаимодействие с СМИ регулируется положениями устава или внутренними нормативными документами.</p>
+<p>В таблице 5 перечислены ТГК из группы ОБЩЗАК и выборочные характеристики содержащихся в них постов.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-83b6029f9cc943501add" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-83b6029f9cc943501add">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 5. ТГК Калужской области, включенные в группу ОБЩЗАК. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывают количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК","ОБЩЗАК"],["Общественная палата Калужской области","Законодательное Собрание Калужской области","Уполномоченный по правам ребенка в Калужской области","Уполномоченный по правам человека в Калужской области","Сослан Такаев","ЕФРЕМОВА|Будни депутата","Это Киршин","Геннадий Новосельцев","МолПарламент40","Дмитрий Афанасьев","Окунев: депутат и меценат","Елена Алешина","Владислав Макушин"],[2634,2411,1439,1118,962,856,831,664,653,439,250,55,54],[54,44,544,0,325,32,264,1,67,1,1,0,6],[1633,1943,1335,1029,730,572,672,362,475,419,154,34,44],[244,664,689,107,194,328,170,238,145,117,49,3,7],[254,467,1040,732,283,392,460,118,261,94,53,22,29],[1479,9,242,419,176,19,124,10,178,414,15,0,0]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<p>В таблице 6 для каждого из каналов группы ОБЩЗАК показан перечень процитированных ТГК группы СМИ с дополнительными метриками (см. пояснения в подписи).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-74cae89219dd92feb328" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-74cae89219dd92feb328">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 6. Цитирования и упоминания ТГК СМИ в постах ТГК группы ОБЩЗАК в период с 2023.01 по 2024.03. Процит.каналов - количество процитированных СМИ, Всего цитат - суммарное количество упоминаний всех СМИ. Сумма - количество цитирований СМИ. Сумма2 - количество цитирований, суммированное с удельным весом ссылок. Доля,%(ОБЩЗАК) = \"Сумма\" / \"Всего цитат\". Доля,%(СМИ) = \"Сумма\" / (сумма цитирований указанного канала во всех ТГК группы ОБЩЗАК).<\/caption>","data":[["Владислав Макушин","Геннадий Новосельцев","Геннадий Новосельцев","ЕФРЕМОВА|Будни депутата","ЕФРЕМОВА|Будни депутата","Законодательное Собрание Калужской области","МолПарламент40","Общественная палата Калужской области","Сослан Такаев","Сослан Такаев","Уполномоченный по правам ребенка в Калужской области","Это Киршин","Это Киршин","Это Киршин"],[1,2,2,2,2,1,1,1,2,2,1,3,3,3],[1,3,3,4,4,1,1,1,2,2,7,9,9,9],["ШОК","ES! - канал Евгения Серкина","НИКА","Моя Калуга","ES! - канал Евгения Серкина","НИКА","ШОК","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужская Неделя","НИКА","НИКА","ES! - канал Евгения Серкина","В Дзержинском районе","Калуга Сегодня"],[1,2,1,3,1,1,1,1,1,1,7,5,3,1],[1,2,1,3,1,1,1,1,1,1,6.2,5,3,1],[1,0.67,0.33,0.75,0.25,1,1,1,0.5,0.5,1,0.5600000000000001,0.33,0.11],[0.5,0.25,0.1,1,0.12,0.1,0.5,1,1,0.1,0.7,0.62,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Кто цитирует (ОБЩЗАК)<\/th>\n      <th>Процит.<br/>каналов<\/th>\n      <th>Всего<br/>цитат<\/th>\n      <th>Кого цитируют (СМИ)<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n      <th>Доля,%<br/>(ОБЩЗАК)<\/th>\n      <th>Доля,%<br/>(СМИ)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"width":"250px","targets":[0,3]},{"width":"90px","targets":[6,7]},{"className":"dt-center","targets":[1,2,4,5,6,7]},{"name":"Кто цитирует (ОБЩЗАК)","targets":0},{"name":"Процит.<br/>каналов","targets":1},{"name":"Всего<br/>цитат","targets":2},{"name":"Кого цитируют (СМИ)","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5},{"name":"Доля,%<br/>(ОБЩЗАК)","targets":6},{"name":"Доля,%<br/>(СМИ)","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Пример прочтения таблицы 6. В канале ЕФРЕМОВА|Будни депутата мы обнаружили 4 цитирования 2-х ТГК группы СМИ – 3 цитирования (75%) канала “Моя Калуга” и 1 цитирование (25%) “ES! - канал Евгения Серкина”. Для ТГ-канала “Моя Калуга” цитирования в канале “ЕФРЕМОВА|Будни депутата” составляют 100% от всех цитирований в ТГК группы “ОБЩЗАК”, а для канала Евгения Серкина - 12%.</p>
+</blockquote>
+<p>На иллюстрации наглядно видны сложившиеся отношения.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/cit_sm_ob.png" width="1058" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f3005d8cf1d6bd8323f5" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f3005d8cf1d6bd8323f5">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 7. Рейтинг ТГК СМИ Калужской области на основании цитирований и упоминаний в виде прямых ссылок в ТГК группы ОБЩЗАК в период с 2023.01 по 2024.03. N_цит_ТГК - количество ТГК группы ОБЩЗАК, которые цитировали посты исследуемого канала СМИ. N_цит_ТГК5 - количество ТГК группы ОБЩЗАК, которые цитировали посты исследуемого канала СМИ не менее 5 раз. h-index - Индекс Хирша. Сумма - количество цитирований и упоминаний в виде ссылки. Сумма2 - количество цитирований, суммированное с удельным весом ссылок.)<\/caption>","data":[["НИКА","ES! - канал Евгения Серкина","ШОК","Моя Калуга","В Дзержинском районе","Калуга Сегодня","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужская Неделя"],[4,3,2,1,1,1,1,1],[1,1,0,0,0,0,0,0],[1,2,1,1,1,1,1,1],[10,8,2,3,3,1,1,1],[9.199999999999999,8,2,3,3,1,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>ТГ-канал<\/th>\n      <th>N_цит_ТГК<\/th>\n      <th>N_цит_ТГК5<\/th>\n      <th>h-index<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"width":"400px","targets":0},{"className":"dt-center","targets":[1,2,3,4,5]},{"name":"ТГ-канал","targets":0},{"name":"N_цит_ТГК","targets":1},{"name":"N_цит_ТГК5","targets":2},{"name":"h-index","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Строки отсортированы по убыванию N_цит_ТГК, но в интерактивной таблице выше, нажав на название столбца, можно пересортировать строки по значениям любого другого столбца.</p>
+<p><strong>Наблюдения</strong>:</p>
+<ul>
+<li><p>ТГК группы ОБЩЗАК еще слабее цитируют СМИ, чем ТГК группы ВЛАСТЬ – из 88 СМИ каналов цитировались лишь 8.</p></li>
+<li><p>наибольшее количество цитирующих каналов ОБЩЗАК также у каналов “Ника” и “ES! - канал Евгения Серкина”.</p></li>
+<li><p>обращает на себя внимание видимость обнинского школьного СМИ (канал “ШОК”).</p></li>
+</ul>
+<hr />
+<h2 id="сми-муниципалы">СМИ-МУНИЦИПАЛЫ</h2>
+<p>В группу МУНИЦИПАЛЫ отнесены <strong>327</strong> ТГК, которые ведут представители администраций районов, городских и сельских поселений. В таблице 8 перечислены ТГК группы МУНИЦИПАЛЫ и характеристики содержащихся в них постов.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b10291d1fa36fc69878d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b10291d1fa36fc69878d">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 8. ТГК Калужской области, включенные в группу МУНИЦИПАЛЫ. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывают количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ","МУНИЦИПАЛЫ"],["Дмитрий Денисов","Городская Дума Калуги","Город Обнинск","Городская Управа города Калуги","СМО Калужской области","Бабынинский район","Обнинское городское Собрание","Администрация МР\"Износковский район\"","Администрация Козельского района","Администрация МР\" Жиздринский район\"🧰","Администрация МР Медынский район","Администрация МО ГП п.Воротынск","Администрация УЛЬЯНОВО","Администрация МР \"Людиново и Людиновский район\"","Администрация Дзержинского района","Администрация Жуковского района","Кировская районная администрация","Вячеслав Парфёнов","Администрация Мр Малоярославецкий Район","Администрация Сухиничского района","Администрация города Балабаново","Администрация Ферзиковского района","Администрация Мещовского района","Администрация МР \"Мосальский район\"","Администрация МР «Спас-Деменский район»","Таруса Город","Татьяна Леонова #городпервых","Администрация Боровского района","Это Голубев","Администрация Куйбышевского района","Феденков Игорь Николаевич - Глава Кировской районной администрации","Администрация ГП город Жуков","Администрация МР \"Думиничский район\"","Администрация Юхновский район","Николай Калиничев","Козлов Николай Васильевич","Сергей Булыгин 🇷🇺","Алексей Волков","Администрация сельского поселения село Ворсино","Управа МР Барятинский район","Егор Вирков","Администрация города Боровска","adm_sp_bolva","Администрация муниципального района \"Перемышльский район\"","Администрация Хвастовичского района","Администрация СП \"Село Бояновичи\"","Администрация МО ГП \"Город Мосальск\"","Куда сходить в Обнинске","Александр Анисимов","Администрация ГП \"Город Сосенский\"","Анатолий Суярко","Деревня Похвиснево","Михаил Крылов","Село Кузьмищево","Поселковая администрация СП \"Посёлок Детчино\"","Село Петрищево","Село Лопатино","Администрация МОСП \"Посёлок Мятлево\"","Деревня Алекино","Село Вознесенье","Село Роща","Владислав Поляков","Администрация СП \"Деревня Брюхово\"","Село Волковское","Село Барятино","Село Некрасово","Елена Слабова","Администрация СП \"Деревня Стайки\"","Сельская Дума СП \"Село Любунь\"","Сельская Дума СП \"Село Чипляево\"","Сельская Дума СП \"Село Буднянский\"","Администрация МО СП \"Деревня Снопот\"","Администрация СП «Хутор Новоалександровский»","Администрация СП \"Деревня Понизовье\"","Администрация муниципального образования \"Город Малоярославец\"","Администрация ГП \"Город Спас-Деменск\"","Администрация городского поселения \"Город Козельск\"","Администрация СП \"Деревня Михальчуково\"","Надежда Бадеева","Владимир Яничев","Администрация СП Деревня Посконь","Администрация СП \"Село Подбужье\"","Администрация МО СП деревня Путогино","Администрация СП \"Село Студенец\"","Манаков на связи","СП Хвастовичи","Администрация МО СП Деревня Долгое","Teplovo_SP","Администрация сельского поселения \"Село Огорь\"","Администрация МОСП «Поселок Раменский»","Администрация МО СП село Боровенск","Администрация МО СП деревня Гачки","Администрация СП \"Село Дашино\"","Администрация СП \"Деревня Стайки\"","Администрация д. Воронино","Администрация СП\"село Барятино\"","Администрация сельского поселения село Трубино","Администрация СП \"Село совхоз Коллективизатор\"","Стефан Перевалов","Бузанов Владимир Анатольевич","Администрация СП \"Село Ильинское\"","администрация СП \"Деревня Нехочи\"","Администрация сельского поселения \"Село Волконское\"","Администрация СП \"Село Поздняково\"","Администрация СП \"Село Маклаки\"","Александр Барыбин","Управа Полотняный Завод","Администрация сельского поселения \"Деревня Киреевское-Первое\"","Колесников Александр","Администрация сельского посления \"Деревня Каменка\"","Администрация сельского поселения \"Деревня Плюсково\"","Администрация сельского посления \"Деревня Подборки\"","Администрация сельского поселения \"Село Бурнашево\"","Администрация СП \"Село Передел\"","Администрация ГП \" Город Жиздра\"","Администрация сельского поселения \"Село Попелево\"","Алексей Кошелев","Администрация СП \"Село Березичский Стеклозавод\"","Администрация сельского поселения \"Деревня Сенино-Первое\"","Администрация СП \"Село Коллонтай\"","Администрация сельского поселения \"Деревня Лавровск\"","Администрация СП \"Деревня Романово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация сельского посления \"Село Чернышено\"","Администрация СП \"Село Чернышено\"","Администрация сельского поселения \"Село Нижние Прыски\"","Администрация СП \"Деревня Варваровка\"","Администрация СП \"Деревня Верхняя Песочня\"","Администрация СП \"Село Заречье\"","Владимир Леонов","Администрация СП \"Деревня Высокое\"","Администрация СП \"Село Брынь\"","Администрация ГП \"Поселок Думиничи\"","Администрация СП \"Село Вертное \"","Андрей Степанян","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","СП \"Поселок Еленский\"","Администрация СП Село Никитское","Администрация МОСП деревня Савино","Администрация СП \"Село Адуево\"","Администрация сельского поселения \"Деревня Дубровка\"","Сельская Дума Администрации СП \"Село Хвастовичи\"","Администрация СП \"Село Которь\"","Марина Карама","Администрация СП \"Железнодорожная станция Кудринская\"","Администрация города Сухиничи","Андрей Хохлов - официальный канал","Администрация ГП \"Посёлок Середейский\"","Администрация СП \"Село Красное\"","Администрация сельского поселения \"Село Кудрявец\"","Администрация СП \"Деревня Михеево\"","Галкин Сергей Павлович","Администрация сельского поселения \"Село Покровск\"","Администрация города Белоусово","Администрация СП \"Село Новослободск\"","Администрация СП \"Село Кременское\"","Сергей Макридов","Администрация СП \"Деревня Берёзовка\"","Администрация п. Молодежный Мещовского района","Администрация СП \"Село Высокиничи\"","Администрация СП \"Деревня Алнеры\"","Администрация Село Пеневичи","Администрация Шлиппово","Администрация СП \"Деревня Воробьево\"","Администрация СП \"Село Недельное\"","Администрация СП \"Деревня Красный Городок\"","Администрация город Юхнов","СП \"Деревня Ермолово\"","Администрация СП \"Село Утешево\"","Администрация МО СП \"Село Извольск\"","Администрация СП \"Село Брынь\"","Администрация СП \"Село Волосово-Дудино\"","Администрация Старки","Администрация МО СП деревня Хвощи","Администрация СП \"Деревня Думиничи\"","СП \"Село Стрельна\"","Администрация СП \"Село Кудиново\"","Администрация СП \"Село Дудоровский\"","СП \"СЕЛО ДАБУЖА\"","Администрация СП \"Деревня Субботники\"","СП \"Деревня Радождево\"","СП \"Деревня Глазково\"","Администрация МО СП \" Село Климов Завод\"","Администрация СП \"Село Спас-Загорье\"","Админстрация СП \"Деревня Бордуково\"","Администрация СП \"Деревня Прудки\"","Сергей Веденкин","Администрация СП \"Деревня Захарово\"","Администрация МО СП д. Ивановское","Администрация СП Гремячево","Администрация СП \"Село Фролово\"","Администрация СП \"Деревня Шумятино\"","Администрация МО СП село Льнозавод","Администрация СП \"Деревня Гусево\"","Администрация сельского поселения \"Село Муромцево\"","Администрация СП \"Село Сильковичи\"","Администрация СП \"Село Богдановы Колодези\"","Администрация СП \"Деревня Выползово\"","Администрация Соболевка","Администрация СП \"Село Маклино\"","Администрация деревня Емельяновка","Администрация СП \" Деревня Буда'","Администрация СП \"Село Головтеево\"","Сельская Дума СП \"Село Татаринцы\"","Администрация СП \"Посёлок Юбилейный\"","Администрация Тарутино","Администрация СП \"Деревня Гавриловка\"","Администрация СП \"Деревня Юрьево\"","Администрация СП \"Село Воскресенск\"","Администрация СП \"Деревня Рябцево\"","Администрация СП \"Деревня Ерденево\"","Администрация деревня Колыхманово","Администрация СП Ахлебинино","Администрация СП \"Деревня Большие Савки\"","Администрация МО СП П. Бабынино","АДМИНИСТРАЦИЯ СП \"СЕЛО ХОТЬКОВО\"","Администрация МО СП \"Деревня Галкино\"","Администрация СП \"Деревня Мелихово\"","Администрация с. Гаврики Мещовского района","Администрация СП \"Деревня Михеево\"","Администрация МО СП \"д. Михали\"","Администрация СП \"Село Заречный\"","Администрация СП \"Деревня Малая Песочня\"","Администрация сельского поселения \"Деревня Дешовки\"","Администрация Жилетово","Марина Ковалева","Администрация МО СП \"Село Дворцы\"","Администрация СП \"Деревня Бахмутово\"","Администрация СП \"Деревня Глухово\"","Районное Собрание МР \"Мещовский район\"","Администрация СП \"Деревня Тягаево\"","Администрация Истье","Администрация Восход","Администрация СП \"Село Бережки\"","Сельское поселение \"УГОРСКОЕ\"","Администрация СП \"Село Волое\"","Мещовская Городская Дума","Администрация МО СП \"Село Льва - Толстого\"","Администрация МО СП д. Людково","Городская Дума город Медынь","Администрация СП \"Село Хотень\"","Администрация МО СП \"Село Совхоз им.Ленина\"","Администрация Село Авчурино","Администрация Бебелевский сельсовет","Администрация Деревня Бронцы","Администрация Октябрьский сельсовет","Администрация СП Село Перемышль","Администрация Село Грабцево","Администрация Деревня Ястребовка","Администрация Село Сашкино","Администрация Село Ферзиково","Администрация Село Кольцово","Администрация СП \"Деревня Верховая\"","Районное Собрание Ульяновского района","Администрация Деревня Зудна","Администрация Деревня Аристово","Администрация Деревня Сугоново","Администрация Поселок Дугна","Администрация СП \"Село Фоминичи\"","Администрация СП\"Село Дуброво\"","Администрация МО СП \"Село Бутчино\"","Администрация СП Макарово","Администрация СП \"Деревня Верхнее Гульцово\"","Администрация д. Корсаково","Администрация СП село Троицкое","Глава СП «село Чернышено»","Халецкий | Pro ЖКХ","Администрация с. Серпейск Мещовского района","Администрация МО СП \"Деревня Плоское\"","Администрация СП Большие Козлы","Сельская Дума МО СП село Износки","Майоров Владимир Георгиевич - Глава городского поселения \"Город Киров\"","Администрация СП « Село Совхоз Чкаловский»","Администрация СП Калужская опытная сельскохозяйственная станция","Администрация МО СП \"Село Щелканово\"","Администрация СП \"Село Сашкино\"","Сельская Дума МО СП \"Село Сабуровщино\"","Администрация МО СП Деревня Высокое","Администрация МО СП \"Село Жерелево\"","Администрация МО СП \"Село Мокрое\" Куйбышевского района Калужской области","Администрация СП Песочня","Администрация СП \"Деревня Младенск\"","Администрация МО СП \"Посёлок Бетлица\"","Администрация СП Хотисино","Администрация МО СП \"Деревня Озеро\"","Администрация города Ермолино","Администрация СП Корекозево","Администрация Чаусово","Администрация д. Асеньевское","Администрация ГП \"Город Кременки\"","Администрация СП Горки","Администрация с. Совхоз \"Боровский\"","Администрация СП Ильинское","Администрация СП \"Село Павлиново\"","Администрация СП \"Деревня Барсуки\"","Администрация СП Борищево","Администрация СП Погореловка","Администрация СП Покровское","Администрация СП Сильково","Администрация СП Григоровское","Администрация МО СП \"Деревня Погореловка\"","Администрация села Воткино","Авдеевская администрация","Администрация деревня Беляево","Постникова Любовь","Администрация села Милеево","АДМИНИСТРАЦИЯ СП \"Карцово\"","Колодясская администрация","Артемьев Геннадий","SPseloLazinki","администрация сп Деревня Маслово","Администрация «Деревня Сени»","Администрация сельского поселения деревня Верховье","Администрация СП \"Деревня Редькино\"","Администрация СП \"Деревня Никольское\"","Администрация МО СП \"Cело\" Бабынино","Администрация СП \"Деревня Асмолово\" 🫵","Администрация села Ловать","Село Слобода","Администрация СП \"Деревня Игнатовка\"","Администрация деревня Порослицы","Администрация деревни Кривское","Администрация муниципального образования сельского поселения деревня Совьяки","Администрация деревня Куркино","Администрация МО ГП посёлок Пятовский","Администрация СП \"Деревня Манино\"","Администрация сельского поселения \"Деревня Крисаново-Пятница\""],[5700,4564,4254,3747,3345,3328,2850,2773,2750,2657,2614,2307,2271,2187,2114,2081,1970,1950,1911,1880,1855,1664,1647,1622,1544,1541,1499,1429,1329,1316,1305,1279,1263,1205,1161,1146,1138,1116,1102,1073,1066,1053,1040,1035,976,937,893,884,862,852,840,827,801,799,795,794,787,783,776,771,766,765,760,757,754,749,743,724,719,719,718,717,712,711,696,691,686,685,683,676,661,660,655,651,651,649,646,644,637,634,627,625,621,618,617,615,610,595,593,574,567,563,544,543,540,537,531,530,529,526,526,524,522,521,521,520,518,515,514,513,512,511,510,509,508,504,503,503,501,495,492,483,479,476,473,461,460,459,455,454,454,454,453,450,449,442,440,434,423,416,403,403,403,402,400,397,396,396,383,377,375,363,361,358,347,344,343,341,340,338,336,335,333,333,333,330,329,328,328,327,327,324,324,321,318,317,314,312,311,310,310,309,308,304,303,302,299,296,294,292,290,289,287,278,277,277,276,275,274,271,269,263,259,247,245,244,244,242,242,242,241,232,231,228,227,224,224,224,222,220,219,219,219,218,217,217,212,211,206,206,204,201,197,197,196,193,192,191,190,189,189,189,189,188,184,183,182,182,180,177,176,174,171,168,166,163,160,155,151,146,141,139,138,135,131,129,128,127,122,119,117,117,116,115,114,113,111,110,106,106,104,102,99,92,89,80,80,80,80,80,75,71,70,69,68,68,68,67,64,62,59,54,54,50,50,38,35,34,33,32,28,26,25,23,10,8,1],[22,37,108,71,3123,35,1,84,68,24,22,69,14,20,11,27,48,4,14,23,571,44,36,25,27,212,22,44,47,27,18,37,30,16,39,4,77,13,94,17,20,78,0,11,17,402,0,27,4,9,3,2,2,1,59,1,1,199,1,1,1,22,87,1,1,1,10,0,0,0,0,0,0,0,0,0,10,0,7,2,0,187,0,3,276,6,13,0,3,0,0,0,0,84,0,3,46,3,29,2,3,86,1,2,0,4,32,1,7,1,1,1,0,0,3,1,18,0,1,5,1,1,351,1,9,1,0,17,1,22,1,8,0,16,1,156,1,0,0,0,0,110,4,15,115,2,4,1,2,72,0,215,0,2,0,4,7,3,1,18,6,0,0,3,3,0,20,2,2,1,0,1,21,11,0,2,1,0,2,2,3,2,117,14,0,0,7,0,2,44,2,0,8,0,2,8,2,4,0,0,31,6,0,0,0,3,4,2,6,1,0,9,7,2,0,0,13,1,4,0,4,193,2,2,36,0,1,0,0,0,4,12,23,2,19,2,0,2,0,28,0,2,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,4,4,4,68,1,8,9,110,1,1,6,1,0,5,0,0,4,0,5,6,0,0,9,0,0,0,3,1,0,0,1,2,2,1,1,0,2,0,0,0,0,0,0,0,0,42,32,0,0,0,0,0,1,0,3,0,0,0,0,0,0,0,1,0,0,0,0,3,0],[4272,3882,3546,2931,2964,2794,1725,2108,2449,2335,2293,2044,2088,1824,1818,1952,1746,1618,1608,1725,1611,1414,1417,1424,1364,1337,1268,1342,987,1191,1088,992,1126,1025,982,981,667,832,936,965,870,857,915,958,797,786,791,801,736,773,776,706,674,687,629,675,674,609,663,665,654,654,672,646,649,641,646,635,634,634,632,632,632,631,552,605,604,609,623,557,580,534,580,584,536,491,568,569,569,553,550,552,545,509,543,514,492,528,409,482,458,472,486,492,466,441,232,467,455,473,467,474,468,455,457,467,466,463,464,485,464,445,399,457,428,452,441,456,479,435,409,409,410,399,286,384,372,389,403,396,380,347,379,355,351,415,350,398,348,349,340,321,367,300,341,345,344,346,342,316,339,303,337,310,308,304,308,315,270,277,317,311,260,256,283,306,281,317,309,305,307,301,226,281,299,279,289,277,260,234,291,279,246,259,232,255,278,254,279,265,249,240,254,255,249,257,246,260,206,245,235,216,222,224,197,214,207,233,218,203,200,196,212,198,197,211,187,205,198,203,197,195,189,202,183,197,195,211,185,174,187,90,179,179,179,181,160,180,174,175,171,176,179,176,170,172,172,170,164,164,104,142,144,147,146,140,147,142,146,130,127,117,73,119,115,108,96,78,80,108,94,102,106,107,107,98,106,98,90,92,96,87,81,85,68,77,75,77,77,77,65,62,61,59,48,60,56,60,29,51,53,49,38,47,48,29,32,29,29,25,22,21,20,20,10,7,1],[580,436,1028,616,1351,426,160,306,425,346,393,366,388,303,220,166,380,266,327,386,397,254,318,212,126,443,722,246,75,319,55,223,160,114,307,73,105,47,260,255,62,143,83,255,98,221,124,361,172,293,26,191,20,200,129,189,197,126,195,187,190,100,164,191,192,184,67,59,59,59,59,58,59,59,70,52,131,187,56,14,109,107,106,150,100,81,113,45,147,105,105,105,103,102,105,66,76,141,66,24,67,77,128,19,64,30,37,127,47,127,126,127,126,117,106,126,31,121,126,132,127,117,107,124,63,120,114,159,29,37,68,72,67,71,3,162,54,97,83,88,64,54,62,195,70,69,9,81,56,81,68,69,100,74,58,82,19,78,68,102,64,52,66,70,107,57,56,64,105,63,62,19,41,64,41,67,69,17,62,62,62,64,73,65,62,60,11,60,61,71,57,68,61,51,93,25,62,30,57,63,52,29,59,38,61,92,30,56,29,62,56,41,54,30,71,36,36,20,56,28,50,59,27,60,51,4,39,7,66,34,28,81,77,27,38,28,34,209,30,18,36,16,24,25,23,25,50,25,24,23,24,23,27,29,22,23,24,22,29,27,20,60,22,55,49,36,113,23,33,62,22,4,16,50,29,26,39,14,14,20,49,23,37,49,34,34,49,39,35,20,48,40,47,15,18,47,47,47,48,47,20,14,14,35,21,14,15,14,3,8,14,15,11,15,15,14,6,6,8,7,6,9,9,6,4,2,0],[1835,2410,1449,1414,1547,2699,122,1777,2327,2085,2183,1661,2037,1434,1661,1612,1026,1207,1455,1453,1195,1367,1311,1362,179,716,398,1189,116,983,65,900,315,931,683,890,268,463,777,846,669,235,101,789,537,335,763,680,703,549,461,419,573,428,531,416,418,326,421,422,422,575,583,417,424,415,427,64,64,64,63,64,62,62,441,59,584,578,529,524,555,183,558,490,149,185,540,57,480,532,530,532,526,211,523,290,315,449,143,100,308,139,475,486,146,405,149,456,286,462,456,463,457,434,363,456,454,452,453,242,453,424,215,446,147,443,420,268,436,319,154,151,151,155,62,187,122,367,383,375,143,126,150,59,132,225,233,193,83,87,147,127,358,266,142,330,40,139,205,228,129,68,147,178,140,212,150,141,238,200,125,304,142,138,134,125,135,262,119,124,120,126,119,133,118,159,10,155,152,100,119,150,134,235,174,208,106,46,107,142,79,29,124,80,128,192,26,89,32,124,116,149,208,57,168,46,129,224,96,191,110,118,54,197,137,191,148,115,189,92,34,125,111,36,130,26,85,2,183,85,43,38,86,87,87,89,116,88,82,83,82,84,40,61,77,80,80,78,26,26,41,80,61,82,108,57,17,50,95,80,44,4,40,77,63,108,76,20,19,21,67,75,78,72,48,44,72,53,45,70,71,42,65,12,50,68,66,68,68,68,18,52,52,37,18,51,35,51,5,16,8,42,8,40,41,27,25,20,22,5,8,15,14,7,4,1,0],[909,35,2399,271,1147,2287,1513,1753,2100,1958,2251,792,1968,653,1458,1786,578,2,191,971,562,729,1267,983,118,799,158,293,44,260,103,789,56,936,77,910,28,624,689,74,269,47,58,743,49,155,724,574,681,466,733,509,3,524,446,517,520,237,522,526,518,517,633,516,514,510,387,39,39,39,39,37,39,39,8,35,550,599,381,65,520,121,523,525,143,108,502,32,513,496,495,497,490,133,488,49,361,478,28,12,117,110,467,11,104,68,119,449,128,455,449,456,451,445,379,449,400,446,445,272,446,433,96,441,104,437,430,161,11,400,108,107,102,106,4,54,105,376,360,392,105,100,104,17,132,198,2,180,108,108,95,100,353,143,97,338,1,109,240,176,158,103,167,147,95,134,191,161,200,210,155,11,108,170,78,158,103,11,155,159,162,160,84,95,149,101,3,98,168,80,151,103,152,248,167,93,149,77,143,95,193,77,95,120,97,102,77,137,79,97,95,172,119,77,142,87,98,12,121,201,105,33,75,191,113,140,114,0,197,118,75,95,77,75,109,77,111,1,170,149,113,6,119,118,119,121,87,121,118,119,114,119,100,106,116,115,116,116,77,77,2,75,35,74,75,10,90,79,103,84,94,1,18,76,78,14,86,2,3,4,67,100,10,73,69,5,72,47,4,13,74,4,65,5,19,67,66,69,69,69,31,3,3,10,16,3,17,3,1,4,9,19,3,18,18,21,1,3,3,2,10,2,2,9,4,2,0]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<p>В таблице 9 для каждого из каналов группы МУНИЦИПАЛЫ показан перечень процитированных ТГК группы СМИ с дополнительными метриками (см. пояснения в подписи).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5f209aac2f9a030fb1ee" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5f209aac2f9a030fb1ee">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 9. Цитирования и упоминания ТГК СМИ в постах ТГК группы МУНИЦИПАЛЫ в период с 2023.01 по 2024.03. Процит.каналов - количество процитированных СМИ, Всего цитат - суммарное количество упоминаний всех СМИ. Сумма - количество цитирований СМИ. Сумма2 - количество цитирований, суммированное с удельным весом ссылок. Доля,%(МУНИЦ) = \"Сумма\" / \"Всего цитат\". Доля,%(СМИ) = \"Сумма\" / (сумма цитирований указанного канала во всех ТГК группы МУНИЦИПАЛЫ).<\/caption>","data":[["Администрация Боровского района","Администрация Восход","Администрация Восход","Администрация ГП \"Город Сосенский\"","Администрация ГП город Жуков","Администрация Жилетово","Администрация Жуковского района","Администрация Истье","Администрация Козельского района","Администрация МО СП \" Село Климов Завод\"","Администрация МО СП \" Село Климов Завод\"","Администрация МО СП \" Село Климов Завод\"","Администрация МО СП \" Село Климов Завод\"","Администрация МО СП \"Деревня Галкино\"","Администрация МО СП \"Деревня Плоское\"","Администрация МО СП \"Село Льва - Толстого\"","Администрация МО СП \"Село Щелканово\"","Администрация МО СП \"Село Щелканово\"","Администрация МО СП \"д. Михали\"","Администрация МО СП Деревня Высокое","Администрация МО СП Деревня Долгое","Администрация МО СП Деревня Долгое","Администрация МО СП Деревня Долгое","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация МОСП \"Посёлок Мятлево\"","Администрация МОСП \"Посёлок Мятлево\"","Администрация МОСП \"Посёлок Мятлево\"","Администрация МОСП \"Посёлок Мятлево\"","Администрация МОСП \"Посёлок Мятлево\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация МР \"Думиничский район\"","Администрация МР \"Людиново и Людиновский район\"","Администрация МР \"Людиново и Людиновский район\"","Администрация МР «Спас-Деменский район»","Администрация МР Медынский район","Администрация МР\" Жиздринский район\"🧰","Администрация МР\" Жиздринский район\"🧰","Администрация МР\"Износковский район\"","Администрация МР\"Износковский район\"","Администрация МР\"Износковский район\"","Администрация МР\"Износковский район\"","Администрация МР\"Износковский район\"","Администрация МР\"Износковский район\"","Администрация СП \"Деревня Алнеры\"","Администрация СП \"Деревня Берёзовка\"","Администрация СП \"Деревня Брюхово\"","Администрация СП \"Деревня Верхнее Гульцово\"","Администрация СП \"Деревня Верхняя Песочня\"","Администрация СП \"Деревня Стайки\"","Администрация СП \"Деревня Стайки\"","Администрация СП \"Железнодорожная станция Кудринская\"","Администрация СП \"Село Богдановы Колодези\"","Администрация СП \"Село Бояновичи\"","Администрация СП \"Село Брынь\"","Администрация СП \"Село Брынь\"","Администрация СП \"Село Вертное \"","Администрация СП \"Село Заречный\"","Администрация СП \"Село Заречный\"","Администрация СП \"Село Коллонтай\"","Администрация СП \"Село Подбужье\"","Администрация СП \"Село Сильковичи\"","Администрация СП \"Село Спас-Загорье\"","Администрация СП Ахлебинино","Администрация СП Гремячево","Администрация СП Гремячево","Администрация СП Макарово","Администрация СП Макарово","Администрация СП Песочня","Администрация СП\"село Барятино\"","Администрация Старки","Администрация Сухиничского района","Администрация УЛЬЯНОВО","Администрация Ферзиковского района","Администрация Юхновский район","Администрация Юхновский район","Администрация город Юхнов","Администрация город Юхнов","Администрация город Юхнов","Администрация город Юхнов","Администрация города Балабаново","Администрация города Балабаново","Администрация города Балабаново","Администрация города Балабаново","Администрация города Балабаново","Администрация города Балабаново","Администрация города Балабаново","Администрация города Боровска","Администрация города Боровска","Администрация города Боровска","Администрация города Боровска","Администрация деревня Беляево","Администрация деревня Емельяновка","Администрация деревня Емельяновка","Администрация деревня Емельяновка","Администрация деревня Порослицы","Администрация сельского поселения \"Село Кудрявец\"","Администрация сельского поселения село Трубино","Администрация сельского поселения село Трубино","Александр Анисимов","Вячеслав Парфёнов","Вячеслав Парфёнов","Вячеслав Парфёнов","Вячеслав Парфёнов","Галкин Сергей Павлович","Галкин Сергей Павлович","Галкин Сергей Павлович","Глава СП «село Чернышено»","Глава СП «село Чернышено»","Город Обнинск","Городская Управа города Калуги","Егор Вирков","Козлов Николай Васильевич","Колесников Александр","Манаков на связи","Манаков на связи","Манаков на связи","Манаков на связи","Марина Карама","Михаил Крылов","Михаил Крылов","Михаил Крылов","Николай Калиничев","Николай Калиничев","Николай Калиничев","Обнинское городское Собрание","Обнинское городское Собрание","Поселковая администрация СП \"Посёлок Детчино\"","Поселковая администрация СП \"Посёлок Детчино\"","Постникова Любовь","Постникова Любовь","Постникова Любовь","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СМО Калужской области","СП \"Деревня Радождево\"","Таруса Город","Таруса Город","Таруса Город","Таруса Город","Татьяна Леонова #городпервых","Управа Полотняный Завод","Управа Полотняный Завод","Управа Полотняный Завод","Халецкий | Pro ЖКХ","Это Голубев","Это Голубев","Это Голубев","администрация СП \"Деревня Нехочи\""],[1,2,2,1,1,1,1,1,1,4,4,4,4,1,1,1,2,2,1,1,3,3,3,6,6,6,6,6,6,5,5,5,5,5,6,6,6,6,6,6,1,2,2,1,1,2,2,6,6,6,6,6,6,1,1,1,1,1,2,2,1,1,1,2,2,1,2,2,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,2,2,4,4,4,4,7,7,7,7,7,7,7,4,4,4,4,1,3,3,3,1,1,2,2,1,4,4,4,4,3,3,3,2,2,1,1,1,1,1,4,4,4,4,1,3,3,3,3,3,3,2,2,2,2,3,3,3,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,1,4,4,4,4,1,3,3,3,1,3,3,3,1],[1,12,12,1,6,1,1,3,1,45,45,45,45,3,4,1,2,2,2,2,3,3,3,44,44,44,44,44,44,57,57,57,57,57,204,204,204,204,204,204,9,2,2,3,4,2,2,13,13,13,13,13,13,1,3,13,1,1,8,8,1,1,30,6,6,1,78,78,4,22,1,3,1,6,6,3,3,2,2,2,3,1,1,5,5,11,11,11,11,109,109,109,109,109,109,109,34,34,34,34,1,6,6,6,1,2,8,8,1,119,119,119,119,9,9,9,41,41,2,2,1,1,1,22,22,22,22,1,5,5,5,35,35,35,3,3,3,3,3,3,3,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,1,27,27,27,27,2,7,7,7,1,13,13,13,9],["НИКА","Жуковский вестник","Просто Жуковский район","Козельск здесь и сейчас","Жуковский вестник","В Дзержинском районе","Жуковский вестник","Жуковский вестник","Козельск здесь и сейчас","Юхнов. Про настоящее","НИКА","Юхновские вести","Типичный ЮХНОВ","В Дзержинском районе","Юхнов. Про настоящее","В Дзержинском районе","Юхнов. Про настоящее","Юхновские вести","Износки. Срочно и точно","Бетлицкий вестник","НИКА","Калуга Сегодня","Мосальская тележка","НИКА","Юхнов. Про настоящее","Юхновские вести","ES! - канал Евгения Серкина","На районе – Думиничи","Типичный ЮХНОВ","Износки. Срочно и точно","Калуга Сегодня","ES! - канал Евгения Серкина","КГВ","Калуга | Север","Юхнов. Про настоящее","Юхновские вести","НИКА","Типичный ЮХНОВ","Типичная Калуга","ES! - канал Евгения Серкина","На районе – Думиничи","НИКА","ES! - канал Евгения Серкина","Спас новости","Медынь: коротко о главном","НИКА","Жиздра 40","Износки. Срочно и точно","НИКА","Калужские дебри","Калуга Сегодня","⚡️ Калуга 24","Калуга, внимание","Организатор_медиа_Сухиничи","Информцентр | МАЯК","Медынь: коротко о главном","На районе – Думиничи","Бетлицкий вестник","Хвастовичи сегодня","КГВ","ES! - канал Евгения Серкина","Сухарик лайф","Хвастовичи сегодня","На районе – Думиничи","!Газета Думиничские вести","На районе – Думиничи","Людиновский стандарт","НИКА","Информцентр | МАЯК","Хвастовичи сегодня","Привет, Барятино!","Информцентр | МАЯК","Перемышль здесь","Перемышль здесь","НИКА","Перемышль здесь","ES! - канал Евгения Серкина","Перемышль здесь","ES! - канал Евгения Серкина","В Дзержинском районе","НИКА","Калуга Сегодня","Газета \"Ферзиковские вести\"📰","Юхнов. Про настоящее","НИКА","Юхнов. Про настоящее","НИКА","ES! - канал Евгения Серкина","КГВ","НИКА","ES! - канал Евгения Серкина","Газета \"Балабаново\"","РИЦ | Боровский район","Боровская стенгазета","Наш Боровский район","Союз журналистов - Калуга","РИЦ | Боровский район","Калужские дебри","ES! - канал Евгения Серкина","Наш Боровский район","Юхновские вести","Юхнов. Про настоящее","НИКА","Юхновские вести","Юхнов. Про настоящее","Хвастовичи сегодня","Жуковский вестник","Жуковский район - и точка","ES! - канал Евгения Серкина","ES! - канал Евгения Серкина","Информцентр | МАЯК","НИКА","Жизнь ВМалом","НИКА","ES! - канал Евгения Серкина","РИЦ | Боровский район","На районе – Думиничи","НИКА","НИКА","Калужская Неделя","КГВ","НИКА","Организатор_медиа_Сухиничи","Таруса здесь и сейчас","НИКА","КГВ","ES! - канал Евгения Серкина","Мосальская газета","ES! - канал Евгения Серкина","Информцентр | МАЯК","НИКА","РИЦ | Боровский район","ES! - канал Евгения Серкина","НИКА","ES! - канал Евгения Серкина","ШОК","Жизнь ВМалом","НИКА","ES! - канал Евгения Серкина","Информцентр | МАЯК","Народ Обнинска","ES! - канал Евгения Серкина","КГВ","Калужские дебри","Типичная Калуга","Таруса здесь и сейчас","НИКА","Калуга | Север","Типичный Обнинск","Жуковский район - и точка","Хвастовичи сегодня","На районе – Думиничи","КО_лужа","Моя Калуга","Наш Боровский район","Калужская Неделя","Сухарик лайф","Сухарик лайф","Таруса здесь и сейчас","НИКА","КГВ","ES! - канал Евгения Серкина","ШОК","Калуга Сегодня","Калужские дебри","kp40.ru - Калуга, Обнинск и Калужская область. Новости","ES! - канал Евгения Серкина","ES! - канал Евгения Серкина","НИКА","Таруса здесь и сейчас","Хвастовичи сегодня"],[1,11,1,1,6,1,1,3,1,21,13,8,3,3,4,1,1,1,2,2,1,1,1,27,9,5,1,1,1,49,3,2,2,1,110,33,30,25,4,2,9,1,1,3,4,1,1,8,1,1,1,1,1,1,3,13,1,1,7,1,1,1,30,5,1,1,77,1,4,22,1,3,1,5,1,2,1,2,2,2,3,1,1,4,1,8,1,1,1,66,22,14,4,1,1,1,24,6,2,2,1,4,1,1,1,2,7,1,1,56,37,18,8,7,1,1,40,1,2,2,1,1,1,14,3,3,2,1,2,2,1,27,6,2,2,1,2,1,1,1,1,248,154,73,52,14,11,3,3,3,1,1,1,1,1,1,1,1,14,7,4,2,2,4,2,1,1,6,5,2,9],[1,11,1,1,6,1,1,3,1,21,13,8,3,3,4,1,1,1,2,2,1,1,1,27,9,5,0.5,1,1,49,3,2,2,1,110,33,30,25,4,2,9,1,1,3,4,1,1,8,1,1,1,1,1,1,3,13,1,1,7,1,1,1,30,5,1,1,77,1,4,22,1,3,1,5,1,2,1,2,2,2,3,1,1,4,1,8,1,1,1,66,22,14,4,1,0.5,1,24,6,2,2,1,4,1,1,1,2,7,1,1,56,37,18,8,7,1,1,40,1,2,2,1,1,1,14,3,3,2,1,2,2,1,26,6,2,2,1,2,1,1,1,1,247.5,154,73,49.3,14,9,3,2.5,2.3,1,1,1,1,1,1,1,1,14,7,4,2,2,4,2,1,1,6,5,2,9],[1,0.92,0.08,1,1,1,1,1,1,0.47,0.29,0.18,0.07000000000000001,1,1,1,0.5,0.5,1,1,0.33,0.33,0.33,0.61,0.2,0.11,0.02,0.02,0.02,0.86,0.05,0.04,0.04,0.02,0.54,0.16,0.15,0.12,0.02,0.01,1,0.5,0.5,1,1,0.5,0.5,0.62,0.08,0.08,0.08,0.08,0.08,1,1,1,1,1,0.88,0.12,1,1,1,0.83,0.17,1,0.99,0.01,1,1,1,1,1,0.83,0.17,0.67,0.33,1,1,1,1,1,1,0.8,0.2,0.73,0.09,0.09,0.09,0.61,0.2,0.13,0.04,0.01,0.01,0.01,0.71,0.18,0.06,0.06,1,0.67,0.17,0.17,1,1,0.88,0.12,1,0.47,0.31,0.15,0.07000000000000001,0.78,0.11,0.11,0.98,0.02,1,1,1,1,1,0.64,0.14,0.14,0.09,1,0.4,0.4,0.2,0.77,0.17,0.06,0.67,0.33,0.67,0.33,0.33,0.33,0.33,0.44,0.27,0.13,0.09,0.02,0.02,0.01,0.01,0.01,0,0,0,0,0,0,0,1,0.52,0.26,0.15,0.07000000000000001,1,0.57,0.29,0.14,1,0.46,0.38,0.15,1],[0,0.39,1,0.5,0.21,0.14,0.04,0.11,0.5,0.13,0.06,0.16,0.1,0.43,0.02,0.14,0.01,0.02,0.03,0.67,0,0.1,1,0.13,0.06,0.1,0,0.02,0.03,0.83,0.3,0.01,0.01,0.25,0.68,0.67,0.14,0.86,0.07000000000000001,0.01,0.16,0,0,1,0.24,0,1,0.14,0,0.01,0.1,1,1,0.5,0.06,0.76,0.02,0.33,0.1,0.01,0,0.33,0.42,0.09,1,0.02,1,0,0.08,0.31,1,0.06,0.1,0.5,0,0.2,0,0.2,0.01,0.29,0.01,0.1,1,0.02,0,0.05,0,0,0.01,0.32,0.06,1,0.07000000000000001,1,0.25,1,0.43,0.07000000000000001,0.01,0.5,0.02,0.02,0,0.02,0.01,0.03,0.25,0.25,0,0.15,0.74,0.09,0.8,0.03,0,0.02,0.6899999999999999,0,0.01,0.67,0.01,0,0.5,0.32,0.01,0.02,0.01,1,0.01,0.04,0,0.48,0.02,0.01,0.01,0.33,0.2,0,0,0.02,1,0.68,0.93,0.89,0.93,0.32,0.05,0.75,1,0.75,0.01,0.02,1,1,0.25,0.33,0.33,0.33,0.32,0.03,0.02,0.01,0.67,0.4,0.02,1,0,0.02,0.02,0.05,0.13]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Кто цитирует (МУНИЦИПАЛЫ)<\/th>\n      <th>Процит.<br/>каналов<\/th>\n      <th>Всего<br/>цитат<\/th>\n      <th>Кого цитируют (СМИ)<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n      <th>Доля,%<br/>(МУНИЦ)<\/th>\n      <th>Доля,%<br/>(СМИ)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"width":"350px","targets":0},{"width":"250px","targets":3},{"width":"90px","targets":[6,7]},{"className":"dt-center","targets":[1,2,4,5,6,7]},{"name":"Кто цитирует (МУНИЦИПАЛЫ)","targets":0},{"name":"Процит.<br/>каналов","targets":1},{"name":"Всего<br/>цитат","targets":2},{"name":"Кого цитируют (СМИ)","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5},{"name":"Доля,%<br/>(МУНИЦ)","targets":6},{"name":"Доля,%<br/>(СМИ)","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Пример прочтения таблицы 9. В канале “Это Голубев” мы видим 13 цитирований 3-х ТГК группы СМИ – 6 цитирований (46%) канала “ES! - канал Евгения Серкина”, 5 (38%) – “НИКА” и 2 (15%) – “Таруса здесь и сейчас”. Для указанных 3 СМИ цитирования в канале “Это Голубев” составляют 2%, 2% и 5%, соответственно.</p>
+</blockquote>
+<p>На иллюстрации показана только структура отношений, названия МУНИЦИПАЛОВ не приведены из-за пространственных ограничений иллюстрации, но все цитирования можно найти в таблице 9, используя поле для поиска.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/cit_sm_mu.png" width="1058" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-33889c36d647be5c680f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-33889c36d647be5c680f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 10. Рейтинг ТГК СМИ Калужской области на основании цитирований и упоминаний в виде прямых ссылок в ТГК группы МУНИЦИПАЛЫ в период с 2023.01 по 2024.03. N_цит_ТГК - количество ТГК группы МУНИЦИПАЛЫ, которые цитировали посты исследуемого канала СМИ. N_цит_ТГК5 - количество ТГК группы МУНИЦИПАЛЫ, которые цитировали посты исследуемого канала СМИ не менее 5 раз. h-index - Индекс Хирша. Сумма - количество цитирований и упоминаний в виде ссылки. Сумма2 - количество цитирований, суммированное с удельным весом ссылок.)<\/caption>","data":[["НИКА","ES! - канал Евгения Серкина","Юхнов. Про настоящее","Хвастовичи сегодня","На районе – Думиничи","Юхновские вести","Таруса здесь и сейчас","Жуковский вестник","Калужские дебри","Износки. Срочно и точно","РИЦ | Боровский район","КГВ","Людиновский стандарт","Типичная Калуга","Информцентр | МАЯК","Типичный ЮХНОВ","Медынь: коротко о главном","Газета \"Балабаново\"","Жизнь ВМалом","Перемышль здесь","Калуга Сегодня","В Дзержинском районе","Калуга | Север","Жуковский район - и точка","Наш Боровский район","Спас новости","Типичный Обнинск","ШОК","Калужская Неделя","Бетлицкий вестник","Сухарик лайф","Козельск здесь и сейчас","Организатор_медиа_Сухиничи","!Газета Думиничские вести","Мосальская тележка","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Просто Жуковский район","Жиздра 40","Боровская стенгазета","Союз журналистов - Калуга","Газета \"Ферзиковские вести\"📰","⚡️ Калуга 24","Калуга, внимание","Народ Обнинска","Мосальская газета","КО_лужа","Моя Калуга","Привет, Барятино!"],[27,22,9,6,7,6,4,5,4,3,4,7,1,2,6,3,2,1,2,4,5,4,2,2,3,1,1,2,2,2,3,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[9,5,4,4,3,3,3,3,2,2,2,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[7,5,4,4,3,3,3,3,2,2,3,3,1,2,3,2,2,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[208,363,162,71,58,49,44,28,82,59,56,166,77,56,50,29,17,14,10,10,10,7,4,4,4,3,3,3,3,3,3,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[206,362,162,71,58,49,44,28,82,59,55,166,77,53.3,50,29,17,14,10,10,10,7,4,3.3,3.5,3,2.5,3,3,3,3,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>ТГ-канал<\/th>\n      <th>N_цит_ТГК<\/th>\n      <th>N_цит_ТГК5<\/th>\n      <th>h-index<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"width":"400px","targets":0},{"className":"dt-center","targets":[1,2,3,4,5]},{"name":"ТГ-канал","targets":0},{"name":"N_цит_ТГК","targets":1},{"name":"N_цит_ТГК5","targets":2},{"name":"h-index","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Строки отсортированы по убыванию N_цит_ТГК5, но в интерактивной таблице выше, нажав на название столбца, можно пересортировать строки по значениям любого другого столбца.</p>
+<p><strong>Наблюдения</strong>:</p>
+<ul>
+<li><p>по количеству ТГК из группы МУНИЦИПАЛОВ, активно цитирующих СМИ (метрика N_цит_ТГК5), лидеры не изменились – “Ника”, а за ней “ES! - канал Евгения Серкина”.</p></li>
+<li><p>ТГК группы МУНИЦИПАЛЫ более активны в цитировании СМИ – из 88 СМИ каналов цитировались 48. Лояльность и внимание муниципальных администраций к “своим” районным СМИ ожидаемо высока – следом за лидерами идут “Юхнов. Про настоящее”, “Хвастовичи сегодня”, “На районе – Думиничи”, “Юхновские вести”, “Таруса здесь и сейчас”, “Жуковский вестник” и др.</p></li>
+<li><p>каналы, которые позволяют открыто критиковать действия региональных властей (КО_лужа, Сорок_А, Калужский мечтатель), никто из МУНИЦИПАЛОВ цитировать не рискнул.</p></li>
+</ul>
+<hr />
+<h2 id="сми-молбиз">СМИ-МОЛБИЗ</h2>
+<p>Между ТГК из групп МОЛОДЁЖЬ и БИЗНЕС немало общего – авторы каналов реализуют направления госполитики, которые никогда не выпадают из фокуса (это вам не “углеродные полигоны”). По этой причине, и молодёжку, и предпринимателей ведут опытные организаторы побед, умеющие и продукт упаковать, и гранты получить, и на фотографии с лидером выглядеть сообразно статусу. Мы предположили, что и с журналистами эти группы ведут себя схожим образом. Куда им без СМИ? Значит, как-то должны налаживать отношения.</p>
+<p>В группу МОЛБИЗ были отнесены <strong>24</strong> ТГК (Таблица 11).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f5e53e0abca5e71066d3" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f5e53e0abca5e71066d3">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 11. ТГК Калужской области, включенные в группы БИЗНЕС и МОЛОДЁЖЬ. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывают количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","БИЗНЕС","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ","МОЛОДЁЖЬ"],["Виолетта Комиссарова ТПП","Бизнес Калужской области","Агентство развития бизнеса","АИРКО","ГЧП в Калужской области","ТПП Калужской области","Центр поддержки экспорта Калужской области","АРРКО","Калужская область, поехали!","Павел Гранков","Николай Андреев","ГАУ КО \"Технопарк \"Обнинск\"","Обнинский бизнес ONLINE","Калужский форум \"Мой бизнес\"","Центр ГЧП Калужской области","#Молодежь40","От 14 и старше","Движение Первых | Калужская область","Молодая Гвардия | Калужская область","ОМЦ - МБУ \"Обнинский молодёжный центр\"","Миронов_в_теме 💼","МБУ \"Молодёжный центр\" г. Калуги","Анастасия Яглицкая📲","СТУДОТРЯДЫ Калужской области"],[2923,1726,1393,1193,773,742,546,537,422,297,169,136,88,82,31,1775,942,488,450,432,367,324,230,107],[327,634,492,21,17,4,184,52,40,17,34,36,13,13,5,46,27,74,92,0,4,4,16,15],[2883,1518,1313,973,534,590,515,475,350,244,138,108,82,73,28,1543,776,409,395,397,310,267,177,96],[717,928,945,824,258,353,345,265,166,33,57,58,80,32,20,988,381,315,236,149,35,70,43,53],[2287,642,971,830,436,526,399,391,328,87,106,73,77,25,21,717,459,365,375,356,288,180,152,75],[379,127,820,563,350,271,88,182,269,38,15,39,8,1,4,413,324,257,218,291,306,17,23,30]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<p>В таблице 12 для каждого из каналов групп БИЗНЕС и МОЛОДЁЖЬ показан перечень процитированных ТГК группы СМИ с дополнительными метриками (см. пояснения в подписи).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-911f91950408e58648cd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-911f91950408e58648cd">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 12. Цитирования и упоминания ТГК СМИ в постах ТГК групп БИЗНЕС и МОЛОДЁЖЬ в период с 2023.01 по 2024.03. Процит.каналов - количество процитированных СМИ, Всего цитат - суммарное количество упоминаний всех СМИ. Сумма - количество цитирований СМИ. Сумма2 - количество цитирований, суммированное с удельным весом ссылок. Доля,%(МОЛБИЗ) = \"Сумма\" / \"Всего цитат\". Доля,%(СМИ) = \"Сумма\" / (сумма цитирований указанного канала во всех каналах групп БИЗНЕС и МОЛОДЁЖЬ).<\/caption>","data":[["АИРКО","АРРКО","Агентство развития бизнеса","Агентство развития бизнеса","Анастасия Яглицкая📲","Бизнес Калужской области","Бизнес Калужской области","Бизнес Калужской области","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","Виолетта Комиссарова ТПП","ГАУ КО \"Технопарк \"Обнинск\"","Движение Первых | Калужская область","Калужская область, поехали!","Миронов_в_теме 💼","Молодая Гвардия | Калужская область","Николай Андреев","ОМЦ - МБУ \"Обнинский молодёжный центр\"","ОМЦ - МБУ \"Обнинский молодёжный центр\"","Павел Гранков","ТПП Калужской области","Центр поддержки экспорта Калужской области"],[1,1,2,2,1,3,3,3,8,8,8,8,8,8,8,8,1,1,1,1,1,1,2,2,1,1,1],[2,1,4,4,1,16,16,16,37,37,37,37,37,37,37,37,1,1,1,1,1,1,7,7,1,17,1],["ES! - канал Евгения Серкина","НИКА","ES! - канал Евгения Серкина","Людиновский стандарт","Калуга Сегодня","ES! - канал Евгения Серкина","Калужские новости","Калужский мечтатель","ES! - канал Евгения Серкина","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужский мечтатель","НИКА","Типичная Калуга","Калужские новости","⚡️ Калуга 24","Сорок_А","ES! - канал Евгения Серкина","КГВ","НИКА","ES! - канал Евгения Серкина","ES! - канал Евгения Серкина","НИКА","ОБНИНСК 040","Типичный Обнинск","ES! - канал Евгения Серкина","НИКА","НИКА"],[2,1,3,1,1,8,7,1,17,6,4,3,3,2,1,1,1,1,1,1,1,1,6,1,1,17,1],[2,1,3,1,1,8,7,1,16.5,6,4,2.5,3,2,1,1,1,1,1,1,1,1,1.3,0.2,1,8.6,1],[1,1,0.75,0.25,1,0.5,0.44,0.06,0.46,0.16,0.11,0.08,0.08,0.05,0.03,0.03,1,1,1,1,1,1,0.86,0.14,1,1,1],[0.06,0.04,0.09,1,1,0.24,0.78,0.2,0.5,1,0.8,0.12,1,0.22,1,1,0.03,1,0.04,0.03,0.03,0.04,1,1,0.03,0.71,0.04]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Кто цитирует (МОЛБИЗ)<\/th>\n      <th>Процит.<br/>каналов<\/th>\n      <th>Всего<br/>цитат<\/th>\n      <th>Кого цитируют (СМИ)<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n      <th>Доля,%<br/>(МОЛБИЗ)<\/th>\n      <th>Доля,%<br/>(СМИ)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"width":"350px","targets":0},{"width":"250px","targets":3},{"width":"90px","targets":[6,7]},{"className":"dt-center","targets":[1,2,4,5,6,7]},{"name":"Кто цитирует (МОЛБИЗ)","targets":0},{"name":"Процит.<br/>каналов","targets":1},{"name":"Всего<br/>цитат","targets":2},{"name":"Кого цитируют (СМИ)","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5},{"name":"Доля,%<br/>(МОЛБИЗ)","targets":6},{"name":"Доля,%<br/>(СМИ)","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Пример прочтения таблицы 12. В канале “Агентство развития бизнеса” мы видим 4 цитирования 2-х ТГК группы СМИ – 3 цитирования (75%) канала “ES! - канал Евгения Серкина” и 1 (25%) – “Людиновский стандарт”. Для “ES! - канал Евгения Серкина” цитированя в канале “Агентство развития бизнеса” составляют 9% от всех цитирований в ТГК группы МОЛБИЗ, а у канала Людиновский стандарт - это единственное цитирование (100%).</p>
+</blockquote>
+<p>На иллюстрации показана структура сети и цитирования.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/cit_sm_mb.png" width="1058" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e863aa1d682d8057b9e4" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e863aa1d682d8057b9e4">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 13. Рейтинг ТГК СМИ Калужской области на основании цитирований и упоминаний в виде прямых ссылок в ТГК групп БИЗНЕС и МОЛОДЁЖЬ в период с 2023.01 по 2024.03. N_цит_ТГК - количество ТГК групп БИЗНЕС и МОЛОДЁЖЬ, которые цитировали посты исследуемого канала СМИ. N_цит_ТГК5 - количество ТГК групп БИЗНЕС и МОЛОДЁЖЬ, которые цитировали посты исследуемого канала СМИ не менее 5 раз. h-index - Индекс Хирша. Сумма - количество цитирований и упоминаний в виде ссылки. Сумма2 - количество цитирований, суммированное с удельным весом ссылок.)<\/caption>","data":[["ES! - канал Евгения Серкина","НИКА","Калужские новости","kp40.ru - Калуга, Обнинск и Калужская область. Новости","ОБНИНСК 040","Калужский мечтатель","Типичная Калуга","Людиновский стандарт","⚡️ Калуга 24","Сорок_А","КГВ","Типичный Обнинск","Калуга Сегодня"],[8,6,2,1,1,2,1,1,1,1,1,1,1],[2,1,1,1,1,0,0,0,0,0,0,0,0],[3,2,2,1,1,1,1,1,1,1,1,1,1],[34,24,9,6,6,5,3,1,1,1,1,1,1],[33.5,15.1,9,6,1.3,5,3,1,1,1,1,0.2,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>ТГ-канал<\/th>\n      <th>N_цит_ТГК<\/th>\n      <th>N_цит_ТГК5<\/th>\n      <th>h-index<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"width":"400px","targets":0},{"className":"dt-center","targets":[1,2,3,4,5]},{"name":"ТГ-канал","targets":0},{"name":"N_цит_ТГК","targets":1},{"name":"N_цит_ТГК5","targets":2},{"name":"h-index","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Строки отсортированы по убыванию N_цит_ТГК5, но в интерактивной таблице выше, нажав на название столбца, можно пересортировать строки по значениям любого другого столбца.</p>
+<p><strong>Наблюдения</strong>:</p>
+<ul>
+<li><p>ТГК, отнесенные к группам БИЗНЕС и МОЛОДЁЖЬ, неожиданно слабо цитируют СМИ</p></li>
+<li><p>в лидерах те же 2 канала, что и в предыдущих рейтингах, с одним отличием – “НИКА” уступила первенство.</p></li>
+</ul>
+<hr />
+<h2 id="сми-остальные">СМИ-ОСТАЛЬНЫЕ</h2>
+<p>Мы не стали отдельно рассматривать редкие цитирования СМИ в ТГК-групп ИДЕОЛОГИЯ, НАДЗОР и СТОЛИЦА (условно – ИНС), приведем их в отдельной таблице.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5e8970eba1307df61dff" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5e8970eba1307df61dff">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 14. Цитирования и упоминания ТГК СМИ в постах ТГК групп НАДЗОР, СТОЛИЦА и ИДЕОЛОГИЯ (ИНС) в период с 2023.01 по 2024.03. Процит.каналов - количество процитированных СМИ, Всего цитат - суммарное количество упоминаний всех СМИ. Сумма - количество цитирований СМИ. Сумма2 - количество цитирований, суммированное с удельным весом ссылок. Доля,%(ИНС) = \"Сумма\" / \"Всего цитат\". Доля,%(СМИ) = \"Сумма\" / (сумма цитирований указанного канала во каналах групп ИНС).<\/caption>","data":[["Анатолий Артамонов","Анатолий Артамонов","Геннадий Скляр","Геннадий Скляр","Геннадий Скляр","Геннадий Скляр","Геннадий Скляр","Дмитрий Лозенко | ЛДПР 🇷🇺","Единая Россия | Калужская область","Ольга Коробова","Прокуратура Калужской области","Росреестр Калужской области","Росреестр Калужской области","СУ СК России по Калужской области","СУ СК России по Калужской области","СУ СК России по Калужской области","СУ СК России по Калужской области","УФССП России по Калужской области","Филиал \"Российское общество \"Знание\" в г.Калуга"],[2,2,5,5,5,5,5,1,1,1,1,2,2,4,4,4,4,1,1],[7,7,26,26,26,26,26,1,1,1,1,3,3,16,16,16,16,1,6],["НИКА","Калужская Неделя","Народ Обнинска","ES! - канал Евгения Серкина","НИКА","КГВ","⚡️ Калуга 24","Калужские новости","НИКА","ES! - канал Евгения Серкина","НИКА","НИКА","Информцентр | МАЯК","НИКА","КГВ","ES! - канал Евгения Серкина","Жуковский вестник","Калуга Сегодня","Калужская Неделя"],[6,1,15,4,3,3,1,1,1,1,1,2,1,10,4,1,1,1,6],[5.2,0.2,15,4,3,3,1,1,1,1,1,2,1,10,4,1,1,1,6],[0.86,0.14,0.58,0.15,0.12,0.12,0.04,1,1,1,1,0.67,0.33,0.62,0.25,0.06,0.06,1,1],[0.26,0.14,1,0.67,0.13,0.43,1,1,0.04,0.17,0.04,0.09,1,0.43,0.57,0.17,1,1,0.86]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Кто цитирует (ИНС)<\/th>\n      <th>Процит.<br/>каналов<\/th>\n      <th>Всего<br/>цитат<\/th>\n      <th>Кого цитируют (СМИ)<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n      <th>Доля,%<br/>(ИНС)<\/th>\n      <th>Доля,%<br/>(СМИ)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 0, 3, \",\", \".\", null);\n  }"},{"width":"350px","targets":0},{"width":"250px","targets":3},{"width":"90px","targets":[6,7]},{"className":"dt-center","targets":[1,2,4,5,6,7]},{"name":"Кто цитирует (ИНС)","targets":0},{"name":"Процит.<br/>каналов","targets":1},{"name":"Всего<br/>цитат","targets":2},{"name":"Кого цитируют (СМИ)","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5},{"name":"Доля,%<br/>(ИНС)","targets":6},{"name":"Доля,%<br/>(СМИ)","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+</div>
+<hr />
+<h2 id="общий-рейтинг">ОБЩИЙ РЕЙТИНГ</h2>
+<p>Вот мы и добрались до финального рейтинга, который построим на основании цитирований СМИ в ТГК всех рассмотренных выше групп. Это означает, что мы будем учитывать все цитирования каналов СМИ, кроме тех, где СМИ цитируют друг друга или себя любимых.</p>
+<p>Какая метрика лучше для оценки? - индекс Хирша (h), количество цитирующих каналов (N_цит_ТГК), количество ТГК, которые процитировали не менее 5 раз (N_цит_ТГК) или общее число цитирований (Сумма и Сумма2)?</p>
+<p>Мы склоняемся к варианту с ранжированием в следующем порядке:</p>
+<ol type="1">
+<li><p><strong>по убыванию индекса Хирша</strong> (этот показатель отражает количество “устойчиво цитирующих” ТГК, ограничивая влияние накруток через “близкие каналы” и “одноразовых” цитирований). Если у канала h = 5, значит есть 5 ТГК, которые цитировали рассматриваемый канал не менее 5 раз. Для того, чтобы увеличить значение индекса Хирша (h) до 7, недостаточно начать теплее дружить с имеющимися пятью, надо чтобы появилось 7 каналов и от каждого минимум по 7 цитирований.</p></li>
+<li><p><strong>по убыванию количества ТГК, которые процитировали минимум 5 раз</strong></p></li>
+<li><p><strong>по убыванию количества ТГК, которые процитировали хотя бы 1 раз</strong></p></li>
+<li><p><strong>по убыванию количества цитирований, суммированного с удельным весом ссылок</strong></p></li>
+</ol>
+<p>🥁 🥁 🥁 🥁 🥁</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e0cbb0cbb6d8d5e6ccd0" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e0cbb0cbb6d8d5e6ccd0">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 15. Рейтинг ТГК СМИ Калужской области на основании цитирований и упоминаний в виде прямых ссылок в ТГК групп ВЛАСТЬ, МУНИЦИПАЛЫ, ОБЩЗАК, БИЗНЕС, МОЛОДЁЖЬ, НАДЗОР, ИДЕОЛОГИЯ, СТОЛИЦА (все цитирования, кроме тех, где СМИ цитирует СМИ) в период с 2023.01 по 2024.03. N_цит_ТГК - количество ТГК из указанных групп, которые цитировали посты исследуемого канала СМИ. N_цит_ТГК5 - количество ТГК из указанных групп, которые цитировали посты исследуемого канала СМИ не менее 5 раз. h-index - Индекс Хирша. Сумма - количество цитирований и упоминаний в виде ссылки. Сумма2 - количество цитирований, суммированное с удельным весом ссылок.)<\/caption>","data":[["НИКА","ES! - канал Евгения Серкина","Юхнов. Про настоящее","Хвастовичи сегодня","КГВ","На районе – Думиничи","Юхновские вести","Жуковский вестник","Таруса здесь и сейчас","РИЦ | Боровский район","Информцентр | МАЯК","Типичная Калуга","Калужская Неделя","Калужские дебри","kp40.ru - Калуга, Обнинск и Калужская область. Новости","Калужские новости","Износки. Срочно и точно","Перемышль здесь","Типичный ЮХНОВ","Медынь: коротко о главном","Жизнь ВМалом","Калуга Сегодня","В Дзержинском районе","Калужский мечтатель","⚡️ Калуга 24","Народ Обнинска","Людиновский стандарт","Газета \"Балабаново\"","ОБНИНСК 040","ШОК","Наш Боровский район","Сухарик лайф","Моя Калуга","Союз журналистов - Калуга","Калуга | Север","Жуковский район - и точка","Бетлицкий вестник","Типичный Обнинск","Козельск здесь и сейчас","КО_лужа","Организатор_медиа_Сухиничи","Спас новости","Перископ Обнинска","!Газета Думиничские вести","Мосальская тележка","Просто Жуковский район","Жиздра 40","Боровская стенгазета","Газета \"Ферзиковские вести\"📰","Калуга, внимание","Сорок_А","Мосальская газета","Привет, Барятино!"],[53,44,9,6,13,7,6,6,4,4,7,3,9,4,4,4,3,4,3,2,2,11,5,3,5,3,2,1,1,4,4,4,3,3,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1],[14,10,4,4,3,3,3,3,3,2,1,1,2,2,2,2,2,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[9,6,4,4,4,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[306,438,162,71,187,58,49,29,44,56,51,59,27,82,20,15,59,10,29,17,10,18,10,7,14,17,78,14,6,5,5,4,5,3,4,4,3,4,2,2,2,3,3,1,1,1,1,1,1,1,1,1,1],[285,435.5,162,71,185.7,58,49,29,44,55,51,56.3,23,82,19.1,14.1,59,10,29,17,10,17.3,10,6.5,14,17,78,14,1.3,5,4.5,4,5,3,4,3.3,3,2.7,2,2,2,3,2.1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>ТГ-канал<\/th>\n      <th>N_цит_ТГК<\/th>\n      <th>N_цит_ТГК5<\/th>\n      <th>h-index<\/th>\n      <th>Сумма<\/th>\n      <th>Сумма2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"width":"400px","targets":0},{"className":"dt-center","targets":[1,2,3,4,5]},{"name":"ТГ-канал","targets":0},{"name":"N_цит_ТГК","targets":1},{"name":"N_цит_ТГК5","targets":2},{"name":"h-index","targets":3},{"name":"Сумма","targets":4},{"name":"Сумма2","targets":5}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Вывод о том, кто Царь Горы среди калужских СМИ, читатель без труда сделает самостоятельно!</p>
+</blockquote>
+<hr />
+<h2 id="забытые-сми">Забытые СМИ</h2>
+<p><em>Нам прах земной взамен бумаги будет,<br/>В него слезами впишем нашу скорбь.</em></p>
+<p>В таблице 16 приводим перечень ТГК СМИ, которых ни разу не цитировали в ТГК 8 рассмотренных выше групп.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-aabf38cdbc6117a80c5d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-aabf38cdbc6117a80c5d">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 16. ТГК СМИ Калужской области, которые ни разу не цитировались в ТГК групп ВЛАСТЬ, МУНИЦИПАЛЫ, ОБЩЗАК, БИЗНЕС, МОЛОДЁЖЬ, НАДЗОР, ИДЕОЛОГИЯ, СТОЛИЦА. \"Всего\" - количество постов, \"Репостов\" - количество постов, которые являются репостами из других каналов, в столбцах \"Текст\", \"URL\", \"Emoji\" и \"#Тэги\" показывают количество постов, в которых присутствует текст, гиперссылки или emoji<\/caption>","data":[["СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ","СМИ"],["Караульный. Калуга","Обнинск сити","Обнинск, вперёд!","ПроходяМиМо","КП Калужская область. Новости региона","Типичный Малоярославец ❤️","Калуга","Маэстро Горбатин","Киров Калужской области Pesochnya40.com","Плохие Новости | Калуга","Людиновский рабочий","ЧП Калуга","Настоящий Обнинск","Бабынинский информер","Прогулки по Обнинску","Киров40 на связи","Мещовские куранты","🔥Наш Обнинск","Чистый Обнинск","ЧП Обнинск","Твое Ферзиково","Козельск Live","«Знамя труда» | Киров 40","Милая Калуга","Куйбышевский обозреватель","Бетлица","Людиново.ру","В Обнинске","Новости п.Воротынск","[В] Обнинске","Ермолинское обозрение | Новости | Калужская область","Инцидент | Обнинск","Калуга вечерняя","[В] Малоярославце","Типичное Кривское"],[18260,14404,6476,6017,5577,5563,5516,5109,4808,4610,3690,3403,3282,2825,2735,2605,2287,2176,1883,1677,1588,1395,1341,977,805,779,750,555,516,289,274,216,194,149,44],[5964,55,61,1046,1,59,11,207,22,0,111,25,24,338,1270,101,334,61,373,49,56,53,266,0,24,22,0,6,0,0,0,16,3,0,0],[17856,9267,6448,4415,5562,4552,5447,5032,4371,4548,3168,3328,3153,2485,2464,2367,2117,2105,1738,1592,1504,1329,1111,934,753,693,676,537,489,287,184,212,186,149,44],[17387,2933,408,1530,944,975,5417,4856,2725,192,406,2531,205,431,1336,581,333,309,939,902,962,111,548,926,297,71,603,114,307,32,87,29,11,15,2],[5537,809,232,195,3569,1702,5404,17,270,3048,77,2600,1754,1685,555,2254,1520,986,1170,988,1221,323,561,809,465,190,2,192,259,129,81,26,25,98,20],[1745,5673,25,102,0,362,5,5,5,132,58,27,8,138,265,1836,74,537,82,0,27,13,103,522,5,24,642,0,0,273,1,0,4,148,42]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>Группа<\/th>\n      <th>Название канала<\/th>\n      <th>Всего<\/th>\n      <th>Репостов<\/th>\n      <th>Текст<\/th>\n      <th>URL<\/th>\n      <th>Emoji<\/th>\n      <th>#Тэги<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"70px","targets":0},{"width":"400px","targets":1},{"name":"Группа","targets":0},{"name":"Название канала","targets":1},{"name":"Всего","targets":2},{"name":"Репостов","targets":3},{"name":"Текст","targets":4},{"name":"URL","targets":5},{"name":"Emoji","targets":6},{"name":"#Тэги","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+</div>
+<hr />
+<h2 id="размышления">РАЗМЫШЛЕНИЯ</h2>
+<p>🧐 Усиление вертикальных структур управления приводит к деградации отношений между публичной властью и СМИ. Зачем обращать внимание на районные СМИ, когда всё доложит пресс-служба? Стоит ли цитировать местных журналистов, когда твою повестку согласуют кураторы? В таких условиях неибежно возрастает риск деградации отдельных СМИ с превращением в поставщика услуг.</p>
+<p>🧐 Было бы направильно переложить всю ответственность на осторожность “класса представителей”. Региональные СМИ довольно разнообразны в своём понимании того, что такое “профессиональные стандарты”. Конечно, не всякий руководитель или политик захочет цитировать канал, владелец которого периодически путает кнопку “Опубликовать” с кнопкой смыва. Увы, не редкость.</p>
+<hr />
+<p>Нравятся наши материалы? 👉 ТГ-канал <a href="https://t.me/+lviW66SN9gQ1YTky" target="_blank">Regina Lab</a></p>
+<hr />
+<h3 class="appendix" id="поделиться">Поделиться</h3>
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<p><a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a></p>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<h3 class="appendix" id="ссылка-для-цитирования">Ссылка для цитирования</h3>
+<p>Telegram Калужской области. Часть 2. Кто цитирует СМИ? // Блог Regina Lab. - 2024. - URL: <a href="https://reginaobninsklab.github.io/posts/kaluga-tg-citations-smi-rank/" class="uri">https://reginaobninsklab.github.io/posts/kaluga-tg-citations-smi-rank/</a>. - Дата публикации: 15 апреля 2024 г.</p>
+<h3 class="appendix" id="права">Права</h3>
+<p>Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии <a href="https://creativecommons.org/licenses/by/4.0/deed.ru" target="_blank">Creative Commons CC BY 4.0 Deed Attribution 4.0 International</a>.</p>
+<h3 class="appendix" id="отказ-от-ответственности">Отказ от ответственности</h3>
+<p><a href="https://reginaobninsklab.github.io/about.html#warranty" target="_blank">См. соответствующий раздел</a> на странице “О проекте”.</p>
+<h3 class="appendix" id="софт">Софт</h3>
+<p>Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.22,
+<a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>.</p>
+<p>Ooms J (2023). <em>magick: Advanced Graphics and Image-Processing in R</em>. R package version 2.8.2,
+<a href="https://CRAN.R-project.org/package=magick" class="uri">https://CRAN.R-project.org/package=magick</a>.</p>
+<p>Pedersen T (2024). <em>patchwork: The Composer of Plots</em>. R package version 1.2.0,
+<a href="https://CRAN.R-project.org/package=patchwork" class="uri">https://CRAN.R-project.org/package=patchwork</a>.</p>
+<p>Qiu Y, details. aotifSfAf (2022). <em>sysfonts: Loading Fonts into R</em>. R package version 0.8.8,
+<a href="https://CRAN.R-project.org/package=sysfonts" class="uri">https://CRAN.R-project.org/package=sysfonts</a>.</p>
+<p>Qiu Y, details. aotisSfAf (2023). <em>showtext: Using Fonts More Easily in R Graphs</em>. R package version 0.9-6,
+<a href="https://CRAN.R-project.org/package=showtext" class="uri">https://CRAN.R-project.org/package=showtext</a>.</p>
+<p>Wickham H (2022). <em>stringr: Simple, Consistent Wrappers for Common String Operations</em>. R package version
+1.5.0, <a href="https://CRAN.R-project.org/package=stringr" class="uri">https://CRAN.R-project.org/package=stringr</a>.</p>
+<p>Wickham H (2016). <em>ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <a href="https://ggplot2.tidyverse.org" class="uri">https://ggplot2.tidyverse.org</a>.</p>
+<p>Wickham H, François R, Henry L, Müller K, Vaughan D (2023). <em>dplyr: A Grammar of Data Manipulation</em>. R
+package version 1.1.2, <a href="https://CRAN.R-project.org/package=dplyr" class="uri">https://CRAN.R-project.org/package=dplyr</a>.</p>
+<p>Wickham H, Henry L (2023). <em>purrr: Functional Programming Tools</em>. R package version 1.0.1,
+<a href="https://CRAN.R-project.org/package=purrr" class="uri">https://CRAN.R-project.org/package=purrr</a>.</p>
+<p>Wickham H, Hester J, Bryan J (2023). <em>readr: Read Rectangular Text Data</em>. R package version 2.1.4,
+<a href="https://CRAN.R-project.org/package=readr" class="uri">https://CRAN.R-project.org/package=readr</a>.</p>
+<p>Wickham H, Seidel D (2022). <em>scales: Scale Functions for Visualization</em>. R package version 1.2.1,
+<a href="https://CRAN.R-project.org/package=scales" class="uri">https://CRAN.R-project.org/package=scales</a>.</p>
+<p>Wickham H, Vaughan D, Girlich M (2023). <em>tidyr: Tidy Messy Data</em>. R package version 1.3.0,
+<a href="https://CRAN.R-project.org/package=tidyr" class="uri">https://CRAN.R-project.org/package=tidyr</a>.</p>
+<p>Wilke C, Wiernik B (2022). <em>ggtext: Improved Text Rendering Support for ‘ggplot2’</em>. R package version
+0.1.2, <a href="https://CRAN.R-project.org/package=ggtext" class="uri">https://CRAN.R-project.org/package=ggtext</a>.</p>
+<p>Xie Y (2023). <em>knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. R package version
+1.43, <a href="https://yihui.org/knitr/" class="uri">https://yihui.org/knitr/</a>.</p>
+<p>Xie Y (2015). <em>Dynamic Documents with R and knitr</em>, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <a href="https://yihui.org/knitr/" class="uri">https://yihui.org/knitr/</a>.</p>
+<p>Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), <em>Implementing Reproducible Computational Research</em>. Chapman and Hall/CRC. ISBN 978-1466561595.</p>
+<p>Xie Y, Allaire J, Grolemund G (2018). <em>R Markdown: The Definitive Guide</em>. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>.</p>
+<p>Xie Y, Dervieux C, Riederer E (2020). <em>R Markdown Cookbook</em>. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <a href="https://bookdown.org/yihui/rmarkdown-cookbook" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook</a>.</p>
+<p>Yu G (2023). <em>ggimage: Use Image in ‘ggplot2’</em>. R package version 0.3.3,
+<a href="https://CRAN.R-project.org/package=ggimage" class="uri">https://CRAN.R-project.org/package=ggimage</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

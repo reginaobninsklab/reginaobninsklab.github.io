@@ -1,0 +1,187 @@
+---
+title: "Образы еды и напитков в ТГ-каналах калужских лидеров мнения"
+description: |
+  Подсчитываем emoji категории Foods & Drinks в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.  
+date: 2024-04-04
+categories:
+  - сми
+  - телеграм
+  - emoji
+  - психолингвистика
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/kaluga_kols.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/tg_channels/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 10, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Продолжаем изучение калужских ТГ-каналов... 
+
+В [первой части](https://reginaobninsklab.github.io/posts/kaluga-kols-tg-part1/){target="_blank"} мы рассматривали использование в телеграмм-каналах наречий, во второй -- перешли на использование образов животных и растений посредством emoji.
+
+Следующие по силе воздействия на сознание масс -- образы еды и выпивки. Если древние люди падали ниц при виде рисунка лошади или уходили в рощи обнимать берёзки, то для многих из наших современников образ рая -- это all inclusive extra plus с  круглосуточным шведским столом и бесплатным алкоголем.
+
+Смотрим....
+
+```{r echo=FALSE}
+emoji_file <- paste0(dir, "data/channel_emojis.parquet")
+emos <- arrow::read_parquet(emoji_file)
+
+emos |> filter(n_channels<=4) |> 
+  filter(grepl("food", slug)) |> 
+  mutate(long_label = paste0("**" ,toupper(long_label), "**")) |>
+  arrange(-channel_use) |> 
+  summarize(.by = c(source, rank), emoji = paste(emoji, collapse = "")) |>
+  arrange(rank) |> 
+  select(`Источник` = source, emoji) |> 
+  datatable(rownames = F, class = 'compact striped', 
+            extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. Наиболее часто употребимые emoji категории Foods & Drinks из исследуемых ТГ-каналов.')), 
+            options = list(columnDefs = list(
+              list(width = '200px', targets = c(0)),
+              list(width = '800px', targets = c(1)))))
+```
+
+Полученный результат перенесли на иллюстрацию, показав близость пабликов через характерные для каналов emoji.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "net_emoji_food.png")
+ch1_blogfile <- paste0(dir_charts, "kaluga_tg_food.png")
+if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+P.S. У нескольких каналов появляется emoji с изображением ножа -- это вряд ли о еде (у одного из каналов в названии ЧП), но мы решили оставить, как и другие столовые приборы.
+
+Продолжение следует...
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Образы еды и напитков в ТГ-каналах калужских лидеров мнения // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-kols-tg-food/. - Дата публикации: 4 апреля 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'ggimage', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+
+Yu G (2023). _ggimage: Use Image in 'ggplot2'_. R package version 0.3.3,
+<https://CRAN.R-project.org/package=ggimage>.
+

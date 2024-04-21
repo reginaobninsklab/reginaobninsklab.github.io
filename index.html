@@ -89,20 +89,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>Regina Lab (Обнинск): Публикации</title>
+  <title>Regina Lab: Публикации</title>
 
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Regina Lab (Обнинск): Публикации"/>
+  <meta property="og:title" content="Regina Lab: Публикации"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="Regina Lab (Обнинск)"/>
+  <meta property="og:site_name" content="Regina Lab"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Regina Lab (Обнинск): Публикации"/>
+  <meta property="twitter:title" content="Regina Lab: Публикации"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -2162,14 +2162,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /* This must remain at the top of this file.                 */
   @import url('https://fonts.google.com/specimen/Sofia+Sans+Condensed:700&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Play');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab');
   @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow');
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans');
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed');
 
   html {
     /*-- Main font sizes --*/
     --title-size:      32px;
-    --body-size:       1.06rem;
+    --body-size:       1.03rem;
     --code-size:       14px;
     --aside-size:      13px;
     --fig-cap-size:    13px;
@@ -2182,57 +2182,84 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     /*-- Specify custom fonts ~~~ must be imported above   --*/
     --heading-font:   'Sofia Sans Condensed', serif;
     --mono-font:       monospace;
-    --body-font:       'Nunito Sans', sans-serif;
+    --body-font:       'Roboto Slab', sans-serif;
     --navbar-font:     'Play', sans-serif;  /* websites + blogs only */
   }
 
   /*-- ARTICLE METADATA --*/
-  d-byline {
-    --heading-size:    0.8rem;
+  d-byline, .d-byline {
+    --heading-size:    0.9rem;
     --heading-color:   rgba(0, 0, 0, 0.5);
-    --body-size:       0.9rem;
+    --body-size:       1rem;
     --body-color:      rgba(0, 0, 0, 0.8);
     --font-weight:     400;
-  	--padding:         0.5rem 0 1.2rem 0;
+  	--padding:         0rem 0 0rem 0;
+  	--margin-top:      0px;
+    --margin-bottom:   0px;
   	--line-height:     1em;
+  	--font-family: 'Sofia Sans Condensed';
   }
+
+  d-byline p.author, d-byline .authors-affiliations, d-byline p {
+    font-size: 1.05em !important;
+    font-weight: 500 !important;
+    font-family: 'Sofia Sans Condensed';
+  }
+
 
   @media (min-width: 1180px) {
   .base-grid, distill-header, d-title, d-abstract, d-article, d-appendix, distill-appendix, d-byline, d-footnote-list, d-citation-list, distill-footer {
-  grid-column-gap: 52px;
-  }
+  grid-column-gap: 64px;
+   }
   }
 
 
   /*-- ARTICLE TABLE OF CONTENTS --*/
   .d-contents {
-    --heading-size:    21px;
-    --contents-size:   15px;
+    --heading-size:    16px;
+    --contents-size:   12px;
+    --font-family: 'Roboto Condensed';
   }
 
   .d-contents nav h3{
-    font-family: 'PT Sans Narrow';
-    font-size: 21px;
-  	font-weight: 600;
-  	letter-spacing: 0.5px;
-  	line-height: 1.2em;
+    font-family: 'Roboto Condensed';
+    color: white;
+    font-size: 0px !important;
+  	font-weight: 600 !important;
+  	letter-spacing: 0px !important;
+  	line-height: 0em !important;
   }
 
   .d-contents nav > ul > li > a {
-    font-family: 'Nunito Sans';
-    font-size: 15px;
-  	font-weight: 200;
+    font-family: 'Roboto Condensed';
+    font-size: 16px;
+  	font-weight: 400;
   	letter-spacing: 0px;
-  	line-height: 1em; 
+  	line-height: 1em;
+  	margin-top: 2em;
+  	margin-bottom: 2em;
+    }
+    
+  .d-contents nav > ul > li > ul > li > a {
+    font-family: 'Roboto Condensed';
+    font-size: 13px;
+  	font-weight: 400;
+  	letter-spacing: 0px;
+  	line-height: 1em;
+  	margin-top: 2em;
+  	margin-bottom: 2em;
+  	padding-left: 0.1em;
     }
 
 
   /*-- ARTICLE APPENDIX --*/
-  d-appendix {
+  d-appendix, .d-appendix .d-appendix {
     --heading-size:    18px;
     --heading-color:   rgba(0, 0, 0, 0.8);
     --text-size:       0.9em;
     --text-color:      rgba(0, 0, 0, 0.8);
+    margin-top:      10px;
+    margin-bottom:   10px;
   }
 
   /*-- WEBSITE HEADER + FOOTER --*/
@@ -2290,9 +2317,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }
 
   html, body, p {
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Roboto Slab', sans-serif;
     font-weight: 400;
-    line-height: 1.2; 
+    line-height: 1.6; 
     font-size: 0.95em;
     letter-spacing: 0px;
     color: #383838;
@@ -2302,6 +2329,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   .posts-list .metadata .publishedDate {
       color: #e05915;
   }
+
+  .posts-list .post-preview p,
+  .posts-list .description p {
+    font-size: 14px;
+    font-family: "Roboto Condensed", "PT Sans Narrow", sans-serif;
+    }
+
 
    .posts-list .posts-list-caption .post-preview-last h1,
    .posts-list .posts-list-caption,
@@ -2315,11 +2349,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     font-weight: 700;
   }
 
+  d-title p {
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.55em;
+    grid-column: text;
+  }
+
    .d-title .d-title h1,
     d-title.d-title h1,
     d-title h1, .posts-list > h1{
     font-family: 'Sofia Sans Condensed';
-    line-height: 0.5; 
+    line-height: 1; 
     font-size: 32px;
     letter-spacing: 1.2px;
     font-weight: 700;
@@ -2328,8 +2369,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   .posts-list .post-preview h2, 
   .posts-list .description h2 {
     font-family: 'PT Sans Narrow';
-    line-height: 1; 
-    font-size: 1.3em;
+    line-height: 1;
+    color: black !important;
+    text-align:left !important;
+    font-size: 1.3em !important;
     letter-spacing: 1px;
     font-weight: 600;
   }
@@ -2345,16 +2388,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }
 
   d-article h3 {
-      margin-top: 2px;
-      margin-bottom: 8px;
+      margin-top: 4px;
+      margin-bottom: 12px;
       font-family: 'Roboto Condensed';
-      font-size: 18px;
+      font-size: 20px;
     }
 
   d-article h2 {
-    font-family: 'PT Sans Narrow';
+    text-align: center;
+    font-family: 'Sofia Sans Condensed';
     line-height: 1; 
-    font-size: 28px;
+    font-size: 46px !important;
+    color: #673509c9 !important;
     letter-spacing: 0.5px;
     font-weight: 600;
   }
@@ -2402,6 +2447,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     font-style: normal;
   }
 
+  d-article blockquote {
+    border-left: 5px solid #dfb229;
+    color: #403f3c;
+    background-color: #e6e9f0 !important;
+    font-size: 1.0em;
+    padding-bottom: 0em;
+    padding-top: 0.6em;
+    padding-left: 0.6em;
+  }
+
   .posts-list .dt-tags .dt-tag, 
   .dt-tags .dt-tag {
     padding-top: 0.1em;
@@ -2410,6 +2465,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     padding-left: 0.3em;
     border-radius: 5px;
     font-size: 14px;
+    font-family: "Roboto Condensed", "PT Sans Narrow", sans-serif;
     text-transform: lowercase;
     background-color: #e6e9f0;
     font-weight: 300;
@@ -2435,22 +2491,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
    height: auto !important;
   }
 
-  table.dataTable tbody th, 
   table.dataTable tbody td { 
     padding-top: 2px;
   	padding-bottom: 2px;
   	padding-left: 5px;
   	font-size: 14px; 
   	line-height: 1.3em;
+    background-color:#ece3d829;
   }
 
-  .dataTables_wrapper .dataTables_length, 
-  .dataTables_wrapper .dataTables_filter, 
-  .dataTables_wrapper .dataTables_info, 
-  .dataTables_wrapper .dataTables_processing, 
-  .dataTables_wrapper .dataTables_paginate {
-  	color: #333;
-  	font-size: 14px;
+  table.dataTable tbody th { 
+    padding-top: 2px;
+  	padding-bottom: 2px;
+  	padding-left: 5px;
+  	font-size: 14px; 
+  	line-height: 1.3em;
+  	background-color: #936a6c2e !important;
   }
 
   div.blue { 
@@ -2476,7 +2532,78 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     -ms-transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
-  } </style>
+  }
+
+  button.dt-button, div.dt-button, a.dt-button, input.dt-button, div.dt-button-split .dt-button,
+  div.dt-buttons > .dt-button, div.dt-buttons > div.dt-button-split .dt-button {
+    padding-top:3px !important;
+    padding-bottom:3px !important;
+    border-radius: 5px !important;
+    font-family: "Play" !important;
+    font-size: 12px !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+   padding: 1px 3px;
+  color: #18993 !important;
+  }
+
+  .dataTables_wrapper .dataTables_length, 
+  .dataTables_wrapper .dataTables_filter, 
+  .dataTables_wrapper .dataTables_info, 
+  .dataTables_wrapper .dataTables_processing, 
+  .dataTables_wrapper .dataTables_paginate {
+    font-family: "Play" !important;
+    font-size: 14px !important;
+    padding-left:10px !important;
+  }
+
+
+  .form-control {
+    height: 30px;
+    padding: 4px 8px;
+    line-height: 1.4;
+    border-radius: 3px;
+  }
+
+  div.dt-buttons>.dt-button,
+  div.dt-buttons>div.dt-button-split .dt-button {
+    position:relative;
+    display:inline-block;
+    box-sizing:border-box;
+    margin-left:.167em;
+    margin-right:.1em;
+    margin-bottom:.2em;
+    padding:3px 3px;
+    border:1px solid rgba(0, 0, 0, 0.3);
+    border-radius:5px;
+    cursor:pointer;
+    font-family: "Play" !important;
+    font-size: 12px !important;
+    line-height:1.6em;
+    color:inherit;
+    white-space:nowrap;
+    overflow:hidden;
+    background-color:rgba(0, 0, 0, 0.1);
+    background:linear-gradient(to bottom, rgba(230, 230, 230, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr="rgba(230, 230, 230, 0.1)", EndColorStr="rgba(0, 0, 0, 0.1)");
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    text-decoration:none;
+    outline:none;
+    text-overflow:ellipsis
+  }
+
+  d-article hr {
+    grid-column: screen;
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid rgba(109, 103, 60, 0.23);
+    margin-top: 20px; 
+    margin-bottom: 20px;
+  }</style>
   <style type="text/css">
   /* base style */
 
@@ -2632,7 +2759,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2679,7 +2806,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">Regina Lab (Обнинск)</a>
+<a href="index.html" class="title">Regina Lab</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
@@ -2835,9 +2962,313 @@ function init_posts_list() {
 
 
 
-<div class="posts-container posts-apply-limit l-page">
+<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="Публикации">Публикации</h1>
+<a href="posts/kaluga-tg-municipal-unique/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","власть","управление"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 21, 2024</div>
+</div>
+<div class="thumbnail">
+<img src="posts/kaluga-tg-municipal-unique/images/munic_unique.png"/>
+</div>
+<div class="description">
+<h2>Telegram Калужской области. Часть 3. Невидимая рука</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">власть</div>
+<div class="dt-tag">управление</div>
+</div>
+<p>Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.</p>
+</div>
+</a>
+<a href="posts/kaluga-tg-citations-smi-rank/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","рейтинг","цитирования"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 15, 2024</div>
+</div>
+<div class="thumbnail">
+<img src="posts/kaluga-tg-citations-smi-rank/images/cit_sm_vl.png"/>
+</div>
+<div class="description">
+<h2>Telegram Калужской области. Часть 2. Кто цитирует СМИ?</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">рейтинг</div>
+<div class="dt-tag">цитирования</div>
+</div>
+<p>Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг.</p>
+</div>
+</a>
+<a href="posts/kaluga-tg-citations/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","рейтинг","цитирования"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 13, 2024</div>
+</div>
+<div class="thumbnail">
+<img src="posts/kaluga-tg-citations/images/cit_sm_sm_drl.png"/>
+</div>
+<div class="description">
+<h2>Telegram Калужской области. Часть 1. Царь горы</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">рейтинг</div>
+<div class="dt-tag">цитирования</div>
+</div>
+<p>Новый проект о ТГ-каналах Калужской области начинаем с анализа сети цитирования ТГ-каналов СМИ. Материал содержит доступный для скачивания рейтинг 80 ТГ-каналов калужских СМИ, построенный по индивидуальной методике на основе первичных данных (никакого TGStat).</p>
+</div>
+</a>
+<a href="posts/kaluga-kols-tg-emojis/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","emoji","психолингвистика"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 5, 2024</div>
+</div>
+<div class="thumbnail">
+<img src="posts/kaluga-kols-tg-emojis/images/kaluga_tg_emoji_use.png"/>
+</div>
+<div class="description">
+<h2>Emoji в ТГ-каналах калужских лидеров мнения</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">emoji</div>
+<div class="dt-tag">психолингвистика</div>
+</div>
+<p>Завершаем анализ использования emoji в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций. В посте также приведены сведения об использовании emoji из категорий Travel &amp; Places 🚂 и Activities 🥋.</p>
+</div>
+</a>
+<a href="posts/kaluga-kols-tg-animals/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","emoji","психолингвистика"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 4, 2024</div>
+</div>
+<div class="thumbnail">
+<img src="posts/kaluga-kols-tg-animals/images/kaluga_tg_animals.png"/>
+</div>
+<div class="description">
+<h2>Образы животных в ТГ-каналах калужских лидеров мнения</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">emoji</div>
+<div class="dt-tag">психолингвистика</div>
+</div>
+<p>Подсчитываем emoji категории Animals в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</p>
+</div>
+</a>
+<a href="posts/kaluga-kols-tg-food/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","emoji","психолингвистика"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 4, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-kols-tg-food/images/kaluga_tg_food.png"/>
+</div>
+<div class="description">
+<h2>Образы еды и напитков в ТГ-каналах калужских лидеров мнения</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">emoji</div>
+<div class="dt-tag">психолингвистика</div>
+</div>
+<p>Подсчитываем emoji категории Foods &amp; Drinks в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</p>
+</div>
+</a>
+<a href="posts/kaluga-kols-tg-part1/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["сми","телеграм","русский язык","психолингвистика"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 3, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-kols-tg-part1/images/kaluga_kols.png"/>
+</div>
+<div class="description">
+<h2>Признаки действия калужских лидеров мнения в Telegram</h2>
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">русский язык</div>
+<div class="dt-tag">психолингвистика</div>
+</div>
+<p>Анализ уникальных и характерных наречий в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</p>
+</div>
+</a>
+<a href="posts/kaluga-taxi-part3/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["такси","яндекс","мигранты"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 31, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-taxi-part3/images/chart3_regx.png"/>
+</div>
+<div class="description">
+<h2>Такси Калужской области (часть 3)</h2>
+<div class="dt-tags">
+<div class="dt-tag">такси</div>
+<div class="dt-tag">яндекс</div>
+<div class="dt-tag">мигранты</div>
+</div>
+<p>События последней недели напомнили о важности регулирования и контроля тех ниш экономики, где нелегальные мигранты находят возможности подработки. Что бы ни говорили лоббисты и эксперты, такси -- именно такая серая зона. На массиве данных о наших такси-поездках по Калужской области (Яндекс Go) с помощью авторской методики анализа происхождения ФИО попробовали оценить уровень гомофилии в парах водитель-владелец.</p>
+</div>
+</a>
+<a href="posts/kaluga-taxi-part2/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["такси","яндекс","реестры"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 22, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-taxi-part2/images/chart2x_reg.png"/>
+</div>
+<div class="description">
+<h2>Такси Калужской области (часть 2)</h2>
+<div class="dt-tags">
+<div class="dt-tag">такси</div>
+<div class="dt-tag">яндекс</div>
+<div class="dt-tag">реестры</div>
+</div>
+<p>На массиве данных о собственных поездках по Калужской области (приложение Яндекс Go) мы измерили отражение машин и перевозчиков в федеральном реестре такси (ФГИС "Такси").</p>
+</div>
+</a>
+<a href="posts/kaluga-taxi-part1/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["такси","мигранты","реестры"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 18, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-taxi-part1/images/chart1_reg.png"/>
+</div>
+<div class="description">
+<h2>Такси Калужской области (часть 1)</h2>
+<div class="dt-tags">
+<div class="dt-tag">такси</div>
+<div class="dt-tag">мигранты</div>
+<div class="dt-tag">реестры</div>
+</div>
+<p>Анализ 1890 ИП и ООО, зарегистрированных в Калужской области в период с 01.01.2016 по 11.03.2024 года с указанием ОКВЭД 49.32 (такси) в качестве одного из основных. На основании анализа фамилии, имени и отчества ООО и ИП были разбиты на 2 группы - А (типичные для Калужской области ФИО) и Б (остальные ФИО). Для обеих групп построены кривые выживаемости и показано отражение в федеральном реестре такси (ФГИС "Такси").</p>
+</div>
+</a>
+<a href="posts/kaluga-gender-gia/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["школы","ЕГЭ","ГИА","образование"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 10, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-gender-gia/images/gia_genders.png"/>
+</div>
+<div class="description">
+<h2>Какие предметы ЕГЭ выбирают девушки и юноши Калужской области?</h2>
+<div class="dt-tags">
+<div class="dt-tag">школы</div>
+<div class="dt-tag">ЕГЭ</div>
+<div class="dt-tag">ГИА</div>
+<div class="dt-tag">образование</div>
+</div>
+<p>По каждому предмету показана динамика распределения по полу выпускников, выбиравших предмет дял ЕГЭ в 2019-2023 гг.</p>
+</div>
+</a>
+<a href="posts/kaluga-schools-rank-part1/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["школы","ЕГЭ","ГИА","образование"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 10, 2024</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/kaluga-schools-rank-part1/images/school_rank_map.png"/>
+</div>
+<div class="description">
+<h2>Открытый рейтинг школ Калужской области (часть 1)</h2>
+<div class="dt-tags">
+<div class="dt-tag">школы</div>
+<div class="dt-tag">ЕГЭ</div>
+<div class="dt-tag">ГИА</div>
+<div class="dt-tag">образование</div>
+</div>
+<p>Попытка оценить эффективность образовательных учреждений по результатам сдачи ЕГЭ в 2019-2023 гг. Материал содержит интерактивные таблицы с показателями школ и рейтингами.</p>
+</div>
+</a>
+</div>
+<div class="posts-sidebar">
+<div class="sidebar-section categories">
+<h3>Categories</h3>
+<ul>
+<li>
+<a href="#category:Articles">Articles</a>
+<span class="category-count">(12)</span>
+</li>
+<li>
+<a href="#category:emoji">emoji</a>
+<span class="category-count">(3)</span>
+</li>
+<li>
+<a href="#category:власть">власть</a>
+<span class="category-count">(1)</span>
+</li>
+<li>
+<a href="#category:ГИА">ГИА</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:ЕГЭ">ЕГЭ</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:мигранты">мигранты</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:образование">образование</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:психолингвистика">психолингвистика</a>
+<span class="category-count">(4)</span>
+</li>
+<li>
+<a href="#category:реестры">реестры</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:рейтинг">рейтинг</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:русский_язык">русский язык</a>
+<span class="category-count">(1)</span>
+</li>
+<li>
+<a href="#category:сми">сми</a>
+<span class="category-count">(7)</span>
+</li>
+<li>
+<a href="#category:такси">такси</a>
+<span class="category-count">(3)</span>
+</li>
+<li>
+<a href="#category:телеграм">телеграм</a>
+<span class="category-count">(7)</span>
+</li>
+<li>
+<a href="#category:управление">управление</a>
+<span class="category-count">(1)</span>
+</li>
+<li>
+<a href="#category:цитирования">цитирования</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:школы">школы</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:яндекс">яндекс</a>
+<span class="category-count">(2)</span>
+</li>
+</ul>
+</div>
 </div>
 <div class="posts-more">
 <a href="#">More articles &raquo;</a>

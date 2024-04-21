@@ -1,0 +1,313 @@
+---
+title: "Такси Калужской области (часть 1)"
+description: |
+  Анализ 1890 ИП и ООО, зарегистрированных в Калужской области в период с 01.01.2016 по 11.03.2024 года с указанием ОКВЭД 49.32 (такси) в качестве одного из основных. На основании анализа фамилии, имени и отчества ООО и ИП были разбиты на 2 группы - А (типичные для Калужской области ФИО) и Б (остальные ФИО). Для обеих групп построены кривые выживаемости и показано отражение в федеральном реестре такси (ФГИС "Такси").           
+date: 2024-03-18
+categories:
+  - такси
+  - мигранты
+  - реестры
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/chart1_reg.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/taxi/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 5, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+В последний год в ТГ-каналах Калужской области стало появляться всё больше жалоб на поведение "новых" таксистов. Видео мы рекламировать не будем, но в летописях потомки прочтут что-то вроде... 
+
+```{r message=FALSE, warning=FALSE, out.height='70%', out.width='70%', fig.align='center'}
+ch0_filename <- paste0(dir, "old_text.png")
+ch0_blogfile <- paste0(dir_charts, "chart0.png")
+if(!file.exists(ch0_filename)){ source(paste0(dir, "pomologic.R"), encoding = "utf8") }
+if(!file.exists(ch0_blogfile)){ s<- file.copy(from = ch0_filename, to = ch0_blogfile, overwrite = T) }
+knitr::include_graphics(ch0_blogfile)
+```
+
+В преддверии профессионального праздника (22 марта отмечается Международный день таксиста) мы решили разобраться с тем, как в Калужской области обстоят дела с этим самым частным извозом. 
+
+### Регистрация такси в 2016-2024 гг.
+
+```{r}
+reg_data0 <- dir |> list.files("parquet", full.names = T) %>%
+  sort(decreasing = T) %>% 
+  map_df(~arrow::read_parquet(.x)) |> distinct() |>  
+  mutate(fio = ifelse(is.na(many_ceo), name, ceo_name), 
+         fio = str_squish(fio)) 
+```
+
+Мы смогли найти и собрать сведения о регистрации с 2016 года по н.в. ООО и ИП, которые в перечне основных ОКВЭД указали 49.32. (деятельность легкового такси и арендованных легковых автомобилей с водителем), всего -- **`r nrow(reg_data0)`**. Некоторые ИНН присутствует в полученном массиве несколько раз по причине ликвидации и повторной регистрации ИП, всего уникальных ИНН -- **`r n_distinct(reg_data0$inn)`**. 
+
+Конечно, это капля в море по сравнению с 25 тысячами, которые [согласно публичным оценкам официальных лиц](https://nikatv.ru/news/obshestvo/vladislav-shapsha-raskritikoval-podgotovku-k-realizacii-novogo-zakona-o-taksi){target="_blank"}   зарегистрированы на платформах агрегаторов.  
+
+Во-первых, в собранный нами массив не попали самозанятые физлица, работающие через агрегаторов или посредников. Сведения о самозанятых нам не доступны, да и к тому же они не указывают ОКВЭД. 
+
+Во-вторых, есть ООО и ИП, у которых 49.32 не включен в основные ОКВЭД. 
+
+Будем считать, что собранные нами сведения отражают тех, кто принял решение заниматься такси как основным видом деятельности от своего лица.
+
+### Группы А и Б (методика)
+
+Публичные сведения о регистрации не содержат указаний о порядке получения гражданства индивидуальными предпринимателями, поэтому разделить владельцев и руководителей такси-сервисов на "местных" и "приезжих" не получится. Но, как известно, в Калужской области примерно [90% населения](https://znanierussia.ru/articles/%D0%9A%D0%B0%D0%BB%D1%83%D0%B6%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C){target="_blank"} -- славяне, поэтому мы будем считать, что для коренных жителей Калужской области характерны [русские личные имена](https://ru.wikipedia.org/wiki/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%BE%D0%B5_%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B5_%D0%B8%D0%BC%D1%8F){target="_blank"}, которые имеют греческое, еврейское, славянское, скандинавское, латинское и германское происхождение. Если такие имена мы отнесем в группу А, то всех остальных (группу Б) можно будет считать "приезжими". Такой подход можно использовать, чтобы оценить изменение деловой активности местных и приезжих жителей Калужской области.
+
+> ВАЖНО! Предлагаемая методика НЕ подразумевает дискриминации представителей какой-либо из групп. Методика используется исключительно для изучения трудовой миграции на основании публично доступных сведениях об ИП и руководителях ООО (ЕГРЮЛ) и не подразумевает дальнейшее распространение обработанных данных.  
+
+Очевидно, что в группе А могут оказаться потомки вятичей с такими убеждениями, за которые в средние века выгоняли за городские стены, а в группе Б -- люди, которые, несмотря на происхождение фамилии мыслят, говорят и чувствуют на русском языке, как на родном. Данная методика не используется нами для рассмотрения отдельных граждан, но позволяет определить применять формальные критерии для выделения групп и наблюдать за их динамикой по годам.
+
+Методика отнесения ФИО к группам:
+ 
+- каждому имени и отчеству присваивали балл -- 1 (русские имена), 0 (иные имена) или 0.5 (имена, которые имеют широкое распространение как среди русских, так и среди других национальностей, например, Руслан, Булат или Эльвира);
+
+- происхождение фамилии менее очевидно, поэтому авторы его определяли по своему усмотрению и только для фамилий с очевидным происхождением. Если в основе фамилии лежит корень русского слова, фамилию считаем русской и присваиваем ей 1 балл (примеры -- Вознесенская, Богатырёв, Ножкин, Дубкова и т.д.). Очевидным не-русским фамилиям присваивали 0. Некоторым фамилиям балл не присваивали в силу невозможности определения их точного происхождения (например, Акоев или Якубов);
+
+-  присвоение баллов проводили раздельно для фамилий, имен и отчеств, чтобы полная комбинация (ФИО) не влияла на решение (т.е. одно и то же имя или отчество всегда получают одинаковый балл вне зависимости от других частей полного имени);
+
+- баллы, присвоенные фамилии, имени и отчеству, усреднялись. Например, для Льва Николаевича Толстого итоговый балл был бы равен (1+1+1)/3 = 1; для Камилы Валерьевны Валиевой -- (0.5+1+0.5)/3 = 0.67. Такой подход позволяет ФИО смешанного происхождения относить к группе А или к группе Б по преобладающим признакам;
+
+- ФИО, для которых средняя оценка была выше 0.5, были отнесены к группе А, остальные -- к группе Б. 
+
+Таким образом, используя общедоступные словари личных имен мы смогли разделить ФИО собранных нами регистрантов в калужском такси-бизнесе (для ООО использовали фамилию руководителя) на 2 группы. Теперь мы можем сравнивать значения показателей для групп А и Б, и на основании их изменения делать предположения об изменении деловой активности представителей групп.
+
+### Динамика регистрации (ООО и ИП)  
+
+```{r message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "chart1_reg.png")
+ch1_blogfile <- paste0(dir_charts, "chart1_reg.png")
+if(!file.exists(ch1_filename)){ source(paste0(dir, "taxi_p1_ch1.R"), encoding = "utf8") }
+if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+* в 2019 в Калужской области резко вырос объем регистраций ИП. Количество новых ИП в группе А в 2019 годы выросло более чем в 2 раза по сравнению с 2016 (156 vs. 71), в группе Б -- в 7 с половиной раз (346 vs. 45);
+
+* с 2020 года поток новых ИП в группу А стабилизировался (немного снизился), в группу Б -- снизился почти в 3 раза (с 217 до 82).
+
+Каковы причины наблюдаемого скачка и последующего снижения в 2020-2021 году?
+
+Наиболее вероятными кажутся 2 объяснения: 
+
+1) С 2019 года на территории Калужской области был запущен пилотный проект с особым налоговым режимом для самозанятых. Согласно ФЗ (ч. 1 ст. 9 Федерального закона №69) самозанятые физические лица не могли самостоятельно работать в такси, но могли сначала оформить ИП, а потом перейти на режим самозанятости;  
+
+2) После пандемии люди начали возвращаться в общественный транспорт, рынок ответил падением спроса, конкуренция выросла и привлекательность "такси-перевозок" для новых предпринимателей вернулась к прежнему уровню.
+
+Вероятно, обе причины имели место. 
+
+Предположение о насыщении рынка можно проверить, взглянув на время жизни зарегистрировавшихся ИП -- если большая часть новых перевозчиков закрепилась на рынке и до сих пор работают, возможно, предложение действительно избыточно. 
+
+### Время жизни ИП
+
+На иллюстрации ниже светло-серым цветом (верхняя часть столбца) показана доля ИП, которые был ликвидированы (без регистрации нового ИП). Можно видеть, что на водителей групп А и Б, очевидно, действует одни и те же "законы". 
+
+```{r message=FALSE, warning=FALSE}
+ch2_filename <- paste0(dir, "chart2_reg.png")
+ch2_blogfile <- paste0(dir_charts, "chart2_reg.png")
+if(!file.exists(ch2_filename)){ source(paste0(dir, "taxi_p1_ch2.R"), encoding = "utf8") }
+if(!file.exists(ch2_blogfile)){s <- file.copy(from = ch2_filename, to = ch2_blogfile, overwrite = T) }
+knitr::include_graphics(ch2_blogfile)
+```
+
+Как видим, выживаемость новых ИП на рынке такси не так уж высока. Около половины ИП, созданных 3-4 года назад, к настоящему моменту ликвидированы, из зарегистрированных в 2018 по данным ЕГРЮЛ ликвидированы, в среднем, 4 из 5 ИП (80%).   
+
+Конечно, мы не знаем об истинных причинах ликвидации и, наверное, мы бы погадали о причинах тех событий, но тут появились новые...
+
+> С 01 сентября 2023 года действует ФЗ "О регулировании перевозок легковыми такси", которые открывает самозанятым возможность работать в такси без необходимости регистрации ИП и без посредников.
+
+Вместе с такой привилегией новый закон устанавливает ряд дополнительных требований, среди которых: 
+
+- регистрация машины в реестре транспортных средств
+
+- регистрация перевозчика в реестре перевозчиков
+
+### Реестры такси
+
+Сначала были региональные реестры. На странице старого портала Правительства КО пока ещё можно найти текст следующего вида [Реестр выданных разрешений на осуществление деятельности по перевозке пассажиров и багажа легковым такси для граждан РФ http://62.148.142.10:1080](http://62.148.142.10:1080){target="_blank"}. На ссылку можно не нажимать, сервис уже не работает, поскольку региональные реестры теперь отдают данные в [ФГИС "Такси"](https://sicmt.ru/fgis-taksi){target="_blank"}. Последняя порадовала доступностью данных -- мы, конечно, не преминули проверить отражение в нём собранных нами ИП.
+
+### Отражение ИП в ФГИС "Такси"
+
+Те ИП из нашего массива, которые сохранили активнось, по идее должны быть в реестре -- согласно установленному порядку их должен был передать региональный реестр.
+
+Если же предприниматель закрыл ИП, чтобы работать как самозанятое физлицо, то мы тоже должны видеть его в федеральном реестре (ФИО для самозанятых в веб-сервисе ФГИС "Такси" не отражается, а ИНН виден).
+
+На иллюстрации ниже для ИП групп А и Б, зарегистрированных в 2016-2024 гг., показаны доли:
+
+- оставшихся в форме ИП и уже присутствующих в ФГИС "Такси",
+
+- ликвидировавших ИП, но присутствующих в ФГИС "Такси" (в качестве самозанятого),
+
+- оставшихся в форме ИП, но отсутствующих в ФГИС "Такси",
+
+- ликвидировавших ИП и отсутствующих в ФГИС "Такси" (серым цветом).
+
+```{r message=FALSE, warning=FALSE}
+ch3_filename <- paste0(dir, "chart3_reg.png")
+ch3_blogfile <- paste0(dir_charts, "chart3_reg.png")
+if(!file.exists(ch3_filename)){ source(paste0(dir, "taxi_p1_ch3.R"), encoding = "utf8") }
+if(!file.exists(ch3_blogfile)){s <- file.copy(from = ch3_filename, to = ch3_blogfile, overwrite = T) }
+knitr::include_graphics(ch3_blogfile)
+```
+
+В группе А даже среди тех ИП, кто зарегистрировался в годы действия режима самозанятости, не более 22% присутствуют в ФГИС "Такси". Доля не ликвидированных ИП группы А, которые отсутствуют в федеральном реестре весьма существенна! 
+
+Что касается группы Б, то там процент ИП, проявившихся в федеральном реестре, совсем низкий.
+
+Учитывая на 90% славянское население Калужской области, соотношение численности групп А и Б, действительно, свидетельствует о чрезмерном перекосе в пользу приезжих, что в свою очередь, как любая асимметрия, негативно характеризует рынок такси. 
+
+### Что происходит? 
+
+Мы не являемся специалистами в части регулирования такси и пассажирского транспорта, поэтому сложные прогнозы делать не станем, но подметим следующее:
+
+1. Большая часть перевозчиков не успели или не захотели попасть в ФГИС "Такси". Возможно, это связано с пунктами нового закона (там что-то про локализацию парка и т.д.). Впрочем, о том, что процесс будет идти вяло руководству КО докладывали с лета 2023 года. [Губернатор счел ситуацию недопустимой](https://nedelya40.ru/vladislav-shapsha-poruchil-provesti-dopolnitelnuyu-rabotu-s-agregatorami-taksi_222901/){target="_blank"} и [поручил управлению административно-технического контроля усилить работу со службами такси](https://nikatv.ru/news/obshestvo/v-kaluzhskoy-oblasti-stoimost-taksi-mozhet-vyrasti-na-30-video){target="_blank"}.
+
+2. [Управление административно-технического контроля Калужской области](https://pre.admoblkaluga.ru/sub/upr_admtechcontrol/activity/taxi/){target="_blank"} в своём [ТГ-канале](https://t.me/uatk_40){target="_blank"} теперь активно призывают водителей регистрироваться в реестре и показательно постят [отчёты о совместных с ГИБДД рейдах](https://t.me/uatk_40/4230){target="_blank"}. Процент отказа по заявлениям на получение разрешения составляет всего [2.8%](https://t.me/uatk_40/4225?comment=2513){target="_blank"}.
+
+3. По новому закону службы заказа такси и агрегаторы могут передавать водителю заказы только в том случае, если сведения о нём есть в реестре перевозчиков и реестре такси. Проверять водителей по реестрам службы заказа должны ежедневно.
+
+4. В ближайшее время Комитет Госдумы по транспорту планирует рассмотреть поправки, предложенные ко второму чтению закона о локализации машин. Зачем и почему? [См. здесь](https://www.anomeft.com/news/ano_meft/popravki_otekhali_ot_lokalizatsii/){target="_blank"} и [здесь](https://www.rbc.ru/technology_and_media/05/02/2024/65bf8a8a9a7947f8d4d8f576){target="_blank"}.
+
+5. На regulation.gov.ru сейчас обсуждаются поправки, касающиеся [страхования](https://regulation.gov.ru/Regulation/Npa/PublicView?npaID=145051#){target="_blank"} перевозок такси.  
+
+Для нас, независимых наблюдателей со стороны, это выглядит как новая фаза передела региональных рынков в пользу федеральных агргегаторов и дешёвой рабочей силы. Что может принести подобная либерализация рынка, было ясно [ещё в 2019 году](https://znamkaluga.ru/2019/04/03/taksi-na-svoj-strakh-i-risk/){target="_blank"}. Правила и запреты люди быстро учатся [обходить](http://meft.info/conf2023/news/Migranty_massovo_narushayut_zapret_vlastey_Tyumenskoy_oblasti/){target="_blank"}Ю тем более когда им помогают Яндекс [с их программой прямого партнерства](https://pro.yandex.ru/ru-ru/moskva/knowledge-base/service-taxi/partners/smz-nerez){target="_blank"} и ушлые предприниматели, оформляющие "под ключ" пакеты документов для гастролирующих водителей.
+
+### Что делать пассажиру?
+
+1. Помните, по новому ФЗ в салоне такси должны быть сведения о машине, водителе, перевозчике, номера телефонов для приёма жалоб и предложений, а также информация о тарифах. Поищите глазами QR-код, попробуйте его проверить. 
+
+2. Если QR-кода нет, скопируйте номер машины (это несложно сделать в приложении Яндекс Такси), перейдите на сайт ФГИС "Такси" ([https://www.sicmt.ru/fgis-taksi?type=car](https://www.sicmt.ru/fgis-taksi?type=car){target="_blank"}) и проверьте присутствие ТС в соответствующем реестре.
+
+Что делать в случае, если Вы уже в машине перевозчика, который игнорирует соблюдение Федерального закона? 
+
+Этот вопрос мы задали руководителю Управления административно-технического контроля Калужской области ([ТГ-канал "Станислав Орехов информирует"](https://t.me/uatk_Orekhov_SP){target="_blank"}) и получили [следующий ответ](https://t.me/uatk_Orekhov_SP/2332?comment=2156){target="_blank"}:
+
+>**Если к вам приехало нелегальное такси, вы можете отказаться от услуги этого такси, сообщить об этом в службу заказа и попросить заменить автомобиль. Также вы можете официально направить заявление с указанием нарушения и информацией об автомобиле в наше управление по адресу: г. Калуга, ул. Плеханова, 45.**
+
+Мы планируем продолжить изучение сектора такси и в следующей части погрузимся в данные о реальных поездках.
+
+- [Задать вопрос авторам](mailto:regina.obninsk@gmail.com?subject=taxi_part1).    
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Такси Калужской области (часть 1) // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/. - Дата публикации: 18 марта 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

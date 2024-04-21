@@ -1,0 +1,246 @@
+---
+title: "Такси Калужской области (часть 3)"
+description: |
+  События последней недели напомнили о важности регулирования и контроля тех ниш экономики, где нелегальные мигранты находят возможности подработки. Что бы ни говорили лоббисты и эксперты, такси -- именно такая серая зона. На массиве данных о наших такси-поездках по Калужской области (Яндекс Go) с помощью авторской методики анализа происхождения ФИО попробовали оценить уровень гомофилии в парах водитель-владелец.
+date: 2024-03-31
+categories:
+  - такси
+  - яндекс
+  - мигранты
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/chart3_regx.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(rmarkdown)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/taxi/")
+dir2 <- paste0(Sys.getenv("OneDrive"), "/taxi/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+```
+
+В предыдущих частях (см. [1](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/){target="_blank"} и [2](https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/){target="_blank"}) мы рассматривали перевозчиков и машины, сейчас взглянем на отношения между организаторами такси-перевозок (ООО и ИП) и нанятых ими водителей.
+
+### Данные о поездках
+
+Участники проекта Regina Lab объединили данные о собственных поездках (cм. [инструкцию](https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/#%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F-%D0%BF%D0%BE-%D0%B2%D1%8B%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B5-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%B7-yandex){target="_blank"}), совершенных по Калужской области в период с 01.03.2021 по 10.03.2024, и отобрали из них такие, в которых ФИО водителя не совпадало с ФИО организаторов перевозки (перевозчика/партнера/парка). Таким образом, в исследование не вошли те, кто катают на своей машине и платят налоги от своего имени.  Всего было отобрано **434** поездки.
+
+### Домыслы и гипотезы
+
+Участники проекта никогда не работали в такси, поэтому до прикосновения к данным мы решили сформулировать основные предположения о природе отношений найма в сфере такси: 
+
+1) добропорядочные местные перевозчики не стремятся привлекать мигрантов из-за многочисленных рисков; 
+
+2) мигранты самоорганизуются для взаимной помощи (и эксплуатации). В [части 1](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/){target="_blank"} нашего исследования мы показывали бум регистраций ИП с нетипичными для Калужской области фамилиями;
+
+3) у крупных и у небольших перевозчиков практики найма водителей могут различаться. 
+
+Для разметки ФИО водителей и владельцев мы воспользовались нашей методикой отнесения ФИО к одной из двух групп -- А (ФИО, имеющие греческое, еврейское, славянское, скандинавское, латинское и германское происхождение) и Б (все остальные ФИО). Подробное описание методики приведено в первой статье цикла [см. раздел "Группы А и Б"](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/#%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-%D0%B0-%D0%B8-%D0%B1-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0){target="_blank"}. 
+
+Для ООО мы используем ФИО генерального директора, считая, что именно этот человек полномочен определять политику ведения бизнеса, в том числе границы практик найма.
+
+> ВАЖНО! Предлагаемая методика НЕ подразумевает дискриминации представителей какой-либо из групп. Методика применяется исключительно для изучения трудовой миграции и особенностей найма в секторе такси-перевозок. Используются сведения о личных поездках (предоставляемые Яндекс Go) и публичные данные из ЕГРЮЛ, которые третьим лицам не передаются!  
+
+### Сеть водителей и владельцев 
+
+Отношения найма формируют сеть связей между водителями и организаторами такси-перевозок (последних ниже будем называть "Владелец"), в которой можно выделить 3 типа отношений:
+
+Тип 1. Отношения, в которых ФИО и водителя такси, и организатора перевозки относятся к группе А, т.е. их можно считать "исторически типичными" для Калужской области. 
+
+Тип 2. Отношения, в которых ФИО и водителя, и перевозчика относятся к группе Б, т.е. не являются "исторически типичными" для Калужской области. 
+
+Тип 3. Отношения, в которых организатор перевозок нанимает водителей с ФИО из обоих групп.  
+
+На иллюстрации ниже показаны примеры таких отношений. Примеры заимствуют структуру из реально сущестующих (наших) поездок, но все имена заменены случайным образом на имена из той же самой группы личных имен (А или Б). 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "chart_p3_1x.png")
+ch1_blogfile <- paste0(dir_charts, "chart3_regx.png")
+# if(!file.exists(ch1_filename)){ source(paste0(dir, "taxi_p3_ch1.R"), encoding = "utf8") }
+# if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+> Мы не проверяли имена на корректность написания, так они приведены в доступных нам данных из приложения Яндекс Go. При подборе случайного имени учитывалась только группа (А или Б), поэтому на иллюстрации больше женских имён, чем в реальности. Если Вы реальный организатор перевозок, не завидуйте Герману, у которого работают Ольга, Галина, Инесса и Елена. Спросите себя, какие условия работы могли бы привлечь их в Вашу компанию...   
+
+Очевидно, что тип 1 -- это те самые добрые русские люди, которые заботятся о своих земляках. 
+
+Тип 2 -- "этнические" такси, в которых с большей вероятностью найдет работу мигрант с водительскими правами.
+
+Тип 3 -- владельцы машин ради прибыли готовы нанимать водителей хоть с других планет. 
+
+Отношения типа 3 олицетворяют либеральный капитализм с его всеобщим равенством перед диктатурой спроса, которому противостоит старый добрый протекционизм, усиленный [гомофилией](https://ru.wikipedia.org/wiki/%D0%93%D0%BE%D0%BC%D0%BE%D1%84%D0%B8%D0%BB%D0%B8%D1%8F){target="_blank"} и опытом со-существования.  
+
+На иллюстрации ниже показаны структуры, наблюдаемые в сведениях о наших личных поездках. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch2_filename <- paste0(dir, "chart_p3_1.png")
+ch2_blogfile <- paste0(dir_charts, "chart3_reg.png")
+# if(!file.exists(ch2_blogfile)){ s<- file.copy(from = ch2_filename, to = ch2_blogfile, overwrite = T) }
+knitr::include_graphics(ch2_blogfile)
+```
+
+### Наблюдения и размышления
+
+1. Показанные структуры отражают очень малую часть рынка такси Калужской области (анализ ограничен личными поездками нескольких людей).
+
+2. Показанные соотношения типов не отражают ситуацию в конкретных районах КО. Несложно представить небольшой населённый пункт, где такси-услуги жёстко контингентированы между участниками картеля.
+
+3. У перевозчиков, чья политика найма, по нашим данным, близка к типу 1 или типу 2, могут быть контракты и с другими водителями (которые не попали в анализ). 
+
+4. Тип 3 можно назвать преобладающим, при этом самый крупный перевозчик, как мы и предполагали, может себе позволить быть не особо разборчивым в найме. Этот субъект вообще много чего себе может позволить, например, он до сих пор не зарегистрирован в [ФГИС "Такси"](https://sicmt.ru/fgis-taksi){target="_blank"}.
+
+О том, какую опасность для общественного порядка представляют такси-перевозчики, ставящие свой собственный [Ordnung](https://w.wiki/9cr2){target="_blank"} превыше федеральных законов, можно узнать из [истории Uber](https://www.pravilamag.ru/articles/22862-uber-scandals/){target="_blank"} и криминальной хроники. 
+
+"Короли уездного извоза", "этнические синдикаты" и "привокзальные бомбилы" будут до последнего сопротивляться  включению в реестр, поэтому ...   
+
+### Пассажирам
+
+1. Согласно новому ФЗ в салоне такси должны быть сведения о машине, водителе, перевозчике, номера телефонов для приёма жалоб и предложений, а также информация о тарифах. Поищите глазами QR-код, попробуйте его проверить. 
+
+2. Если QR-кода нет, скопируйте номер машины (это несложно сделать в приложении Яндекс Go), перейдите на сайт ФГИС "Такси" ([https://www.sicmt.ru/fgis-taksi?type=car](https://www.sicmt.ru/fgis-taksi?type=car){target="_blank"}) и проверьте присутствие ТС в соответствующем реестре. Да, вводя на экране смартфона капчу, мысленные пожелания успехов и благополучия отправляйте в СИЦ Минтранса РФ. 
+
+Что делать в случае, если Вы уже в машине перевозчика, который игнорирует соблюдение Федерального закона? 
+
+Этот вопрос мы задали руководителю Управления административно-технического контроля Калужской области ([ТГ-канал "Станислав Орехов информирует"](https://t.me/uatk_Orekhov_SP){target="_blank"}) и получили [следующий ответ](https://t.me/uatk_Orekhov_SP/2332?comment=2156){target="_blank"}:
+
+>\-- "Если к вам приехало нелегальное такси, вы можете отказаться от услуги этого такси, сообщить об этом в службу заказа и попросить заменить автомобиль. Также вы можете официально направить заявление с указанием нарушения и информацией об автомобиле в наше управление по адресу: г. Калуга, ул. Плеханова, 45."
+
+### Дальнейшие планы
+
+Увы, оператор ФГИС "Такси" (ФГБУ СИЦ Минтранса России) недавно убрали фильтр по региону и "поставили капчу", что усложняет проверку нахождения в реестре автоматизированными средствами. Не будем строить домыслы о том, почему они решили **закрыть открытый** реестр, но мы глубоко разочарованы.
+
+По-натоящему открытый реестр или API позволили бы создать удобные инструменты для пассажиров (например, ТГ-бота для проверки машин и перевозчиков).
+
+Региональный реестр Калужкой области теперь ведётся с помощью ФГИС "Такси". В то, что местные администраторы начнут публиковать реестр на своём сайте, верится с трудом, хотя в ФЗ № 580 от 29.12.2022 есть ст.23. 
+
+По этой причине коллектив Regina Lab принял решение не продолжать изучение рынка такси до тех пор, пока реестры не откроют. 
+
+- [Задать вопрос авторам](mailto:regina.obninsk@gmail.com?subject=taxi_part3).  
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Такси Калужской области (часть 3) // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-taxi-part3/. - Дата публикации: 31 марта 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 'ggforce', 'igraph', 'tidygraph', 'ggraph', 'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J,
+Chang W, Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Csardi G, Nepusz T (2006). “The igraph software package for complex network research.”
+_InterJournal_, *Complex Systems*, 1695. <https://igraph.org>.
+
+Csárdi G, Nepusz T, Traag V, Horvát S, Zanini F, Noom D, Müller K (2024). _igraph: Network
+Analysis and Visualization in R_. doi:10.5281/zenodo.7682609
+<https://doi.org/10.5281/zenodo.7682609>, R package version 2.0.2,
+<https://CRAN.R-project.org/package=igraph>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version
+2.8.2, <https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2022). _ggforce: Accelerating 'ggplot2'_. R package version 0.4.1,
+<https://CRAN.R-project.org/package=ggforce>.
+
+Pedersen T (2023). _tidygraph: A Tidy API for Graph Manipulation_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidygraph>.
+
+Pedersen T (2022). _ggraph: An Implementation of Grammar of Graphics for Graphs and
+Networks_. R package version 2.1.0, <https://CRAN.R-project.org/package=ggraph>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package
+version 0.9-6, <https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R
+package version 1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York.
+ISBN 978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data
+Manipulation_. R package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version
+2.1.4, <https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version
+1.2.1, <https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package
+version 0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R
+package version 1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca
+Raton, Florida. ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V,
+Leisch F, Peng RD (eds.), _Implementing Reproducible Computational Research_. Chapman and
+Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and
+Hall/CRC, Boca Raton, Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca
+Raton, Florida. ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+

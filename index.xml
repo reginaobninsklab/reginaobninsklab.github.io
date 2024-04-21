@@ -1,12 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
   <channel>
-    <title>Regina Lab (Обнинск)</title>
+    <title>Regina Lab</title>
     <link>https://reginaobninsklab.github.io</link>
     <atom:link href="https://reginaobninsklab.github.io/index.xml" rel="self" type="application/rss+xml"/>
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 24 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Telegram Калужской области. Часть 3. Невидимая рука</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique</link>
+      <description>Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>власть</category>
+      <category>управление</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique</guid>
+      <pubDate>Sun, 21 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique/images/munic_unique.png" medium="image" type="image/png" width="2116" height="1511"/>
+    </item>
+    <item>
+      <title>Telegram Калужской области. Часть 2. Кто цитирует СМИ?</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-tg-citations-smi-rank</link>
+      <description>Анализ цитирования 88 калужских СМИ в ТГ-каналах региональной и муниципальной власти, органов общественного и государственного надзора, политических партий и институтов развития региона (всего - 418 каналов) в период с 2023.01 по 2024.03 г. На основе найденных репостов и прямых ссылок (всего - 9682 цитирования) для 53 каналов СМИ построен рейтинг.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>рейтинг</category>
+      <category>цитирования</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-tg-citations-smi-rank</guid>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-tg-citations-smi-rank/images/cit_sm_vl.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Telegram Калужской области. Часть 1. Царь горы</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-tg-citations</link>
+      <description>Новый проект о ТГ-каналах Калужской области начинаем с анализа сети цитирования ТГ-каналов СМИ. Материал содержит доступный для скачивания рейтинг 80 ТГ-каналов калужских СМИ, построенный по индивидуальной методике на основе первичных данных (никакого TGStat).</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>рейтинг</category>
+      <category>цитирования</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-tg-citations</guid>
+      <pubDate>Sat, 13 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-tg-citations/images/cit_sm_sm_drl.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Emoji в ТГ-каналах калужских лидеров мнения</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-emojis</link>
+      <description>Завершаем анализ использования emoji в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций. В посте также приведены сведения об использовании emoji из категорий Travel &amp; Places 🚂 и Activities 🥋.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>emoji</category>
+      <category>психолингвистика</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-emojis</guid>
+      <pubDate>Fri, 05 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-kols-tg-emojis/images/kaluga_tg_emoji_use.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Образы животных в ТГ-каналах калужских лидеров мнения</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-animals</link>
+      <description>Подсчитываем emoji категории Animals в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>emoji</category>
+      <category>психолингвистика</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-animals</guid>
+      <pubDate>Thu, 04 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-kols-tg-animals/images/kaluga_tg_animals.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Образы еды и напитков в ТГ-каналах калужских лидеров мнения</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-food</link>
+      <description>Подсчитываем emoji категории Foods &amp; Drinks в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>emoji</category>
+      <category>психолингвистика</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-food</guid>
+      <pubDate>Thu, 04 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-kols-tg-food/images/kaluga_tg_food.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Признаки действия калужских лидеров мнения в Telegram</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-part1</link>
+      <description>Анализ уникальных и характерных наречий в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций.</description>
+      <category>сми</category>
+      <category>телеграм</category>
+      <category>русский язык</category>
+      <category>психолингвистика</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-kols-tg-part1</guid>
+      <pubDate>Wed, 03 Apr 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-kols-tg-part1/images/kaluga_kols.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Такси Калужской области (часть 3)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-taxi-part3</link>
+      <description>События последней недели напомнили о важности регулирования и контроля тех ниш экономики, где нелегальные мигранты находят возможности подработки. Что бы ни говорили лоббисты и эксперты, такси -- именно такая серая зона. На массиве данных о наших такси-поездках по Калужской области (Яндекс Go) с помощью авторской методики анализа происхождения ФИО попробовали оценить уровень гомофилии в парах водитель-владелец.</description>
+      <category>такси</category>
+      <category>яндекс</category>
+      <category>мигранты</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-taxi-part3</guid>
+      <pubDate>Sun, 31 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-taxi-part3/images/chart3_regx.png" medium="image" type="image/png" width="2116" height="1360"/>
+    </item>
+    <item>
+      <title>Такси Калужской области (часть 2)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-taxi-part2</link>
+      <description>На массиве данных о собственных поездках по Калужской области (приложение Яндекс Go) мы измерили отражение машин и перевозчиков в федеральном реестре такси (ФГИС "Такси").</description>
+      <category>такси</category>
+      <category>яндекс</category>
+      <category>реестры</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-taxi-part2</guid>
+      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/images/chart2x_reg.png" medium="image" type="image/png" width="1965" height="1058"/>
+    </item>
+    <item>
+      <title>Такси Калужской области (часть 1)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-taxi-part1</link>
+      <description>Анализ 1890 ИП и ООО, зарегистрированных в Калужской области в период с 01.01.2016 по 11.03.2024 года с указанием ОКВЭД 49.32 (такси) в качестве одного из основных. На основании анализа фамилии, имени и отчества ООО и ИП были разбиты на 2 группы - А (типичные для Калужской области ФИО) и Б (остальные ФИО). Для обеих групп построены кривые выживаемости и показано отражение в федеральном реестре такси (ФГИС "Такси").</description>
+      <category>такси</category>
+      <category>мигранты</category>
+      <category>реестры</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-taxi-part1</guid>
+      <pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/images/chart1_reg.png" medium="image" type="image/png" width="2116" height="1058"/>
+    </item>
+    <item>
+      <title>Какие предметы ЕГЭ выбирают девушки и юноши Калужской области?</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-gender-gia</link>
+      <description>По каждому предмету показана динамика распределения по полу выпускников, выбиравших предмет дял ЕГЭ в 2019-2023 гг.</description>
+      <category>школы</category>
+      <category>ЕГЭ</category>
+      <category>ГИА</category>
+      <category>образование</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-gender-gia</guid>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-gender-gia/images/gia_genders.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
+    <item>
+      <title>Открытый рейтинг школ Калужской области (часть 1)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</link>
+      <description>Попытка оценить эффективность образовательных учреждений по результатам сдачи ЕГЭ в 2019-2023 гг. Материал содержит интерактивные таблицы с показателями школ и рейтингами.</description>
+      <category>школы</category>
+      <category>ЕГЭ</category>
+      <category>ГИА</category>
+      <category>образование</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</guid>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/images/school_rank_map.png" medium="image" type="image/png" width="2116" height="1587"/>
+    </item>
   </channel>
 </rss>

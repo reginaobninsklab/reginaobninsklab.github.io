@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Telegram Калужской области. Часть 3. Невидимая рука</title>
+
+  <meta property="description" itemprop="description" content="Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-04-21"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-04-21"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Telegram Калужской области. Часть 3. Невидимая рука"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Telegram Калужской области. Часть 3. Невидимая рука"/>
+  <meta property="twitter:description" content="Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","categories","output","preview","draft","citation"]}},"value":[{"type":"character","attributes":{},"value":["Telegram Калужской области. Часть 3. Невидимая рука"]},{"type":"character","attributes":{},"value":["Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.\n"]},{"type":"character","attributes":{},"value":["2024-04-21"]},{"type":"character","attributes":{},"value":["сми","телеграм","власть","управление"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","highlight","highlight_downlit","toc","toc_depth","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["kate"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["dir_charts/munic_unique.png"]},{"type":"NULL"},{"type":"logical","attributes":{},"value":[false]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["images/munic_example1.png","images/munic_example2.png","images/munic_unique.png","kaluga-tg-municipal-unique_files/anchor-4.2.2/anchor.min.js","kaluga-tg-municipal-unique_files/bowser-1.9.3/bowser.min.js","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/css/crosstalk.min.css","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/js/crosstalk.js","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/js/crosstalk.js.map","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/js/crosstalk.min.js","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/js/crosstalk.min.js.map","kaluga-tg-municipal-unique_files/crosstalk-1.2.1/scss/crosstalk.scss","kaluga-tg-municipal-unique_files/datatables-binding-0.32/datatables.js","kaluga-tg-municipal-unique_files/datatables-css-0.0.0/datatables-crosstalk.css","kaluga-tg-municipal-unique_files/distill-2.2.21/template.v2.js","kaluga-tg-municipal-unique_files/dt-core-1.13.6/css/jquery.dataTables.extra.css","kaluga-tg-municipal-unique_files/dt-core-1.13.6/css/jquery.dataTables.min.css","kaluga-tg-municipal-unique_files/dt-core-1.13.6/js/jquery.dataTables.min.js","kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css","kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js","kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.html5.min.js","kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.print.min.js","kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js","kaluga-tg-municipal-unique_files/header-attrs-2.26/header-attrs.js","kaluga-tg-municipal-unique_files/htmlwidgets-1.6.2/htmlwidgets.js","kaluga-tg-municipal-unique_files/jquery-3.6.0/jquery-3.6.0.js","kaluga-tg-municipal-unique_files/jquery-3.6.0/jquery-3.6.0.min.js","kaluga-tg-municipal-unique_files/jquery-3.6.0/jquery-3.6.0.min.map","kaluga-tg-municipal-unique_files/jszip-1.13.6/jszip.min.js","kaluga-tg-municipal-unique_files/popper-2.6.0/popper.min.js","kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy-bundle.umd.min.js","kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy-light-border.css","kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy.css","kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy.umd.min.js","kaluga-tg-municipal-unique_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="kaluga-tg-municipal-unique_files/header-attrs-2.26/header-attrs.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="kaluga-tg-municipal-unique_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+  <script src="kaluga-tg-municipal-unique_files/datatables-binding-0.32/datatables.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="kaluga-tg-municipal-unique_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link href="kaluga-tg-municipal-unique_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+  <script src="kaluga-tg-municipal-unique_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/jszip-1.13.6/jszip.min.js"></script>
+  <link href="kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+  <script src="kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+  <link href="kaluga-tg-municipal-unique_files/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+  <script src="kaluga-tg-municipal-unique_files/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/popper-2.6.0/popper.min.js"></script>
+  <link href="kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="kaluga-tg-municipal-unique_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="kaluga-tg-municipal-unique_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Telegram Калужской области. Часть 3. Невидимая рука","description":"Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.","authors":[],"publishedDate":"2024-04-21T00:00:00.000+03:00"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Telegram Калужской области. Часть 3. Невидимая рука</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">сми</div>
+<div class="dt-tag">телеграм</div>
+<div class="dt-tag">власть</div>
+<div class="dt-tag">управление</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Массовые посты и креативные emoji - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.</p></p>
+</div>
+
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#скорость-рассылок">Скорость рассылок</a>
+<ul>
+<li><a href="#пример-1">Пример 1</a></li>
+<li><a href="#пример-2">Пример 2</a></li>
+<li><a href="#итоги">Итоги</a></li>
+<li><a href="#поделиться">Поделиться</a></li>
+<li><a href="#ссылка-для-цитирования">Ссылка для цитирования</a></li>
+<li><a href="#права">Права</a></li>
+<li><a href="#отказ-от-ответственности">Отказ от ответственности</a></li>
+<li><a href="#софт">Софт</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<p>Продолжаем наше <a href="https://reginaobninsklab.github.io/index.html#category:%D1%82%D0%B5%D0%BB%D0%B5%D0%B3%D1%80%D0%B0%D0%BC" target="_blank">исследование Телеграм-каналов</a> (далее – ТГК, канал, каналы) Калужской области и в “День местного самоуправления” решили заглянуть в каналы районных и поселенческих администраций. Даже те из читателей, которые не могут похвастаться наблюдательностью, при просмотре официальных ТГ-каналов сельских поселений области очень скоро заметят, что перед ними мелькают одни и те же публикации. Нет, речь не репостах, а именно о “идентичных” постах, плюс/минус смайлик.</p>
+<p>Собственно, это и определило наши следующие шаги:</p>
+<ol type="1">
+<li><p>разделили все каналы на 3 условных группы (А. ТГК первых лиц районов и городов, Б. ТГК администраций районов, Калуги и Обнинска, В. ТГК администраций и других органов (думы, собрания), а также депутатов.</p></li>
+<li><p>подсчитали для каждого канала долю репостов, уникальных постов, а также таких постов, идентичные копии которых встречаются в других ТГК (см. Таблицу 1).</p></li>
+<li><p>для районов и городов областного значения подсчитали среднюю доля постов каждого типа для каждой группы (иллюстрация).</p></li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4eda8c2abddb4e514195" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4eda8c2abddb4e514195">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 1. ТГК муниципальных образований Калужской области. Группа А. ТГК первых лиц (главы администраций и представительных органов) районов и городов (35). Группа Б. Официальные ТГК администраций г. Калуга, г.Обнинск и районов (26). Группа В. ТГК органов исполнительной и представительной власти поселений, а также Собраний, Дум и депутатов любого уровня (268). Анализ выполнен на массиве постов из 160,463 постов (это все посты с данных каналов). В 4-х столбцах справа показана доля постов, которые уникальны в выборке (Уникал.), являются репостами (Репост), встречаются в других каналах, но не более 9 раз (2-9 копий), встречаются в 10 или более каналах (10+ копий). Копиями считаются идентичные посты, не являющиеся репостами и обнаруженные в 2-х или более ТГ-каналах из исследуемой выборки. Идентичность постов определялась по тексту и иллюстрациям, не принимая в расчет тэги, emoji и URL-ссылки.<\/caption>","data":[["Бабынинский район","Бабынинский район","Бабынинский район","Бабынинский район","Бабынинский район","Бабынинский район","Бабынинский район","Бабынинский район","Барятинский район","Барятинский район","Барятинский район","Барятинский район","Барятинский район","Барятинский район","Барятинский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Боровский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Дзержинский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Думиничский район","Жиздринский район","Жиздринский район","Жиздринский район","Жиздринский район","Жиздринский район","Жиздринский район","Жиздринский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Жуковский район","Износковский район","Износковский район","Износковский район","Износковский район","Износковский район","Износковский район","Износковский район","Износковский район","Износковский район","Калуга","Калуга","Калуга","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Кировcкий район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Козельский район","Куйбышевский район","Куйбышевский район","Куйбышевский район","Куйбышевский район","Куйбышевский район","Куйбышевский район","Куйбышевский район","Людиновский район","Людиновский район","Людиновский район","Людиновский район","Людиновский район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Малоярославецкий район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Медынский район","Мещовский район","Мещовский район","Мещовский район","Мещовский район","Мещовский район","Мещовский район","Мещовский район","Мещовский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Мосальский район","Обнинск","Обнинск","Обнинск","Обнинск","Обнинск","Обнинск","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Перемышльский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Спас-Деменский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Сухиничский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Тарусский район","Ульяновский район","Ульяновский район","Ульяновский район","Ульяновский район","Ульяновский район","Ульяновский район","Ульяновский район","Ульяновский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Ферзиковский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Хвастовичский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район","Юхновский район"],["Владимир Яничев","Бабынинский район","Администрация МО ГП п.Воротынск","Администрация МО СП П. Бабынино","Администрация СП \"Село Утешево\"","Администрация МО СП \"Cело\" Бабынино","Сельская Дума МО СП \"Село Сабуровщино\"","Администрация сельского поселения \"Село Муромцево\"","Андрей Хохлов - официальный канал","Управа МР Барятинский район","Администрация СП\"село Барятино\"","Администрация СП \"Деревня Асмолово\" 🫵","Администрация СП \"Деревня Бахмутово\"","Администрация сельского поселения \"Деревня Крисаново-Пятница\"","Администрация СП \"Село Сильковичи\"","Бодрова Анжелика Якубовна","Галкин Сергей Павлович","Николай Калиничев","Администрация Боровского района","Администрация деревни Кривское","Администрация д. Асеньевское","Администрация города Ермолино","Администрация муниципального образования сельского поселения деревня Совьяки","Администрация сельского поселения село Ворсино","Администрация города Балабаново","Администрация города Боровска","Администрация с. Совхоз \"Боровский\"","Андрей Степанян","Егор Вирков","Администрация Дзержинского района","Администрация МО СП \"Село Льва - Толстого\"","Администрация МО СП \"Село Совхоз им.Ленина\"","Администрация СП « Село Совхоз Чкаловский»","Администрация МО СП \"Деревня Галкино\"","Управа Полотняный Завод","Администрация «Деревня Сени»","Администрация СП \"Деревня Барсуки\"","Администрация МО СП \"Село Дворцы\"","АДМИНИСТРАЦИЯ СП \"Карцово\"","Администрация МО ГП посёлок Пятовский","Администрация СП \"Деревня Редькино\"","Администрация СП \"Деревня Никольское\"","Администрация Старки","Сельское поселение \"УГОРСКОЕ\"","Администрация Жилетово","Сергей Булыгин 🇷🇺","Администрация МР \"Думиничский район\"","Администрация СП \"Село Брынь\"","Администрация СП \"Деревня Думиничи\"","Администрация СП \"Село Новослободск\"","Администрация ГП \"Поселок Думиничи\"","Администрация СП \"Деревня Высокое\"","Глава СП «село Чернышено»","Администрация СП \"Село Чернышено\"","Администрация сельского поселения \"Деревня Дубровка\"","Администрация СП \"Село Которь\"","администрация сп Деревня Маслово","Администрация СП \"Село Маклаки\"","АДМИНИСТРАЦИЯ СП \"СЕЛО ХОТЬКОВО\"","Администрация СП \"Село Вертное \"","Администрация СП \"Деревня Верхнее Гульцово\"","Александр Барыбин","Администрация МР\" Жиздринский район\"🧰","Администрация СП \"Село совхоз Коллективизатор\"","Администрация сельского поселения \"Село Огорь\"","Администрация СП \"Село Студенец\"","Администрация СП \"Деревня Младенск\"","Администрация ГП \" Город Жиздра\"","Анатолий Суярко","Тарас Зважий","Администрация Жуковского района","Администрация города Белоусово","Администрация Чаусово","Администрация ГП \"Город Кременки\"","Администрация Тарутино","Администрация СП село Троицкое","Администрация Восход","Администрация Истье","Администрация д. Корсаково","Администрация ГП город Жуков","Администрация сельского поселения деревня Верховье","Администрация СП \"Село Высокиничи\"","Администрация сельского поселения село Трубино","Владимир Леонов","Администрация МР\"Износковский район\"","Администрация МО СП село Льнозавод","Администрация МОСП \"Посёлок Мятлево\"","Сельская Дума МО СП село Износки","Администрация МО СП д. Ивановское","Администрация МО СП \"Село Извольск\"","Администрация МО СП \"д. Михали\"","Администрация МО СП деревня Хвощи","Дмитрий Денисов","Городская Управа города Калуги","Городская Дума Калуги","Феденков Игорь Николаевич - Глава Кировской районной администрации","Майоров Владимир Георгиевич - Глава городского поселения \"Город Киров\"","Кировская районная администрация","Администрация СП \"Село Бережки\"","Администрация СП \"Деревня Большие Савки\"","Администрация СП \" Деревня Буда'","Администрация СП\"Село Дуброво\"","Администрация СП \"Село Фоминичи\"","Администрация СП \"Деревня Гавриловка\"","Администрация СП \"Деревня Малая Песочня\"","Администрация СП \"Деревня Тягаево\"","Администрация СП \"Деревня Выползово\"","Администрация СП \"Село Волое\"","Администрация СП \"Село Воскресенск\"","Администрация СП \"Деревня Верхняя Песочня\"","Елена Слабова","Администрация Козельского района","Администрация СП \"Село Березичский Стеклозавод\"","Администрация ГП \"Город Сосенский\"","Администрация сельского поселения \"Село Бурнашево\"","Администрация сельского посления \"Село Чернышено\"","Администрация сельского поселения \"Деревня Дешовки\"","Администрация сельского поселения \"Деревня Киреевское-Первое\"","Администрация городского поселения \"Город Козельск\"","Администрация сельского поселения \"Село Нижние Прыски\"","Администрация сельского поселения \"Деревня Плюсково\"","Администрация сельского поселения \"Село Попелево\"","Администрация сельского поселения \"Деревня Сенино-Первое\"","Администрация сельского посления \"Деревня Каменка\"","Администрация сельского поселения \"Деревня Лавровск\"","Администрация сельского посления \"Деревня Подборки\"","Администрация сельского поселения \"Село Покровск\"","Администрация сельского поселения \"Село Волконское\"","Сергей Макридов","Администрация Куйбышевского района","Администрация МО СП \"Посёлок Бетлица\"","Администрация МО СП \"Село Бутчино\"","Администрация МО СП \"Село Жерелево\"","Администрация МО СП \"Село Мокрое\" Куйбышевского района Калужской области","Администрация МО СП Деревня Высокое","Стефан Перевалов","Администрация МР \"Людиново и Людиновский район\"","Администрация СП \"Деревня Игнатовка\"","Администрация СП \"Деревня Манино\"","Администрация СП \"Село Заречный\"","Михаил Крылов","Вячеслав Парфёнов","Администрация Мр Малоярославецкий Район","Администрация СП \"Деревня Берёзовка\"","Поселковая администрация СП \"Посёлок Детчино\"","Администрация СП \"Деревня Ерденево\"","Администрация СП \"Село Головтеево\"","Администрация СП \"Село Ильинское\"","Администрация СП \"Село Коллонтай\"","Администрация СП \"Село Кудиново\"","Администрация СП \"Село Маклино\"","Администрация СП \"Деревня Михеево\"","Администрация СП \"Село Недельное\"","Администрация СП \"Деревня Прудки\"","Администрация СП \"Деревня Рябцево\"","Администрация СП \"Деревня Шумятино\"","Администрация СП \"Село Спас-Загорье\"","Администрация СП \"Деревня Воробьево\"","Администрация СП \"Посёлок Юбилейный\"","Администрация СП \"Деревня Захарово\"","Администрация муниципального образования \"Город Малоярославец\"","Козлов Николай Васильевич","Администрация МР Медынский район","Администрация СП \"Село Адуево\"","Администрация СП \"Деревня Брюхово\"","Администрация СП \"Деревня Глухово\"","Администрация СП \"Деревня Гусево\"","Администрация СП \"Село Кременское\"","Администрация СП Село Никитское","Администрация СП \"Деревня Романово\"","Администрация СП \"Село Передел\"","Городская Дума город Медынь","Администрация СП \"Деревня Михеево\"","Администрация СП \"Деревня Михальчуково\"","Администрация СП \"Деревня Варваровка\"","Владислав Поляков","Администрация Мещовского района","Мещовская Городская Дума","Администрация с. Гаврики Мещовского района","Администрация СП \"Железнодорожная станция Кудринская\"","Районное Собрание МР \"Мещовский район\"","Администрация п. Молодежный Мещовского района","Администрация с. Серпейск Мещовского района","Алексей Кошелев","Марина Карама","Администрация МР \"Мосальский район\"","Администрация СП \"Село Дашино\"","Администрация СП Деревня Посконь","Администрация МО СП село Боровенск","Администрация МО СП Деревня Долгое","Администрация МО СП деревня Гачки","Администрация МО СП д. Людково","Администрация МО СП деревня Путогино","Администрация МОСП «Поселок Раменский»","Администрация д. Воронино","Администрация МО ГП \"Город Мосальск\"","Администрация МОСП деревня Савино","Артемьев Геннадий","Татьяна Леонова #городпервых","Город Обнинск","Халецкий | Pro ЖКХ","Обнинское городское Собрание","Постникова Любовь","Надежда Бадеева","Администрация муниципального района \"Перемышльский район\"","Администрация СП Ахлебинино","Администрация СП Большие Козлы","Администрация СП Борищево","Администрация СП Горки","Администрация СП Гремячево","Администрация СП Григоровское","Администрация СП Хотисино","Администрация СП Ильинское","Администрация СП Калужская опытная сельскохозяйственная станция","Администрация СП Корекозево","Администрация СП Макарово","Администрация СП Село Перемышль","Администрация СП Песочня","Администрация СП Погореловка","Администрация СП Покровское","Администрация СП Сильково","Бузанов Владимир Анатольевич","Администрация МР «Спас-Деменский район»","SPseloLazinki","adm_sp_bolva","Администрация МО СП \"Деревня Снопот\"","Администрация СП \"Село Павлиново\"","Администрация СП \"Деревня Понизовье\"","Администрация СП \"Деревня Стайки\"","Администрация СП «Хутор Новоалександровский»","Сельская Дума СП \"Село Буднянский\"","Администрация ГП \"Город Спас-Деменск\"","Сельская Дума СП \"Село Чипляево\"","Сельская Дума СП \"Село Любунь\"","Teplovo_SP","Колесников Александр","Администрация Сухиничского района","СП \"СЕЛО ДАБУЖА\"","Администрация города Сухиничи","Сельская Дума СП \"Село Татаринцы\"","Администрация ГП \"Посёлок Середейский\"","Администрация СП \"Деревня Алнеры\"","Администрация СП \"Село Богдановы Колодези\"","Админстрация СП \"Деревня Бордуково\"","Администрация СП \"Село Брынь\"","СП \"Деревня Ермолово\"","Администрация СП \"Село Фролово\"","СП \"Деревня Глазково\"","СП \"Деревня Радождево\"","Администрация СП \"Село Хотень\"","Администрация Шлиппово","Администрация Соболевка","СП \"Село Стрельна\"","Администрация СП \"Деревня Субботники\"","Администрация СП \"Деревня Верховая\"","Администрация СП \"Деревня Юрьево\"","Это Голубев","Манаков на связи","Тарусский район","Деревня Алекино","Село Барятино","Село Кузьмищево","Село Лопатино","Село Некрасово","Село Петрищево","Деревня Похвиснево","Село Роща","Таруса Город","Село Волковское","Село Вознесенье","Тарусское Районное собрание","Александр Анисимов","Администрация УЛЬЯНОВО","Администрация СП \"Село Дудоровский\"","Администрация СП \"Деревня Мелихово\"","Администрация СП \"Село Поздняково\"","Администрация СП \"Село Волосово-Дудино\"","Администрация СП \"Село Заречье\"","Районное Собрание Ульяновского района","Алексей Волков","Администрация Ферзиковского района","Администрация Село Авчурино","Администрация Бебелевский сельсовет","Администрация Октябрьский сельсовет","Администрация Деревня Бронцы","Администрация Село Грабцево","Администрация Село Кольцово","Администрация Село Сашкино","Администрация Деревня Ястребовка","Администрация Деревня Аристово","Администрация Поселок Дугна","Администрация СП \"Деревня Красный Городок\"","Администрация СП \"Село Сашкино\"","Администрация Село Ферзиково","Администрация Деревня Сугоново","Администрация Деревня Зудна","Сергей Веденкин","Администрация Хвастовичского района","Администрация сельского поселения \"Село Кудрявец\"","Администрация села Ловать","Администрация Село Пеневичи","Авдеевская администрация","Сельская Дума Администрации СП \"Село Хвастовичи\"","СП \"Поселок Еленский\"","Колодясская администрация","Администрация СП \"Село Красное\"","Администрация села Милеево","администрация СП \"Деревня Нехочи\"","Администрация СП \"Село Подбужье\"","Село Слобода","СП Хвастовичи","Администрация СП \"Село Бояновичи\"","Администрация СП \"Деревня Стайки\"","Администрация села Воткино","Марина Ковалева","Администрация Юхновский район","Администрация деревня Куркино","Администрация МОсельское поселение \"Деревня Упрямово\"","Администрация деревня Беляево","Администрация МО сельское поселение \"Деревня Чемоданово\"Юхновский район Калужская область","Администрация деревня Емельяновка","Администрация МО СП \" Село Климов Завод\"","Администрация деревня Колыхманово","Администрация МО СП \"Деревня Озеро\"","Администрация МО СП \"Деревня Плоское\"","Администрация МО СП \"Деревня Погореловка\"","Администрация деревня Порослицы","Администрация МО СП \"Село Щелканово\"","Администрация город Юхнов"],[557,2794,2043,197,270,29,95,233,348,962,513,32,205,1,255,114,311,976,1340,21,90,98,20,929,1606,861,87,286,870,1816,211,81,73,207,233,49,68,187,56,10,47,48,262,186,197,660,1092,409,283,341,410,409,143,429,380,379,53,466,213,403,144,441,2332,527,568,583,102,455,775,186,1951,297,98,91,257,146,189,195,148,990,38,317,489,435,2097,245,614,127,253,278,200,255,4244,2932,3603,1087,117,1742,202,224,241,163,163,245,212,196,254,196,206,453,645,2424,463,766,468,457,198,467,604,452,467,467,464,473,464,474,367,486,344,1188,106,104,79,108,80,409,1820,25,7,170,649,1614,1604,346,624,235,254,458,485,282,265,340,306,279,245,279,281,310,249,277,533,981,2284,395,671,198,258,345,388,444,455,169,203,608,440,652,1416,195,220,372,203,342,142,466,357,1422,543,580,550,568,552,185,580,553,543,791,403,29,1265,3542,147,1721,52,621,958,218,130,77,96,233,77,107,81,119,106,154,160,96,75,77,77,480,1362,51,913,631,85,629,633,630,631,603,632,632,567,455,1718,308,415,255,398,337,279,299,317,315,291,301,307,187,337,279,306,305,179,260,986,541,2157,662,649,686,673,640,674,707,653,1338,645,665,354,736,2086,317,233,492,311,479,176,827,1412,179,179,181,179,180,176,175,174,172,170,304,108,171,172,170,289,796,344,29,301,61,363,371,60,346,60,470,530,29,490,780,504,62,211,1023,20,403,61,390,247,228,216,107,146,65,22,115,308],["А","Б","В","В","В","В","В","В","А","Б","В","В","В","В","В","А","А","А","Б","В","В","В","В","В","В","В","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","А","Б","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","А","Б","В","В","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","А","А","Б","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","В","А","Б","В","В","В","В","В","В","В","В","В","В","В","В","В"],[0.996,0.888,0.906,0.132,0.27,0.034,0.042,0.142,0.98,0.651,0.708,0,0.966,1,0.714,1,0.473,0.964,0.871,0.048,0.089,0.173,0,0.82,0.651,0.837,0.115,0.997,0.975,0.843,0.991,0.444,0.356,0.193,0.24,0.02,0.265,0.075,0.357,0.6,0,0,0.29,0.038,0.061,0.895,0.615,0.044,0.004,0.032,0.044,0.022,0.259,0.08599999999999999,0.003,0.008,0.038,0.17,0.023,0.02,0.035,0.959,0.657,0,0.002,0.005,0.02,0.657,0.988,0.909,0.883,0.764,0,0.604,0.447,0.384,0.36,0.421,0.02,0.858,0.895,0.584,0.779,0.9360000000000001,0.789,0.176,0.396,0.016,0.217,0.234,0.27,0.165,0.989,0.9429999999999999,0.99,0.981,0.923,0.889,0.302,0.344,0.386,0.092,0.092,0.388,0.349,0.25,0.421,0.265,0.272,0.653,0.983,0.637,0.002,0.383,0,0,0,0.002,0.136,0,0.002,0,0.002,0,0,0.002,0.003,0.002,0.98,0.763,0.236,0.721,0.6840000000000001,0.8149999999999999,0.65,0.9320000000000001,0.92,0.5600000000000001,0.571,0.059,0.968,0.991,0.795,0.228,0.726,0.026,0.098,0.454,0.588,0.128,0.136,0.279,0.206,0.122,0.004,0.097,0.117,0.171,0,0.123,0.872,0.97,0.718,0.154,0.215,0,0.05,0.452,0.008,0.007,0.026,0.728,0.325,0.395,0.002,0.9399999999999999,0.868,0.108,0.018,0.169,0.153,0.336,0.077,0.957,0.958,0.33,0.002,0.005,0,0.002,0,0.005,0.002,0.002,0,0.001,0.002,1,0.984,0.92,0.993,0.99,0.365,0.977,0.758,0.601,0.315,0.026,0.146,0.468,0,0.243,0.099,0.286,0.245,0.058,0.419,0.125,0.013,0,0,0.767,0.251,0,0.002,0,0,0,0,0,0,0.002,0,0,0,0.978,0.795,0.188,0.361,0.329,0.183,0.205,0.082,0.154,0.205,0.168,0.172,0.146,0.176,0.021,0.208,0.147,0.167,0.144,0.151,0.077,0.949,0.479,0.694,0.033,0.022,0.067,0.042,0.006,0.058,0.095,0.023,0.543,0.014,0.035,0.056,0.995,0.908,0.883,0.837,0.921,0.875,0.921,0.25,0.955,0.696,0.028,0.022,0.039,0.017,0.028,0.006,0.006,0.017,0.017,0.012,0.02,0.008999999999999999,0.012,0.012,0.006,0.976,0.623,0.026,0.06900000000000001,0,0,0.008,0.159,0,0.066,0,0.149,0.109,0,0.161,0.121,0.24,0.016,0.991,0.843,0,0.094,0.082,0.456,0.591,0.346,0.606,0.299,0.541,0.108,0,0.443,0.6919999999999999],[0.004,0.013,0.029,0,0.007,0,0.053,0.008999999999999999,0.011,0.018,0.006,0,0,0,0.024,0,0.527,0.036,0.03,0,0.011,0.01,0,0.09,0.308,0.074,0.011,0.003,0.022,0.006,0.008999999999999999,0.025,0,0.058,0.137,0,0.029,0.005,0,0,0,0,0.08,0.091,0.162,0.103,0.021,0.017,0,0,0,0.002,0.706,0.019,0,0.011,0.019,0,0,0.04,0.007,0.008999999999999999,0.01,0.006,0.005,0.005,0,0.007,0.004,0.07000000000000001,0.013,0.007,0,0.022,0.012,0.055,0.095,0.056,0.054,0.032,0.079,0.057,0.09,0.048,0.039,0.033,0.282,0,0.008,0.004,0.02,0.043,0.005,0.023,0.008999999999999999,0.015,0.043,0.026,0.01,0.008999999999999999,0.025,0.025,0.025,0.016,0.008999999999999999,0.02,0.016,0.01,0.024,0.038,0.016,0.025,0,0.01,0,0.002,0.01,0.002,0.017,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0,0.002,0.02,0.019,0,0.038,0,0,0.075,0.068,0.011,0,0.286,0.9,0.003,0.002,0.008999999999999999,0.006,0.058,0,0,0.004,0.008,0.004,0,0,0.01,0,0.004,0,0.043,0.01,0,0,0,0.004,0.008999999999999999,0,0.122,0,0,0.012,0,0.002,0,0.13,0,0,0,0.031,0.023,0,0.018,0.29,0,0.003,0.007,0.034,0.042,0.015,0,0,0,0.021,0,0,0,0,0,0,0,0,0.016,0.028,0.007,0.001,0.615,0.011,0.01,0.032,0.008,0,0.021,0.172,0,0,0.012,0,0,0.416,0.013,0.094,0,0,0,0.004,0.02,0,0,0,0,0,0,0,0,0,0,0,0,0.013,0.013,0.003,0.005,0,0.003,0.018,0.007,0,0,0.006,0.007,0.007,0.01,0,0,0,0.007,0.007,0,0.008,0.047,0.451,0.002,0.002,0.002,0.001,0.001,0.002,0.001,0.003,0.002,0.141,0.002,0.002,0.003,0.005,0.007,0,0.004,0.004,0.003,0.002,0,0.013,0.026,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.021,0.021,0.189,0,0,0,0.256,0.003,0,0.006,0,0.172,0.308,0,0.01,0.471,0.157,0,0,0.016,0,0.834,0.656,0.374,0.126,0.478,0.042,0.028,0.041,0,0.045,0.035,0.062],[0,0.053,0.039,0.6899999999999999,0.578,0.828,0.726,0.678,0.008999999999999999,0.178,0.23,0.8120000000000001,0.029,0,0.22,0,0,0,0.022,0.524,0.656,0.602,0.6,0.06,0.029,0.063,0.632,0,0.003,0.066,0,0.198,0,0.415,0.348,0,0.015,0.545,0.054,0.2,0,0.021,0.37,0.522,0.431,0,0.091,0.08799999999999999,0.039,0.035,0.1,0.11,0.014,0.08400000000000001,0.079,0.08699999999999999,0.075,0.08400000000000001,0.061,0.079,0.042,0.032,0.258,0.869,0.863,0.861,0.745,0.158,0.008,0.022,0.044,0.148,0.582,0.22,0.319,0.329,0.317,0.328,0.554,0.059,0.026,0.24,0.098,0.005,0.1,0.624,0.252,0.291,0.609,0.608,0.5600000000000001,0.616,0.006,0.015,0.001,0.005,0.034,0.022,0.01,0.022,0.012,0.031,0.031,0.024,0.008999999999999999,0.031,0.016,0.015,0.029,0.008999999999999999,0.002,0.125,0.06,0.067,0.017,0.008999999999999999,0.07099999999999999,0.011,0.225,0.018,0.015,0.013,0.008999999999999999,0.023,0.008999999999999999,0.027,0.014,0.049,0,0.073,0.5570000000000001,0.202,0.266,0.157,0.225,0,0.015,0.2,0.143,0.018,0.029,0.006,0.07199999999999999,0.06900000000000001,0.022,0.004,0.008,0.041,0.008,0.035,0.008,0.044,0.016,0.025,0.02,0.043,0.018,0.065,0.032,0.036,0.039,0.019,0.116,0.281,0.31,0.48,0.422,0.13,0.394,0.457,0.453,0.036,0.089,0.238,0.459,0.028,0.042,0.241,0.3,0.148,0.232,0.222,0.218,0.008999999999999999,0,0.219,0.017,0.057,0.015,0.021,0.018,0.059,0.064,0.016,0.018,0.312,0.017,0,0,0.018,0,0.008999999999999999,0.019,0.011,0.079,0.023,0.092,0,0.042,0.039,0.013,0.056,0.012,0.076,0.057,0.032,0.1,0.021,0,0.013,0.013,0.131,0.26,0.412,0.313,0.055,0,0.052,0.058,0.054,0.055,0.015,0.057,0.059,0.007,0.004,0.076,0.023,0.077,0.004,0.133,0.033,0.025,0.027,0.022,0.038,0.017,0.05,0.033,0.016,0.042,0.022,0.023,0.033,0.011,0.019,0.004,0.018,0.045,0.02,0.018,0.019,0.025,0.011,0.013,0.018,0.017,0.028,0.014,0.023,0.042,0,0.026,0.079,0.107,0.051,0.08400000000000001,0.052,0.057,0.031,0.135,0.017,0.028,0.028,0.028,0.028,0.023,0.023,0.006,0.006,0.012,0.395,0.963,0.006,0.006,0.024,0.003,0.049,0.038,0,0.04,0,0.22,0.065,0,0.08699999999999999,0.017,0.062,0.036,0,0.231,0.036,0.04,0,0.005,0.047,0,0.02,0.016,0.062,0.101,0.061,0.139,0.243,0.123,0.231,0.045,0.148,0.091],[0,0.046,0.026,0.178,0.144,0.138,0.179,0.172,0,0.154,0.057,0.188,0.005,0,0.043,0,0,0,0.077,0.429,0.244,0.214,0.4,0.029,0.013,0.026,0.241,0,0,0.08500000000000001,0,0.333,0.644,0.333,0.275,0.98,0.6909999999999999,0.374,0.589,0.2,1,0.979,0.26,0.349,0.345,0.002,0.273,0.851,0.958,0.9330000000000001,0.856,0.866,0.021,0.8110000000000001,0.918,0.894,0.868,0.747,0.915,0.861,0.917,0,0.075,0.125,0.13,0.129,0.235,0.178,0,0,0.06,0.081,0.418,0.154,0.222,0.233,0.228,0.195,0.372,0.052,0,0.12,0.033,0.011,0.073,0.167,0.07000000000000001,0.6929999999999999,0.166,0.155,0.15,0.176,0,0.019,0,0,0,0.063,0.678,0.625,0.577,0.853,0.853,0.571,0.632,0.699,0.547,0.709,0.675,0.3,0,0.214,0.9370000000000001,0.54,0.983,0.989,0.919,0.985,0.623,0.98,0.981,0.985,0.987,0.975,0.989,0.968,0.984,0.947,0,0.145,0.208,0.038,0.051,0.028,0.05,0,0.054,0.24,0,0.024,0,0.001,0.125,0.697,0.194,0.97,0.894,0.5,0.396,0.833,0.857,0.676,0.768,0.853,0.971,0.86,0.822,0.755,0.968,0.841,0.08799999999999999,0.006,0.157,0.5649999999999999,0.353,0.52,0.527,0.406,0.598,0.534,0.521,0.107,0.586,0.367,0.539,0.002,0.067,0.651,0.664,0.392,0.616,0.439,0.697,0,0,0.436,0.982,0.9379999999999999,0.985,0.956,0.982,0.9350000000000001,0.9340000000000001,0.982,0.982,0.6860000000000001,0.98,0,0,0.035,0,0.001,0,0,0.152,0.344,0.585,0.974,0.792,0.322,0.987,0.701,0.877,0.639,0.698,0.494,0.469,0.76,0.987,0.987,0.987,0.098,0.469,0.588,0.6850000000000001,0.945,1,0.948,0.9419999999999999,0.946,0.945,0.983,0.9429999999999999,0.9409999999999999,0.993,0.004,0.115,0.786,0.5570000000000001,0.667,0.681,0.745,0.885,0.819,0.773,0.787,0.804,0.797,0.782,0.963,0.751,0.832,0.804,0.8159999999999999,0.838,0.896,0,0.052,0.259,0.946,0.958,0.913,0.9320000000000001,0.981,0.927,0.884,0.959,0.288,0.971,0.9409999999999999,0.898,0,0.059,0.038,0.052,0.024,0.039,0.025,0.6929999999999999,0,0.142,0.955,0.95,0.9340000000000001,0.955,0.944,0.972,0.971,0.977,0.977,0.976,0.586,0.028,0.982,0.983,0.971,0,0.307,0.747,0.931,0.96,1,0.515,0.774,1,0.841,0.983,0.617,0.547,1,0.598,0.373,0.5629999999999999,0.984,0.005,0.095,1,0.052,0.246,0.108,0.182,0.114,0.213,0.43,0.295,0.662,0.909,0.374,0.156]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>МО КО<\/th>\n      <th>Название канала<\/th>\n      <th>Постов<\/th>\n      <th>Группа<\/th>\n      <th>Уникал.<\/th>\n      <th>Репост<\/th>\n      <th>2-9 копий<\/th>\n      <th>10+ копий<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"lengthMenu":[8,16,24],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \",\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \",\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \",\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \",\", null);\n  }"},{"className":"dt-center","targets":[2,3,4,5,6,7]},{"width":"120px","targets":0},{"width":"400px","targets":1},{"name":"МО КО","targets":0},{"name":"Название канала","targets":1},{"name":"Постов","targets":2},{"name":"Группа","targets":3},{"name":"Уникал.","targets":4},{"name":"Репост","targets":5},{"name":"2-9 копий","targets":6},{"name":"10+ копий","targets":7}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render"],"jsHooks":[]}</script>
+</div>
+<blockquote>
+<p>Пример прочтения таблицы 1. Введём в поле для поиска “павлин”, что отфильтрует строку для канала “Администрация СП”Село Павлиново”. В этом канале группы В было опубликовано 85 постов, 100% из которых встречаются более чем в 10 других каналах. Иными словами, всё то, что опубликовано в этом канале, можно прочесть не менее чем в 10 других.</p>
+</blockquote>
+<p>Среди ТГК первых лиц (группа А) самые высокие показатели уникальности у каналов главы Боровска и главы Обнинского городского собрания (последний не особо писуч и больше известен комическим даром, но раз вышел в лидеры, против цифры не попрёшь).</p>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>На иллюстрации показаны усредненные показатели для районов и городов областного значения.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/munic_unique.png" width="1058" /></p>
+</div>
+<blockquote>
+<p>Массовые посты (10+ копий) составляют <strong>36%</strong> от общего числа всех постов в группах А, Б и В.</p>
+</blockquote>
+<p>Ну, вообще, мы с пониманием относимся к деревенскому быту – куда там в телеграмы эти писать, когда <a href="https://www.youtube.com/watch?v=1iKJtd3ac1c" target="_blank">“утром покос, вечером надои”</a>? И наверное, разведя руками, оставили бы эту тему, но бросилась нам в глаза одна деталь – время публикации.</p>
+<h2 id="скорость-рассылок">Скорость рассылок</h2>
+<p>Из выбранных нами каналов мы выделили 3,123 текстов, копии которых разошлись по более чем 10 каналам (массовые посты). Под текстом мы подразумеваем последовательность слов без пунктуации, тэгов, emoji и форматирования, которые часто используются для придания посту “видимой” уникальности.</p>
+<blockquote>
+<p><strong>73%</strong> массовых постов были опубликованы в течение 1 минуты (сразу во всех каналах, где они в итоге появились), <strong>93%</strong> – в течение 24 часов.</p>
+</blockquote>
+<h3 id="пример-1">Пример 1</h3>
+<p>Наибольший тираж в 2024 году получил пост:</p>
+<blockquote>
+<p>“Победа Владимира Владимировича – победа каждого жителя нашей страны!”. В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.</p>
+</blockquote>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>Копии этого поста появились в <strong>230</strong> ТГ-каналах в <strong>20</strong> различных версиях (Таблица 2). Можно видеть, как творчески менялся контент для ТГ-каналов отдельных районов Калужской области.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-94a71cf593394da2b2b0" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-94a71cf593394da2b2b0">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 2. Хронология публикации различных версий (№) поста, посвященного победе В.В.Путина на выборах Президента РФ, в 230 ТГ-каналах муниципальных образований Калужской области. версии поста (№01, №02,...). Версии различаются наличием emoji (Э) и #тэгов (Т), размерами рисунка (Р), элементами форматирования (Ф) текста (\"ДА\" в столбцах Э, Т, Р, Ф указывает на наличие соответствующей модификации.<\/caption>","data":[["№01","№02","№03","№04","№05","№06","№07","№08","№09","№10","№11","№12","№13","№14","№15","№16","№17","№18","№19","№20"],["\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Мещовскийрайон || 1280×1280, 137.9 KB","🗯\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","🇷🇺 «Победа Владимира Владимировича – победа каждого жителя нашей страны!»<br/><br/>В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее.<br/><br/>Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","☝️ \"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Легитимность || 500×500, 38.7 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Жуковскийрайон40 || 1280×1280, 137.9 KB","🇷🇺\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/>В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.🤝<br/><br/>#МедынскийРайон<br/>#Выборы2024<br/>#естьмнение || 1280×1280, 137.9 KB","🇷🇺\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов.<br/><br/>Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Ферзиково_40 || 1280×1280, 137.9 KB","«Победа Владимира Владимировича – победа каждого жителя нашей страны!»<br/><br/>- в этом уверен областной депутат Александр Козлов.<br/><br/>🗳️ Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/><br/>В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","🇷🇺\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов.<br/><br/>Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","💬\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\"<br/><br/>👤В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#ВыборыПрезидентаРФ2024 || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/>#администрацияМРжиздринскийрайон || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/><br/>В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#ВыборыПрезидентаРФ2024<br/>#АдминистрацияМРСпасДеменскийрайон || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#АдминистрацияСПСелоБарятино || 1280×1280, 142.5 KB","🗯️ \"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/><br/>📍 В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","💬\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. || 1280×1280, 137.9 KB","🇷🇺\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/>В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.🤝<br/><br/>#МедынскийРайон<br/>#Выборы2024<br/>#естьмнение<br/><br/>#ГородскаяДумаМедынь || 1280×1280, 142.5 KB","🗯️ \"Победа Владимира Владимировича – победа каждого жителя нашей страны!\".<br/><br/>✅ В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Ульяново40 || 1280×1280, 137.9 KB","\"Победа Владимира Владимировича – победа каждого жителя нашей страны!\". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента.<br/><br/>#Тема_дня_итоги_выборов || 1280×1280, 137.9 KB"],[82,6,5,1,17,9,10,1,1,13,14,16,5,11,1,6,19,1,1,11],["Барятинский, Дзержинский, Думиничский, Куйбышевский, Людиновский, Сухиничский, Тарусский, Хвастовичский, Юхновский","Мещовский","Бабынинский","Обнинск","Перемышльский","Жуковский","Медынский","Ферзиковский","Боровский","Кировcкий","Ферзиковский","Козельский","Жиздринский","Спас-Деменский","Барятинский","Ульяновский","Малоярославецкий","Медынский","Ульяновский","Мосальский"],[null,null,"ДА","ДА","ДА",null,"ДА","ДА","ДА",null,"ДА","ДА",null,null,null,"ДА","ДА","ДА","ДА",null],[null,"ДА",null,null,"ДА","ДА","ДА","ДА",null,null,null,"ДА","ДА","ДА","ДА",null,null,"ДА","ДА","ДА"],[null,null,null,null,"ДА",null,null,null,null,null,null,null,null,null,"ДА",null,null,"ДА",null,null],[null,"ДА",null,"ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА",null,"ДА","ДА","ДА"]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>№<\/th>\n      <th>Пост<\/th>\n      <th>N<\/th>\n      <th>Регионы<\/th>\n      <th>Э<\/th>\n      <th>Т<\/th>\n      <th>Р<\/th>\n      <th>Ф<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":4,"lengthMenu":[2,4,8,16],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"className":"dt-center","targets":[0,2,4,5,6,7]},{"width":"700px","targets":1},{"width":"10px","targets":[4,5,6,7]},{"width":"260px","targets":3},{"name":"№","targets":0},{"name":"Пост","targets":1},{"name":"N","targets":2},{"name":"Регионы","targets":3},{"name":"Э","targets":4},{"name":"Т","targets":5},{"name":"Р","targets":6},{"name":"Ф","targets":7}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>На иллюстрации показана динамика публикации перечисленных в Таблице 2 версий поста. Для наглядности посты сгруппированы в 10-минутные интервалы.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/munic_example1.png" width="1058" /></p>
+</div>
+<p>Порадовало время публикации в ТГ-каналах Юхновского района – словно забыли, а потом, уже собираясь домой, такие: “А юхновцам сообщили?” И быстрее-быстрее, без всяких смайликов и тэгов, хоть в ночь, но таки успели отправить.</p>
+<h3 id="пример-2">Пример 2</h3>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>Еще одим пример массового поста, который был разослан 11 июля 2022 года:</p>
+<blockquote>
+<p>👍Новые возможности для жителей села. Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.</p>
+</blockquote>
+<p>Копии этого поста появились в <strong>114</strong> ТГ-каналах в <strong>15</strong> различных версиях (Таблица 3). Здесь уже без спешки – с чувством подобранные emoji и аккуратные тэги.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-acb16cc72cdc9b6fb68e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-acb16cc72cdc9b6fb68e">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption style=\"caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;\">Таблица 3. Хронология публикации различных версий (№) поста о новых возможностях для жителей села (\"Сельская ипотека\") в 230 ТГ-каналах муниципальных образований Калужской области. версии поста (№01, №02,...). Версии различаются наличием emoji (Э) и #тэгов (Т), размерами рисунка (Р), элементами форматирования (Ф) текста (\"ДА\" в столбцах Э, Т, Р, Ф указывает на наличие соответствующей модификации.<\/caption>","data":[["№01","№02","№03","№04","№05","№06","№07","№08","№09","№10","№11","№12","№13","№14","№15"],["👍Новые возможности для жителей села.<br/><br/>Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","Новые возможности для жителей села<br/><br/>Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","🌾Новые возможности для жителей села<br/><br/>🏠Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","Новые возможности для жителей села<br/><br/>Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. #АдминистрацияМРИзносковскийрайон || 2084×2084, 225.7 KB","✅Новые возможности для жителей села<br/><br/>Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","⚡Новые возможности для жителей села<br/><br/>✨Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#Поддержка #Сельская_ипотека || 2084×2084, 225.7 KB","✅Новые возможности для жителей села<br/><br/>🏡Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","👍Новые возможности для жителей села!<br/><br/>💸Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#СельскаяИпотека || 1080×1080, 99.3 KB","💫Новые возможности для жителей села<br/><br/>✅Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#Калужскаяобласть #СельскаяИпотека || 2084×2084, 225.7 KB","👍 Новые возможности для жителей села<br/><br/>Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","💫Новые возможности для жителей села<br/><br/>✅Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#Калужскаяобласть #СельскаяИпотека<br/><br/>#ГородскаяДумаМедынь || 1280×1280, 119.6 KB","📢Новые возможности для жителей села<br/><br/>✅ Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","📌Новые возможности для жителей села<br/><br/>👉Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. || 2084×2084, 225.7 KB","Новые возможности для жителей села❗<br/><br/>🏡Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#Калужскаяобласть #Бабынинскийрайон #Бабынино40 #сельскаяипотека || 2084×2084, 225.7 KB","☝️Новые возможности для жителей села<br/><br/>🏢Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее.<br/><br/>#Калужскаяобласть #АдминистрацияВоротынск || 2084×2084, 225.7 KB"],[3,31,1,1,18,12,11,16,8,3,1,5,2,1,1],["Боровский","Жиздринский, Износковский, Кировcкий, Куйбышевский, Людиновский, Спас-Деменский","Сухиничский","Износковский","Малоярославецкий","Козельский","Мосальский","Перемышльский","Медынский","Мещовский","Медынский","Ульяновский","Ферзиковский","Бабынинский","Бабынинский"],["ДА",null,"ДА",null,"ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА","ДА"],[null,null,null,"ДА",null,"ДА",null,"ДА","ДА",null,"ДА",null,null,"ДА","ДА"],[null,null,null,null,null,null,null,"ДА",null,null,"ДА",null,null,null,null],[null,null,null,null,null,"ДА",null,"ДА","ДА",null,"ДА",null,null,"ДА","ДА"]],"container":"<table class=\"compact striped\">\n  <thead>\n    <tr>\n      <th>№<\/th>\n      <th>Пост<\/th>\n      <th>N<\/th>\n      <th>Регионы<\/th>\n      <th>Э<\/th>\n      <th>Т<\/th>\n      <th>Р<\/th>\n      <th>Ф<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":4,"lengthMenu":[2,4,8,16],"dom":"Blfrtip","buttons":["copy","csv","excel"],"deferRender":true,"ordering":true,"autoWidth":true,"language":{"url":"https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json"},"columnDefs":[{"className":"dt-center","targets":[0,2,4,5,6,7]},{"width":"700px","targets":1},{"width":"10px","targets":[4,5,6,7]},{"width":"260px","targets":3},{"name":"№","targets":0},{"name":"Пост","targets":1},{"name":"N","targets":2},{"name":"Регионы","targets":3},{"name":"Э","targets":4},{"name":"Т","targets":5},{"name":"Р","targets":6},{"name":"Ф","targets":7}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>На иллюстрации показана динамика публикации перечисленных в Таблице 3 версий поста, посты также сгруппированы в 10-минутные интервалы.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/munic_example2.png" width="1058" /></p>
+</div>
+<h3 id="итоги">Итоги</h3>
+<p>Что же мы наблюдаем?</p>
+<ul>
+<li><p>в ТГК администраций и представительных органов власти в районах Калужской области более трети постов имеют признаки массовой (централизованной) рассылки.</p></li>
+<li><p>Таинственная(?) невидимая рука, управляющая информированием народных масс, имеет склонность к креативу. Общественный спрос на разнообразие удовлетворяется тэгами и вдохновляющими emoji.</p></li>
+<li><p>Наибольшее количество уникальных постов наблюдается в ТГ-каналах публичных лиц (глав администрации).</p></li>
+</ul>
+<blockquote>
+<p>В День местного самоуправления желаем главам всех администраций побольше автономии, сил, ресурсов и креативности!</p>
+</blockquote>
+<hr />
+<p>Нравятся наши материалы? 👉 ТГ-канал <a href="https://t.me/+lviW66SN9gQ1YTky" target="_blank">Regina Lab</a></p>
+<hr />
+<h3 class="appendix" id="поделиться">Поделиться</h3>
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<p><a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a></p>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<h3 class="appendix" id="ссылка-для-цитирования">Ссылка для цитирования</h3>
+<p>Telegram Калужской области. Часть 3. Невидимая рука // Блог Regina Lab. - 2024. - URL: <a href="https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique/" class="uri">https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique/</a>. - Дата публикации: 21 апреля 2024 г.</p>
+<h3 class="appendix" id="права">Права</h3>
+<p>Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии <a href="https://creativecommons.org/licenses/by/4.0/deed.ru" target="_blank">Creative Commons CC BY 4.0 Deed Attribution 4.0 International</a>.</p>
+<h3 class="appendix" id="отказ-от-ответственности">Отказ от ответственности</h3>
+<p><a href="https://reginaobninsklab.github.io/about.html#warranty" target="_blank">См. соответствующий раздел</a> на странице “О проекте”.</p>
+<h3 class="appendix" id="софт">Софт</h3>
+<p>Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.22,
+<a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>.</p>
+<p>Ooms J (2023). <em>magick: Advanced Graphics and Image-Processing in R</em>. R package version 2.8.2,
+<a href="https://CRAN.R-project.org/package=magick" class="uri">https://CRAN.R-project.org/package=magick</a>.</p>
+<p>Pedersen T (2024). <em>patchwork: The Composer of Plots</em>. R package version 1.2.0,
+<a href="https://CRAN.R-project.org/package=patchwork" class="uri">https://CRAN.R-project.org/package=patchwork</a>.</p>
+<p>Qiu Y, details. aotifSfAf (2022). <em>sysfonts: Loading Fonts into R</em>. R package version 0.8.8,
+<a href="https://CRAN.R-project.org/package=sysfonts" class="uri">https://CRAN.R-project.org/package=sysfonts</a>.</p>
+<p>Qiu Y, details. aotisSfAf (2023). <em>showtext: Using Fonts More Easily in R Graphs</em>. R package version 0.9-6,
+<a href="https://CRAN.R-project.org/package=showtext" class="uri">https://CRAN.R-project.org/package=showtext</a>.</p>
+<p>Wickham H (2022). <em>stringr: Simple, Consistent Wrappers for Common String Operations</em>. R package version
+1.5.0, <a href="https://CRAN.R-project.org/package=stringr" class="uri">https://CRAN.R-project.org/package=stringr</a>.</p>
+<p>Wickham H (2016). <em>ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <a href="https://ggplot2.tidyverse.org" class="uri">https://ggplot2.tidyverse.org</a>.</p>
+<p>Wickham H, François R, Henry L, Müller K, Vaughan D (2023). <em>dplyr: A Grammar of Data Manipulation</em>. R
+package version 1.1.2, <a href="https://CRAN.R-project.org/package=dplyr" class="uri">https://CRAN.R-project.org/package=dplyr</a>.</p>
+<p>Wickham H, Henry L (2023). <em>purrr: Functional Programming Tools</em>. R package version 1.0.1,
+<a href="https://CRAN.R-project.org/package=purrr" class="uri">https://CRAN.R-project.org/package=purrr</a>.</p>
+<p>Wickham H, Hester J, Bryan J (2023). <em>readr: Read Rectangular Text Data</em>. R package version 2.1.4,
+<a href="https://CRAN.R-project.org/package=readr" class="uri">https://CRAN.R-project.org/package=readr</a>.</p>
+<p>Wickham H, Seidel D (2022). <em>scales: Scale Functions for Visualization</em>. R package version 1.2.1,
+<a href="https://CRAN.R-project.org/package=scales" class="uri">https://CRAN.R-project.org/package=scales</a>.</p>
+<p>Wickham H, Vaughan D, Girlich M (2023). <em>tidyr: Tidy Messy Data</em>. R package version 1.3.0,
+<a href="https://CRAN.R-project.org/package=tidyr" class="uri">https://CRAN.R-project.org/package=tidyr</a>.</p>
+<p>Wilke C, Wiernik B (2022). <em>ggtext: Improved Text Rendering Support for ‘ggplot2’</em>. R package version
+0.1.2, <a href="https://CRAN.R-project.org/package=ggtext" class="uri">https://CRAN.R-project.org/package=ggtext</a>.</p>
+<p>Xie Y (2023). <em>knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. R package version
+1.43, <a href="https://yihui.org/knitr/" class="uri">https://yihui.org/knitr/</a>.</p>
+<p>Xie Y (2015). <em>Dynamic Documents with R and knitr</em>, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <a href="https://yihui.org/knitr/" class="uri">https://yihui.org/knitr/</a>.</p>
+<p>Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), <em>Implementing Reproducible Computational Research</em>. Chapman and Hall/CRC. ISBN 978-1466561595.</p>
+<p>Xie Y, Allaire J, Grolemund G (2018). <em>R Markdown: The Definitive Guide</em>. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>.</p>
+<p>Xie Y, Dervieux C, Riederer E (2020). <em>R Markdown Cookbook</em>. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <a href="https://bookdown.org/yihui/rmarkdown-cookbook" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook</a>.</p>
+<p>Yu G (2023). <em>ggimage: Use Image in ‘ggplot2’</em>. R package version 0.3.3,
+<a href="https://CRAN.R-project.org/package=ggimage" class="uri">https://CRAN.R-project.org/package=ggimage</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

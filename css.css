@@ -11,14 +11,14 @@
 /* This must remain at the top of this file.                 */
 @import url('https://fonts.google.com/specimen/Sofia+Sans+Condensed:700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Play');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab');
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow');
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed');
 
 html {
   /*-- Main font sizes --*/
   --title-size:      32px;
-  --body-size:       1.06rem;
+  --body-size:       1.03rem;
   --code-size:       14px;
   --aside-size:      13px;
   --fig-cap-size:    13px;
@@ -31,57 +31,84 @@ html {
   /*-- Specify custom fonts ~~~ must be imported above   --*/
   --heading-font:   'Sofia Sans Condensed', serif;
   --mono-font:       monospace;
-  --body-font:       'Nunito Sans', sans-serif;
+  --body-font:       'Roboto Slab', sans-serif;
   --navbar-font:     'Play', sans-serif;  /* websites + blogs only */
 }
 
 /*-- ARTICLE METADATA --*/
-d-byline {
-  --heading-size:    0.8rem;
+d-byline, .d-byline {
+  --heading-size:    0.9rem;
   --heading-color:   rgba(0, 0, 0, 0.5);
-  --body-size:       0.9rem;
+  --body-size:       1rem;
   --body-color:      rgba(0, 0, 0, 0.8);
   --font-weight:     400;
-	--padding:         0.5rem 0 1.2rem 0;
+	--padding:         0rem 0 0rem 0;
+	--margin-top:      0px;
+  --margin-bottom:   0px;
 	--line-height:     1em;
+	--font-family: 'Sofia Sans Condensed';
 }
+
+d-byline p.author, d-byline .authors-affiliations, d-byline p {
+  font-size: 1.05em !important;
+  font-weight: 500 !important;
+  font-family: 'Sofia Sans Condensed';
+}
+
 
 @media (min-width: 1180px) {
 .base-grid, distill-header, d-title, d-abstract, d-article, d-appendix, distill-appendix, d-byline, d-footnote-list, d-citation-list, distill-footer {
-grid-column-gap: 52px;
-}
+grid-column-gap: 64px;
+ }
 }
 
 
 /*-- ARTICLE TABLE OF CONTENTS --*/
 .d-contents {
-  --heading-size:    21px;
-  --contents-size:   15px;
+  --heading-size:    16px;
+  --contents-size:   12px;
+  --font-family: 'Roboto Condensed';
 }
 
 .d-contents nav h3{
-  font-family: 'PT Sans Narrow';
-  font-size: 21px;
-	font-weight: 600;
-	letter-spacing: 0.5px;
-	line-height: 1.2em;
+  font-family: 'Roboto Condensed';
+  color: white;
+  font-size: 0px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0px !important;
+	line-height: 0em !important;
 }
 
 .d-contents nav > ul > li > a {
-  font-family: 'Nunito Sans';
-  font-size: 15px;
-	font-weight: 200;
+  font-family: 'Roboto Condensed';
+  font-size: 16px;
+	font-weight: 400;
 	letter-spacing: 0px;
-	line-height: 1em; 
+	line-height: 1em;
+	margin-top: 2em;
+	margin-bottom: 2em;
+  }
+  
+.d-contents nav > ul > li > ul > li > a {
+  font-family: 'Roboto Condensed';
+  font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	line-height: 1em;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	padding-left: 0.1em;
   }
 
 
 /*-- ARTICLE APPENDIX --*/
-d-appendix {
+d-appendix, .d-appendix .d-appendix {
   --heading-size:    18px;
   --heading-color:   rgba(0, 0, 0, 0.8);
   --text-size:       0.9em;
   --text-color:      rgba(0, 0, 0, 0.8);
+  margin-top:      10px;
+  margin-bottom:   10px;
 }
 
 /*-- WEBSITE HEADER + FOOTER --*/
@@ -139,9 +166,9 @@ d-appendix {
 }
 
 html, body, p {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
   font-weight: 400;
-  line-height: 1.2; 
+  line-height: 1.6; 
   font-size: 0.95em;
   letter-spacing: 0px;
   color: #383838;
@@ -151,6 +178,13 @@ html, body, p {
 .posts-list .metadata .publishedDate {
     color: #e05915;
 }
+
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-size: 14px;
+  font-family: "Roboto Condensed", "PT Sans Narrow", sans-serif;
+  }
+
 
  .posts-list .posts-list-caption .post-preview-last h1,
  .posts-list .posts-list-caption,
@@ -164,11 +198,18 @@ html, body, p {
   font-weight: 700;
 }
 
+d-title p {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.55em;
+  grid-column: text;
+}
+
  .d-title .d-title h1,
   d-title.d-title h1,
   d-title h1, .posts-list > h1{
   font-family: 'Sofia Sans Condensed';
-  line-height: 0.5; 
+  line-height: 1; 
   font-size: 32px;
   letter-spacing: 1.2px;
   font-weight: 700;
@@ -177,8 +218,10 @@ html, body, p {
 .posts-list .post-preview h2, 
 .posts-list .description h2 {
   font-family: 'PT Sans Narrow';
-  line-height: 1; 
-  font-size: 1.3em;
+  line-height: 1;
+  color: black !important;
+  text-align:left !important;
+  font-size: 1.3em !important;
   letter-spacing: 1px;
   font-weight: 600;
 }
@@ -194,16 +237,18 @@ h2, d-title h2 {
 }
 
 d-article h3 {
-    margin-top: 2px;
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 12px;
     font-family: 'Roboto Condensed';
-    font-size: 18px;
+    font-size: 20px;
   }
 
 d-article h2 {
-  font-family: 'PT Sans Narrow';
+  text-align: center;
+  font-family: 'Sofia Sans Condensed';
   line-height: 1; 
-  font-size: 28px;
+  font-size: 46px !important;
+  color: #673509c9 !important;
   letter-spacing: 0.5px;
   font-weight: 600;
 }
@@ -251,6 +296,16 @@ d-article a {
   font-style: normal;
 }
 
+d-article blockquote {
+  border-left: 5px solid #dfb229;
+  color: #403f3c;
+  background-color: #e6e9f0 !important;
+  font-size: 1.0em;
+  padding-bottom: 0em;
+  padding-top: 0.6em;
+  padding-left: 0.6em;
+}
+
 .posts-list .dt-tags .dt-tag, 
 .dt-tags .dt-tag {
   padding-top: 0.1em;
@@ -259,6 +314,7 @@ d-article a {
   padding-left: 0.3em;
   border-radius: 5px;
   font-size: 14px;
+  font-family: "Roboto Condensed", "PT Sans Narrow", sans-serif;
   text-transform: lowercase;
   background-color: #e6e9f0;
   font-weight: 300;
@@ -284,22 +340,22 @@ div.datatables {
  height: auto !important;
 }
 
-table.dataTable tbody th, 
 table.dataTable tbody td { 
   padding-top: 2px;
 	padding-bottom: 2px;
 	padding-left: 5px;
 	font-size: 14px; 
 	line-height: 1.3em;
+  background-color:#ece3d829;
 }
 
-.dataTables_wrapper .dataTables_length, 
-.dataTables_wrapper .dataTables_filter, 
-.dataTables_wrapper .dataTables_info, 
-.dataTables_wrapper .dataTables_processing, 
-.dataTables_wrapper .dataTables_paginate {
-	color: #333;
-	font-size: 14px;
+table.dataTable tbody th { 
+  padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	font-size: 14px; 
+	line-height: 1.3em;
+	background-color: #936a6c2e !important;
 }
 
 div.blue { 
@@ -325,4 +381,75 @@ div.blue a, div.blue p {
   -ms-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-} 
+}
+
+button.dt-button, div.dt-button, a.dt-button, input.dt-button, div.dt-button-split .dt-button,
+div.dt-buttons > .dt-button, div.dt-buttons > div.dt-button-split .dt-button {
+  padding-top:3px !important;
+  padding-bottom:3px !important;
+  border-radius: 5px !important;
+  font-family: "Play" !important;
+  font-size: 12px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+ padding: 1px 3px;
+color: #18993 !important;
+}
+
+.dataTables_wrapper .dataTables_length, 
+.dataTables_wrapper .dataTables_filter, 
+.dataTables_wrapper .dataTables_info, 
+.dataTables_wrapper .dataTables_processing, 
+.dataTables_wrapper .dataTables_paginate {
+  font-family: "Play" !important;
+  font-size: 14px !important;
+  padding-left:10px !important;
+}
+
+
+.form-control {
+  height: 30px;
+  padding: 4px 8px;
+  line-height: 1.4;
+  border-radius: 3px;
+}
+
+div.dt-buttons>.dt-button,
+div.dt-buttons>div.dt-button-split .dt-button {
+  position:relative;
+  display:inline-block;
+  box-sizing:border-box;
+  margin-left:.167em;
+  margin-right:.1em;
+  margin-bottom:.2em;
+  padding:3px 3px;
+  border:1px solid rgba(0, 0, 0, 0.3);
+  border-radius:5px;
+  cursor:pointer;
+  font-family: "Play" !important;
+  font-size: 12px !important;
+  line-height:1.6em;
+  color:inherit;
+  white-space:nowrap;
+  overflow:hidden;
+  background-color:rgba(0, 0, 0, 0.1);
+  background:linear-gradient(to bottom, rgba(230, 230, 230, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr="rgba(230, 230, 230, 0.1)", EndColorStr="rgba(0, 0, 0, 0.1)");
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  text-decoration:none;
+  outline:none;
+  text-overflow:ellipsis
+}
+
+d-article hr {
+  grid-column: screen;
+  width: 80%;
+  border: none;
+  border-bottom: 1px solid rgba(109, 103, 60, 0.23);
+  margin-top: 20px; 
+  margin-bottom: 20px;
+}

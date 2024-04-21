@@ -1,0 +1,383 @@
+---
+title: "Telegram Калужской области. Часть 3. Невидимая рука"
+description: |
+   Массовые посты и креативные emoji  - анализ уникальности публикаций в ТГ-каналах органов власти районов и поселений Калужской области.
+date: 2024-04-21
+categories:
+  - сми
+  - телеграм
+  - власть
+  - управление
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: dir_charts/munic_unique.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/tg_channels/")
+dir_tg <- "E://TG_Kaluga/"
+
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 8, lengthMenu = c(8, 16, 24), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+
+regions <- paste0(Sys.getenv("OneDrive"), "/ODCity/kaluga_region_all.xlsx") %>% 
+  readxl::read_xlsx() |> filter(!is.na(src_tag) & !is.na(source)) 
+
+region <- regions %>% filter(level == "МУНИЦИПАЛЫ") |> 
+  mutate(actual_role = case_when(
+    grepl("глава", role, ignore.case = T) ~ "head",
+    grepl("дминистрация района", role)| (grepl("ция города", role) & city %in% c("Калуга", "Обнинск")) ~ "rayon",
+    TRUE ~ "other")
+  ) 
+```
+
+Продолжаем наше [исследование Телеграм-каналов](https://reginaobninsklab.github.io/index.html#category:%D1%82%D0%B5%D0%BB%D0%B5%D0%B3%D1%80%D0%B0%D0%BC){target="_blank"} (далее -- ТГК, канал, каналы) Калужской области и в "День местного самоуправления" решили заглянуть в каналы районных и поселенческих администраций. Даже те из читателей, которые не могут похвастаться наблюдательностью, при просмотре официальных ТГ-каналов сельских поселений области очень скоро заметят, что перед ними мелькают одни и те же публикации. Нет, речь не репостах, а именно о "идентичных" постах, плюс/минус смайлик. 
+
+Собственно, это и определило наши следующие шаги:
+
+1. разделили все каналы на 3 условных группы (А. ТГК первых лиц районов и городов, Б. ТГК администраций районов, Калуги и Обнинска, В. ТГК администраций и других органов (думы, собрания), а также депутатов.
+
+2. подсчитали для каждого канала долю репостов, уникальных постов, а также таких постов, идентичные копии которых встречаются в других ТГК (см. Таблицу 1).    
+
+3. для районов и городов областного значения подсчитали среднюю доля постов каждого типа для каждой группы (иллюстрация).  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+adm_stats0 <- paste0(dir, "region_stat_unique.xlsx") %>% 
+  readxl::read_xlsx(sheet = "stat") %>% 
+  filter(!is.na(region)) |> 
+  left_join(region[,c("src_tag", "role", "actual_role", "city")], by = join_by(src_tag)) |> 
+  mutate(score = case_when(type == "mass" ~ 0,
+                           type == "duplicated" ~ 0.25,
+                           type == "repost" ~ 0.5,
+                           type == "unique" ~ 0.75)) %>% 
+  mutate(.by = src_tag, score_sum = sum(score * share)) |> 
+  filter(actual_role %in% c("head", "rayon", "other")) |> 
+  mutate(actual_role = factor(actual_role, levels = c("head", "rayon", "other"))) |> 
+  mutate(type = factor(type, levels = rev(c("unique", "repost", "duplicated", "mass"))))
+
+adm_stat <- adm_stats0 |> 
+  mutate(.by = c(region, actual_role),
+         score_sum = mean(score_sum),
+         n_chs = n_distinct(src_tag), 
+         n_total_posts = sum(n_posts)) |> 
+  summarize(.by = c(region,  actual_role,  n_chs, n_total_posts, score_sum, type,), 
+            n_posts = sum(n_posts)) |>
+  mutate(.by = c(region, actual_role), share = n_posts/n_total_posts)
+
+adm_stats0 |> 
+  mutate(.by = c(src_tag), n_posts = sum(n_posts)) |>
+  mutate(actual_role = case_when(
+    actual_role == "head" ~ "А",
+    actual_role == "rayon" ~ "Б",
+    actual_role == "other" ~ "В")
+    ) |> 
+  select(region, source, actual_role, n_posts, type, share) |> distinct() |> 
+  arrange(region, actual_role) |> 
+  pivot_wider(names_from = type, values_from = share, values_fill = 0) |> 
+  select(`МО КО` = region, `Название канала` = source, 
+         `Постов` = n_posts, `Группа` = actual_role, 
+          `Уникал.` = unique, `Репост` = repost, `2-9 копий` = duplicated, `10+ копий` = mass) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F, 
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. ТГК муниципальных образований Калужской области. Группа А. ТГК первых лиц (главы администраций и представительных органов) районов и городов (35). Группа Б. Официальные ТГК администраций г. Калуга, г.Обнинск и районов (26). Группа В. ТГК органов исполнительной и представительной власти поселений, а также Собраний, Дум и депутатов любого уровня (268). Анализ выполнен на массиве постов из ',scales::number(sum(adm_stats0$n_posts), big.mark = ","), ' постов (это все посты с данных каналов). В 4-х столбцах справа показана доля постов, которые уникальны в выборке (Уникал.), являются репостами (Репост), встречаются в других каналах, но не более 9 раз (2-9 копий), встречаются в 10 или более каналах (10+ копий). Копиями считаются идентичные посты, не являющиеся репостами и обнаруженные в 2-х или более ТГ-каналах из исследуемой выборки. Идентичность постов определялась по тексту и иллюстрациям, не принимая в расчет тэги, emoji и URL-ссылки.')), 
+            options = list(columnDefs = list(
+              list(className = 'dt-center', targets = c(2:7)),
+              list(width = '120px', targets = c(0)),
+              list(width = '400px', targets = c(1))))) |> 
+  formatPercentage(5:8, digits = 1, dec.mark = ",")
+```
+
+> Пример прочтения таблицы 1. Введём в поле для поиска "павлин", что отфильтрует строку для канала "Администрация СП "Село Павлиново". В этом канале группы В было опубликовано 85 постов, 100% из которых встречаются более чем в 10 других каналах. Иными словами, всё то, что опубликовано в этом канале, можно прочесть не менее чем в 10 других.
+
+Среди ТГК первых лиц (группа А) самые высокие показатели уникальности у каналов главы Боровска и главы Обнинского городского собрания (последний не особо писуч и больше известен комическим даром, но раз вышел в лидеры, против цифры не попрёшь).
+
+```{r}
+adm_dups <- arrow::read_parquet(paste0(dir,"tg_municipal_mass_posts.parquet")) |> 
+  mutate(catf = case_when(time_min < 1 ~ "a",
+                          time_min < 720 ~ "b",
+                          TRUE ~ "c")) |> 
+  arrange(-n_yr_txt_chs, ctext, post_tag)
+
+adm_texts <- adm_dups |> group_by(ctext, catf) |> filter(row_number()==1) |> ungroup() 
+
+adm_dups_stat <- adm_dups %>% 
+  summarize(.by = catf, 
+            n_texts = n_distinct(ctext),
+            n_chs = median(n_yr_txt_chs)) |> 
+  arrange(catf) |> 
+  mutate(share = n_texts / sum(n_texts))
+```
+
+На иллюстрации показаны усредненные показатели для районов и городов областного значения.  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "munic_unique.png")
+ch1_blogfile <- paste0(dir_charts, "munic_unique.png")
+if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+> Массовые посты (10+ копий) составляют **`r scales::percent(nrow(adm_dups)/sum(adm_stats0$n_posts))`** от общего числа всех постов в группах А, Б и В.
+
+Ну, вообще, мы с пониманием относимся к деревенскому быту -- куда там в телеграмы эти писать, когда ["утром покос, вечером надои"](https://www.youtube.com/watch?v=1iKJtd3ac1c){target="_blank"}?  И наверное, разведя руками, оставили бы эту тему, но бросилась нам в глаза одна деталь -- время публикации.
+
+## Скорость рассылок 
+
+Из выбранных нами каналов мы выделили `r scales::number(sum(adm_dups_stat$n_texts), big.mark = ",")` текстов, копии которых разошлись по более чем 10 каналам (массовые посты). Под текстом мы подразумеваем последовательность слов без пунктуации, тэгов, emoji и форматирования, которые часто используются для придания посту "видимой" уникальности.
+
+> **`r scales::percent(sum(adm_dups_stat$n_texts[adm_dups_stat$catf=="a"])/sum(adm_dups_stat$n_texts))`** массовых постов были опубликованы в течение 1 минуты (сразу во всех каналах, где они в итоге появились), **`r scales::percent(sum(adm_dups_stat$n_texts[adm_dups_stat$catf %in% c("a", "b")])/sum(adm_dups_stat$n_texts))`** -- в течение 24 часов.
+
+### Пример 1
+
+Наибольший тираж в 2024 году получил пост: 
+
+> "Победа Владимира Владимировича – победа каждого жителя нашей страны!". В этом уверен областной депутат Александр Козлов. Он отметил, что на своем избирательном участке видел много семей - и это радует, ведь от голосов каждой российской семьи зависит наше будущее. Как результат - легитимные выборы и рекордная поддержка президента. 
+
+```{r}
+chg <- adm_dups |> filter(grepl("победа владими", ctext))
+
+chg_unique <- chg |> arrange(post_tag) |>  
+  left_join(region[,c("src_tag", "region", "actual_role")]) |> 
+  summarize(.by = c(text), first = head(post_tag, 1),
+              n = n(),
+              regions = paste(unique(sort(gsub(' район', '', region))), collapse = ", ")) |> 
+    arrange(-n) |> 
+    mutate(extra = sapply(str_extract_all(text, '\\p{So}|\\p{Cn}'), function(x) paste(x, collapse = " "))) |>
+    mutate(tags = sapply(str_extract_all(text, '\\#[^\\s]+'), function(x) paste(x, collapse = "; "))) |> 
+    mutate(resize = str_extract(text, "[\\d+\\.]+ .B$")) |> 
+    mutate(breaks = str_count(text, "\\\n|\\«|\\»")) |> 
+    mutate(breaks = ifelse(breaks != breaks[1], "Y", NA)) |> 
+    mutate(resize = str_extract(text, "[\\d+\\.]+ .B$")) |> 
+    mutate(resize = ifelse(resize != resize[1], "Y", NA)) |> 
+    arrange(first) |> 
+    mutate(id = paste0("№", str_extract(paste0("0", row_number()), "\\d{2}$")))
+```
+
+Копии этого поста появились в **`r nrow(chg)`** ТГ-каналах в **`r nrow(chg_unique)`** различных версиях (Таблица 2). Можно видеть, как творчески менялся контент для ТГ-каналов отдельных районов Калужской области.
+
+```{r}
+chg_unique |> 
+  mutate(across(c("extra", "tags", "resize", "breaks"), ~ ifelse(is.na(.x)|.x=="", NA, "ДА"))) |>
+  mutate(text = gsub("\\\n", "<br/>", text)) |> 
+  select(`№`=id, `Пост`=text, `N`=n, `Регионы`=regions, 
+         `Э`=extra, `Т`=tags, `Р`=resize, `Ф`=breaks) |>
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F, 
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 2. Хронология публикации различных версий (№) поста, посвященного победе В.В.Путина на выборах Президента РФ, в ', chg$n_yr_txt_chs[1], ' ТГ-каналах муниципальных образований Калужской области. версии поста (№01, №02,...). Версии различаются наличием emoji (Э) и #тэгов (Т), размерами рисунка (Р), элементами форматирования (Ф) текста ("ДА" в столбцах Э, Т, Р, Ф указывает на наличие соответствующей модификации.')), 
+    options = list(pageLength = 4, lengthMenu = c(2, 4, 8, 16), 
+              columnDefs = list(
+              list(className = 'dt-center', targets = c(0,2, 4:7)),
+              list(width = '700px', targets = c(1)),
+              list(width = '10px', targets = c(4:7)),
+              list(width = '260px', targets = c(3))))) 
+
+```
+
+На иллюстрации показана динамика публикации перечисленных в Таблице 2 версий поста. Для наглядности посты сгруппированы в 10-минутные интервалы. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch2_filename <- paste0(dir, "munic_example1.png")
+ch2_blogfile <- paste0(dir_charts, "munic_example1.png")
+if(!file.exists(ch2_blogfile)){ s<- file.copy(from = ch2_filename, to = ch2_blogfile, overwrite = T) }
+knitr::include_graphics(ch2_blogfile)
+```
+Порадовало время публикации в ТГ-каналах Юхновского района -- словно забыли, а потом, уже собираясь домой, такие: "А юхновцам сообщили?" И быстрее-быстрее, без всяких смайликов и тэгов, хоть в ночь, но таки успели отправить.
+
+### Пример 2
+
+```{r}
+chg2 <- adm_dups |> filter(grepl("новые возможности для жителей села", ctext))
+
+chg_unique2 <- chg2 |> arrange(post_tag) |>  
+  left_join(region[,c("src_tag", "region", "actual_role")], by = join_by(src_tag)) |> 
+  summarize(.by = c(text), first = head(post_tag, 1),
+              n = n(),
+              regions = paste(unique(sort(gsub(' район', '', region))), collapse = ", ")) |> 
+    arrange(-n) |> 
+    mutate(extra = sapply(str_extract_all(text, '\\p{So}|\\p{Cn}'), function(x) paste(x, collapse = " "))) |>
+    mutate(tags = sapply(str_extract_all(text, '\\#[^\\s]+'), function(x) paste(x, collapse = "; "))) |> 
+    mutate(resize = str_extract(text, "[\\d+\\.]+ .B$")) |> 
+    mutate(breaks = str_count(text, "\\\n|\\«|\\»")) |> 
+    mutate(breaks = ifelse(breaks != breaks[1], "Y", NA)) |> 
+    mutate(resize = str_extract(text, "[\\d+\\.]+ .B$")) |> 
+    mutate(resize = ifelse(resize != resize[1], "Y", NA)) |> 
+    arrange(first) |> 
+    mutate(id = paste0("№", str_extract(paste0("0", row_number()), "\\d{2}$")))
+```
+
+Еще одим пример массового поста, который был разослан 11 июля 2022 года:
+
+> 👍Новые возможности для жителей села. Правительство расширило программу «Сельская ипотека». Теперь по ставке не более 3% можно взять в кредит до 6 миллионов рублей на строительство дома или покупку квартиры. Сумма удвоилась, а это значит, что комфортное жилье станет доступнее. 
+
+Копии этого поста появились в **`r nrow(chg2)`** ТГ-каналах в **`r nrow(chg_unique2)`** различных версиях (Таблица 3). Здесь уже без спешки -- с чувством подобранные emoji и аккуратные тэги.
+
+```{r}
+chg_unique2 |> 
+  mutate(across(c("extra", "tags", "resize", "breaks"), ~ ifelse(is.na(.x)|.x=="", NA, "ДА"))) |>
+  mutate(text = gsub("\\\n", "<br/>", text)) |> 
+  select(`№`=id, `Пост`=text, `N`=n, `Регионы`=regions, 
+         `Э`=extra, `Т`=tags, `Р`=resize, `Ф`=breaks) |>
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F, 
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 3. Хронология публикации различных версий (№) поста о новых возможностях для жителей села ("Сельская ипотека") в ', chg$n_yr_txt_chs[1], ' ТГ-каналах муниципальных образований Калужской области. версии поста (№01, №02,...). Версии различаются наличием emoji (Э) и #тэгов (Т), размерами рисунка (Р), элементами форматирования (Ф) текста ("ДА" в столбцах Э, Т, Р, Ф указывает на наличие соответствующей модификации.')), 
+    options = list(pageLength = 4, lengthMenu = c(2, 4, 8, 16), 
+              columnDefs = list(
+              list(className = 'dt-center', targets = c(0,2, 4:7)),
+              list(width = '700px', targets = c(1)),
+              list(width = '10px', targets = c(4:7)),
+              list(width = '260px', targets = c(3))))) 
+
+```
+На иллюстрации показана динамика публикации перечисленных в Таблице 3 версий поста, посты также сгруппированы в 10-минутные интервалы. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch3_filename <- paste0(dir, "munic_example2.png")
+ch3_blogfile <- paste0(dir_charts, "munic_example2.png")
+if(!file.exists(ch3_blogfile)){ s<- file.copy(from = ch3_filename, to = ch3_blogfile, overwrite = T) }
+knitr::include_graphics(ch3_blogfile)
+```
+
+### Итоги
+
+Что же мы наблюдаем?
+
+- в ТГК администраций и представительных органов власти в районах Калужской области более трети постов имеют признаки массовой (централизованной) рассылки. 
+
+- Таинственная(?) невидимая рука, управляющая информированием народных масс, имеет склонность к креативу. Общественный спрос на разнообразие удовлетворяется тэгами и вдохновляющими emoji.
+
+- Наибольшее количество уникальных постов наблюдается в ТГ-каналах публичных лиц (глав администрации).
+
+> В День местного самоуправления желаем главам всех администраций побольше автономии, сил, ресурсов и креативности!
+
+***
+
+Нравятся наши материалы? 👉 ТГ-канал [Regina Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"}  
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Telegram Калужской области. Часть 3. Невидимая рука // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique/. - Дата публикации: 21 апреля 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'ggimage', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+
+Yu G (2023). _ggimage: Use Image in 'ggplot2'_. R package version 0.3.3,
+<https://CRAN.R-project.org/package=ggimage>.
+

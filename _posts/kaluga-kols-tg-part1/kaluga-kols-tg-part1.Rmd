@@ -1,0 +1,236 @@
+---
+title: "Признаки действия калужских лидеров мнения в Telegram"
+description: |
+  Анализ уникальных и характерных наречий в ТГ-каналах калужских политиков, чиновников, журналистов, медийных персон и общественных организаций. 
+date: 2024-04-03
+categories:
+  - сми
+  - телеграм
+  - русский язык
+  - психолингвистика
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/kaluga_kols.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/tg_channels/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 10, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Анализ телеграм-каналов задумывался нами как первоапрельская забава, но мы немного увлеклись и, кажется, обеспечили себя исследовательским материалом на следующие несколько недель (или месяцев?).
+
+Первая история будет о том, "как они это делают". 
+
+### Кто "они"?
+
+Они -- это авторы ТГ-каналов калужских и обнинских СМИ, органов власти, чиновников, медийных персон и просто инфлюенсеров. Мы не отбирали их по количеству подписчиков, а просто выбрали сначала известные обнинские каналы, а потом добавили к ним каналы региональных СМИ и медийных персон (кого смогли вспомнить). Если Вас забыли, 🤷, не обижайтесь.
+
+Получилось 36 пабликов (~ 150 тысяч постов).  
+
+### Почему "как"? 
+
+Сравнивать тексты министра транспорта и юриста сложно из-за профессиональной лексики, которая определяет выбор имен существительных, прилагательных и даже глагольных форм. Наречия в меньшей степени зависят от рода деятельности говорящего и используются для решения риторических задач. С помощью наречий автор жонглирует глагольными формами, придавая им необходимые вес и окраску, смещая внимание от предмета обсуждения к описанию процессов: 
+
+- "неотступно преследовать цель"
+
+- "несомненно приблизиться к решению"
+ 
+- "энергично взяться за выполнение"
+
+- "мыслить позитивно и творчески".
+
+> Мнение лингвиста 👉 *Ившина Татьяна Петровна. Риторический потенциал наречия в публицистическом тексте // Вестник ЛГУ им. А.С. Пушкина. 2010. №3. URL: [https://cyberleninka.ru/article/n/ritoricheskiy-potentsial-narechiya-v-publitsisticheskom-tekste](https://cyberleninka.ru/article/n/ritoricheskiy-potentsial-narechiya-v-publitsisticheskom-tekste){target="_blank"} (дата обращения: 03.04.2024)*.
+
+Для того, чтобы проверить наши интуиции, мы извлекли из постов все наречия. 
+
+```{r echo=FALSE}
+ranks <- readxl::read_xlsx(paste0(dir, "adverbs_checked.xlsx"), sheet = "rank") |> 
+  select(source, rank)
+
+adverbs <- paste0(dir, "adverbs_checked.xlsx") %>% 
+  readxl::read_xlsx(sheet = "unique") |> 
+  filter(label!="АГР") |> 
+  filter(!grepl("\\*|чертовски", token)) |> 
+  inner_join(ranks, by = "source") |> 
+  select(rank, source, token, channel_use) |> 
+  arrange(rank, -channel_use)
+
+top <- paste0(dir, "adverbs_checked.xlsx") %>% 
+  readxl::read_xlsx(sheet = "top") |> 
+  inner_join(ranks, by = "source") |> 
+  select(rank, source, token, channel_use) |> 
+  arrange(rank, -channel_use)
+```
+
+Наиболее употребимые наречия были предсказуемо малоинформативны (сегодня, сейчас, очень, здесь, вместе, теперь и т.д.). Тогда мы удалили наречия длиной менее 9 букв, но рейтинг стал напоминать методичку по менеджменту (полностью, обязательно, практически, оперативно...). Либо мы включили в выборку слишком много представителей органов власти, либо их язык стали копировать даже СМИ (*ой, Региночка, завязывай с интуициями*).  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+top %>% select(-rank) %>% filter(!is.na(token)) |> 
+     rename(`Название ТГ-канала` = source, 
+            `Наречие` = token, `Упоминаний в канале` = channel_use) |> 
+  datatable(rownames = F, class = 'compact striped', 
+            extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. Наиболее часто употребимые наречия из ТГ-каналов.')), 
+            options = list(columnDefs = list(
+              list(width = '400px', targets = c(0)),
+              list(width = '200px', targets = c(1)),
+              list(className = 'dt-center', targets = c(2)))))
+```
+
+Тогда мы решили взглянуть на наречия, которые в нашей выборке встречаются не более чем в 2 ТГ-каналах, предположив, что так сможем увидеть наречия, характерные для каждого автора. 
+
+И действительно...   
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+adverbs %>% select(-rank) %>%
+     rename(`Название ТГ-канала` = source, 
+            `Наречие` = token, `Упоминаний в канале` = channel_use) |>  
+  datatable(rownames = F, class = 'compact striped', 
+            extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 2. Уникальные и характериные наречия из ТГ-каналов. Слово считается уникальным, если встречалось не более чем в 2-х каналах. Из массива исключили несколько наречий с опечатками и нецензурные слова.')), 
+            options = list(columnDefs = list(
+              list(width = '400px', targets = c(0)),
+              list(width = '200px', targets = c(1)),
+              list(className = 'dt-center', targets = c(2)))))
+```
+
+Для того, чтобы увидеть в каких ТГ-каналов упоминалось конкретное наречие, введите его в поле для поиска в таблице выше.
+
+Полученный результат перенесли на иллюстрацию, показав близость пабликов через характерные наречия (темными кружками показаны ТГ-каналы, серыми точками -- наречия).
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "net_tags.png")
+ch1_blogfile <- paste0(dir_charts, "kaluga_kols.png")
+if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+В нескольких пабликах уникальных наречий мы не обнаружили. Плохо ли это? У нас нет ответа на этот вопрос. Возможно, их авторы предпочитают использовать более простой язык, говоря о происходящем без ~~окказиальных интенсификаторов~~ прикрас.
+
+Продолжение следует...
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Признаки действия калужских лидеров мнения в Telegram // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-kols-tg-part1/. - Дата публикации: 3 апреля 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

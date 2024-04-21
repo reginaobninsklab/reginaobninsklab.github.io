@@ -1,0 +1,467 @@
+---
+title: "Открытый рейтинг школ Калужской области (часть 1)"
+description: |
+  Попытка оценить эффективность образовательных учреждений по результатам сдачи ЕГЭ в 2019-2023 гг. Материал содержит интерактивные таблицы с показателями школ и рейтингами.
+date: 2024-03-10
+categories:
+  - школы
+  - ЕГЭ
+  - ГИА
+  - образование
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/school_rank_map.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/alumnis/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 5, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Приближается сезон записи в школы и всё чаще в сети Интернет звучат вопросы об их реальном уровне. В России немало рейтингов школ, но практически все они рассчитываются по методикам, которые невозможно проверить. При этом доступных, а тем более открытых данных, которые можно было бы использовать для собственного исследования или воспроизведения рейтингов, напротив, очень мало.
+
+Нас давно интересует тема среднего образования и вот мы собрали доступные сведения о школах Калужской области и решили построить собственный рейтинг. Это не заказное и не "профессиональное" исследование, поэтому методику оценки мы придумали сами. 
+
+> Почему мы назвали рейтинг "открытым"? Потому что таблицы ниже вы можете не только просматривать, фильтровать и ранжировать, но также сохранить в виде файлов CSV/Excel для того, чтобы проверить наши расчеты или попробовать создать свой собственный рейтинг. Прежде чем использовать или цитировать результаты нашей оценки, пожалуйста, ознакомьтесь с методикой. В случае возникновения вопросов, задайте [вопрос авторам](mailto:regina.obninsk@gmail.com?subject=re%20school%20rank&amp).    
+
+Другие материалы по теме можно будет найти в блоге, используя категории "школы" и "образование".
+
+```{r echo=FALSE}
+all <- paste0(dir, "all_kaluga_schools_w_gia11.xlsx") %>% 
+  readxl::read_xlsx(sheet  = "all_schools") %>% 
+  select(ogrn = data.ogrn, inn = data.inn, name_full = data.name.full, 
+         status = data.state.status, opf_short = data.opf.short, 
+         address = data.address.unrestricted_value,
+         lat = data.address.data.geo_lat,
+         lon = data.address.data.geo_lon,
+         postal_code = data.address.data.postal_code,
+         city = data.address.data.city) %>% distinct() %>% 
+  filter(!opf_short %in% c("Филиал", "Представительство"))
+
+rank <- paste0(dir, "all_kaluga_schools_w_gia11.xlsx") %>% 
+  readxl::read_xlsx(sheet  = "rank") %>% 
+  filter(nchar(org0)>4) %>% 
+  select(ogrn = data.ogrn, year, g1 = 2, g2 = 3, g3 = 4, g4 = 5) %>% 
+  summarize(.by = c(ogrn, year), across(where(is.numeric), ~sum(.x))) %>%
+  mutate(year_total = g1 + g2 + g3 + g4)
+```
+
+В этой части мы будем ранжировать школы на основании результатов сдачи ЕГЭ с 2019 по 2023 гг. 
+
+В тексте ниже будут использованы  следующие сокращения: **ЕГЭ** -- единый государственный экзамен, **ГИА-11** -- государственная итоговая аттестация 11-классников, **ВТГ** -- выпускники текущего года. 
+
+## Информация о школах
+
+В доступных на сайте [http://ege.kaluga.ru](http://ege.kaluga.ru){target="_blank"} материалах можно найти таблицы с названием **"Рейтинг образовательных организаций по интегральным показателям качества подготовки выпускников"**, в которых для каждой школы показана доля (от общего числа) выпускников текущего года (ВТГ), чей суммарный балл по трем выбранным предметам попал в диапазоны:
+
+<span style='font-family:\"Roboto+Slab\"; background-color: #ffeda0; padding: 0.1em 0.3em; border-radius: 5px; font-size: 12pt'>Г1. до 160 баллов</span> <span style='font-family:\"Roboto+Slab\"; background-color: #d9ef8b; padding: 0.1em 0.3em; border-radius: 5px; font-size: 12pt'>Г2. от 161 до 220 баллов</span> <span style='font-family:\"Roboto+Slab\"; background-color: #a6d96a; padding: 0.1em 0.3em; border-radius: 5px; font-size: 12pt'>Г3. от 221 до 250 баллов</span> <span style='font-family:\"Roboto+Slab\"; background-color: #66bd63; padding: 0.1em 0.3em; border-radius: 5px; font-size: 12pt'>Г4. от 251 до 300 баллов</span>
+
+На основании этих данных мы разделили образовательные организации на 3 группы и для каждой построили отдельный рейтинг. 
+
+```{r include=FALSE}
+category_function <- function(rank_df, min_annual_hurdle, min_total_hurdle_A, min_total_hurdle_B){
+  rank_df |> 
+    summarize(.by = ogrn,
+              total = sum(year_total),
+              n_yrs = sum(year_total>0), 
+              n_yrs_min = sum(year_total>=min_annual_hurdle),
+              n_g4 = sum(g4>0),
+              n_g4_pair = sum(g4>1),
+              across(c("g1", "g2", "g3", "g4"), ~sum(.x))) %>% 
+    mutate(across(c("g1", "g2", "g3", "g4"), ~100*round(.x/total,3),.names = "{.col}_share")) |> 
+    mutate(cat = ifelse((n_yrs == n_yrs_min & n_yrs %in% c(3,4,5)|total>=min_total_hurdle_A), "A", "B"),
+           cat = ifelse(cat == "B" & n_yrs_min == 0 & total <= min_total_hurdle_B, "C", cat))
+}
+
+table4blog <- category_function(rank, min_annual_hurdle = 10, 
+                           min_total_hurdle_A = 60, min_total_hurdle_B = 15) |>
+  left_join(all, by = join_by(ogrn)) |> 
+  mutate(name_full = stringr::str_replace_all(name_full, 
+                            paste0(c("ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ КАЛУЖСКОЙ ОБЛАСТИ ",
+                            "ГОСУДАРСТВЕННОЕ КАЗ.ННОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ КАЛУЖСКОЙ ОБЛАСТИ ",
+                            "МУНИЦ.ПАЛЬНОЕ КАЗ.ННОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ",
+                            "МУНИЦ.ПАЛЬНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ",
+                            "МУНИЦ.ПАЛЬНОЕ БЮДЖЕТНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ "), collapse = "|"), "")) |> 
+  mutate(inn = paste0("ИНН:", inn)) |> 
+  mutate(city = ifelse(is.na(city), NA, paste0("<b>", city, "</b>"))) |> 
+  unite(c("name_full", "city", "inn"), col = "name", na.rm = T, sep = " | ") 
+
+rankstat <- table4blog |> select(cat, total, g1,g2,g3,g4) |> 
+  mutate(.by = "cat", total = sum(total)) |> 
+  summarize(.by=c("cat", "total"), across(starts_with("g"), ~sum(.x))) |> 
+  mutate(across(starts_with("g"), ~.x/total)) |> 
+  mutate(total_share = total/(sum(total)))
+```
+
+### Группа А. Школы со стабильным участием в ГИА-11
+
+Договоримся считать участие школы в ГИА-11 стабильным, если выполняется любое из двух условий: 
+
+(а) в период с 2019 по 2023 год не менее 60 выпускников школы сдавали ЕГЭ, 
+
+(б) в период с 2019 по 2023 год выпускники школы участвовали в ЕГЭ не менее 3 раз и при этом в каждый год участвовало не менее 10 человек. 
+
+На основании этих критериев в группу А были отобраны `r pull(count(filter(table4blog, cat=="A"), cat),n)` школ, на долю которых приходится `r scales::percent(rankstat$total[rankstat$cat=="A"]/sum(rankstat$total))` выпускников, сдававших ЕГЭ с 2019 по 2023 годы.
+
+```{r echo=FALSE}
+table4blog |> filter(cat=="A") |> 
+  select(name, total, g1,g2,g3,g4) |>
+  arrange(-total) |> 
+  rename(`Г1<br/>[0-160]` = g1, `Г2<br/>[161-220]` = g2, `Г3<br/>[221-250]` = g3, `Г4<br/>[251-300]` = g4, 
+         `ВТГ<br/>(2019-2023)` = total, `Сокращенное название школы | Город | ИНН` = name) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. Школы Калужской области со стабильным участием в ГИА-11 (группа А). Источник сведений: https://ege.kaluga.ru.')), 
+            options = list(columnDefs = list(
+              list(width = '600px', targets = c(0)),
+              list(className = 'dt-center', targets = c(1:5)))))
+```
+
+### Группа Б. Школы с меньшим количеством сдающих ЕГЭ
+
+В группу Б мы отнесем школы, которые не попали в группу А из-за того, что в некоторые годы в ЕГЭ принимали участие менее 10 их выпускников, при этом за наблюдаемый 5-летний период в ЕГЭ приняли участие от 15 до 60 выпускников этих школ. В итоге в группу Б попали `r pull(count(filter(table4blog, cat=="B"), cat),n)` школ, на долю которых пришлось `r scales::percent(rankstat$total[rankstat$cat=="B"]/sum(rankstat$total))` выпускников.
+
+```{r echo=FALSE}
+table4blog |> filter(cat=="B") |> 
+  select(name, total, g1,g2,g3,g4) |>
+  arrange(-total) |> 
+  rename(`Г1<br/>[0-160]` = g1, `Г2<br/>[161-220]` = g2, `Г3<br/>[221-250]` = g3, `Г4<br/>[251-300]` = g4, 
+         `ВТГ<br/>(2019-2023)` = total, `Сокращенное название школы | Город | ИНН` = name) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 2. Школы Калужской области с меньшим количеством выпускников, участвовавших в ГИА-11 (группа Б). Источник сведений: https://ege.kaluga.ru.')), 
+            options = list(columnDefs = list(
+              list(width = '600px', targets = c(0)),
+              list(className = 'dt-center', targets = c(1:5)))))
+```
+
+### Группа В. Школы с эпизодическим участием в ГИА-11
+
+Оставшиеся образовательные учреждения, выпускники которых сдавали ЕГЭ с 2019 по 2023 год, попали в группу В. Всего -- `r pull(count(filter(table4blog, cat=="C"), cat),n)` школ, в каждой из которых за весь наблюдаемый 5-летний период в ЕГЭ приняли участие 15 или менее выпускников. В общем объеме выпускников Калужской области, сдававших ЕГЭ в период с 2019 по 2023 год, учащиеся из школ группы В составляют всего `r scales::percent(rankstat$total[rankstat$cat=="C"]/sum(rankstat$total),0.1)`.  
+
+```{r echo=FALSE}
+table4blog |> filter(cat=="C") |> 
+  select(name, total, g1,g2,g3,g4) |>
+  arrange(-total) |> 
+  rename(`Г1<br/>[0-160]` = g1, `Г2<br/>[161-220]` = g2, `Г3<br/>[221-250]` = g3, `Г4<br/>[251-300]` = g4, 
+         `ВТГ<br/>(2019-2023)` = total, `Сокращенное название школы | Город | ИНН` = name) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 3. Школы Калужской области с эпизодическим участием в ГИА-11 (группа В). Источник сведений: https://ege.kaluga.ru.')), 
+            options = list(columnDefs = list(
+              list(width = '600px', targets = c(0)),
+              list(className = 'dt-center', targets = c(1:5)))))
+```
+
+### Экспресс-сравнение групп 
+
+Различия между группами достаточно наглядны -- диаграмма ниже показывает доли выпускников, набравших определенное количество баллов в каждой группе.           
+
+```{r echo=FALSE}
+chart_file <- paste0(dir_charts, "school_groups_bars.png")
+if(!file.exists(chart_file)){
+  source(paste0(Sys.getenv("OneDrive"), "/ODCity/chart_styles.R"), encoding = "utf8")
+
+  chart <- bind_cols(rankstat, tibble(catx = c("Школы группы А", "Школы группы Б", "Школы группы В"))) |> 
+    select(catx, `от 0\nдо 160` = g1, `от 161\nдо 220` = g2, 
+           `от 221\nдо 250` = g3, `от 251\nдо 300` = g4) |> 
+    pivot_longer(2:5, names_to = "group", values_to = "n") |> 
+    ggplot() + 
+    geom_col(aes(y = group, x = n, fill = group), width = 0.85, colour = "black", linewidth = 0.1) + 
+    geom_text(aes(y = group, x = n + 0.01, label = scales::percent(n, 1)), 
+              hjust = 0, color = "white", size = 8, family = "Sofia") + 
+    scale_x_continuous(labels = scales::label_percent(), expand = expansion(add = c(0, 0.1)))+
+    facet_wrap(~catx) + 
+    labs(y = "Сумма баллов за 3 экзамена\n", x = "Доля от общего количества выпускников, %", 
+         caption = regina_caption, 
+         subtitle = paste0("На основе сведений о выборе ЕГЭ выпускниками школ Калужской области в 2019-2023 гг.\n",
+    "Источник: http://ege.kaluga.ru (ГАОУ ДПО \"Калужский государственный институт модернизации образования\")"),
+         title = "ДОЛЯ ВЫПУСКНИКОВ И СУММА БАЛЛОВ") +
+    scale_fill_viridis_d(option = "D", begin = 0.2)+
+    guides(fill = "none")+
+    blankbg + theme(panel.spacing = unit(1,'cm'))
+  
+    ggsave(chart, filename = chart_file, width = 28, height = 10, units = "cm", dpi = 192)
+}
+knitr::include_graphics(chart_file)
+```
+
+>В школах группы А доля выпускников, набравших от 251 до 300 баллов, почти втрое больше, чем в группах Б и В; доля набравших от 220 до 250 -- на 80% выше; а доля тех, кто набрал менее 160 баллов, примерно на 40% ниже.
+
+## Методика оценки
+
+```{r include=FALSE}
+rank_function <- function(rank_df){
+    rank_df |> 
+      mutate(score_a = g4_share*25 + g3_share*10 + g2_share*3 + g1_share*1,
+             score_b = g4_share*10 + g3_share*3 + g2_share - g1_share*5,
+             score_c = g4_share*10 + 3*g3_share - 5*g1_share,
+             score_d = g4_share^2 + g3_share - g2_share - g1_share^2)  |>
+    mutate(.by = cat, across(starts_with("score"), ~dense_rank(-.x))) |> 
+    mutate(score = (score_a + score_b + score_c + score_d)/4) |> 
+    mutate(.by = cat, score = dense_rank(score)) |> 
+    arrange(cat, score)
+}
+rank4blog <- table4blog |> rank_function() |> arrange(cat, score)
+```
+
+На основе имеющихся данных идеальную формулу оценки для построения рейтинга школ по результатам сдачи ЕГЭ придумать точно не получится, поэтому мы придумали несколько собственных моделей для расчета итоговой оценки (в формулах ниже Г~x~ -- доля выпускников, набравших баллы, соответствующие группе Х):
+
+**Модель М1 (либеральная)**
+<br/><span style='font-family:\"RobotoC\"; background-color: #e6e9f0; padding: 0.1em 0.3em; border-radius: 5px; font-size: 10pt'>"Все, кто вышел на экзамен, уже победили"</span><br/>
+Это максимально мягкая модель, поддерживающая известную точку зрения "Лучше в школе дядю слушать, чем в подворотне водку кушать". Но за каждого выпускника, попадающего в группу с более высокими баллами, естественно, будем добавлять более высокие баллы.<br/>
+Формула: Оценка = 25 &#8226; Г~4~ + 10 &#8226; Г~3~ + 3 &#8226; Г~2~ + Г~1~ 
+
+**Модель М2 (умеренная)**
+<br/><span style='font-family:\"RobotoC\"; background-color: #e6e9f0; padding: 0.1em 0.3em; border-radius: 5px; font-size: 10pt'>"За недотянувших до 160 -- штраф, за остальных -- премируем"</span><br/>
+Доля выпускников из групп Г2, Г3 и Г4 складываются с весами 1, 3 и 10; доля попавших в группу Г1 вычитается с весом 5. Модель штрафует школу за плохо подготовленных выпускников.<br/>
+Формула: Оценка = 10 &#8226; Г~4~ + 3 &#8226; Г~3~ + Г~2~ &#xFF0D; Г~1~ 
+ 
+**Модель М3 (практичная)**.
+<br/><span style='font-family:\"RobotoC\"; background-color: #e6e9f0; padding: 0.1em 0.3em; border-radius: 5px; font-size: 10pt'>"За недотянувших до 160 -- штраф, премируем только за тех, кто набрал больше 220"</span><br/>
+Отличается от модели Б тем, что доля выпускников, отнесенных к группе Г2 не учитывается, остальные веса точно такие же. Группа Г2 -- самая многочисленная, именно под неё выравнивается сложность задач ЕГЭ и по этой причине за выпускников группы Г2 школа не получает никаких баллов.<br/>
+Формула: Оценка = 10 &#8226; Г~4~ + 3 &#8226; Г~3~ &#xFF0D; Г~1~ 
+
+**Модель М4 (радикальная)**.
+<br/><span style='font-family:\"RobotoC\"; background-color: #e6e9f0; padding: 0.1em 0.3em; border-radius: 5px; font-size: 10pt'>"Успех начинается от 220 баллов, остальное -- неудача"</span><br/>
+Доля выпускников из групп Г1 и Г4 учитываются со степенью 2 (значение возводится в квадрат), доли Г2 и Г3 применяются без весов. Таким образом, школа получает штрафные баллы за выпускников не только группы Г1, но и Г2.<br/>
+Формула: Оценка = (Г~4~)^2^ + Г~3~ &#xFF0D; Г~2~ &#xFF0D; (Г~1~)^2^ 
+
+> Штрафы за выпускников, набравших невысокое количество баллов, отражают следующую точку зрения: каждый выпускник, попавший в группу Г1 -- это не только потраченные впустую 2 года молодой жизни с сертификатом о неудаче, но и напрасно потраченные ресурсы школы (бюджетные, капитальные, человеческие). Профессиональное ориентирование и психологический контроль должны были  помочь таким ученикам после 9 класса выбрать другие программы развития.  
+
+Для каждой модели (М1-М4) мы рассчитали ранговые значения школ в группах А-В, после чего полученные для организаций ранги усреднили (среднее арифметическое) для получения итогового положения места организации в рейтинге.
+
+> В таблицах 4 и 5 организации отсортированы по итоговому рангу, но списки школ можно отсортировать по любой из моделей, кликнув на заголовок соответствующего столбца таблицы.      
+
+### Рейтинг школ группы А
+
+```{r echo=FALSE}
+df <- rank4blog |> filter(cat=="A") |> 
+  select(name, score_a, score_b, score_c, score_d, score) |>
+  arrange(score)
+df$color <- colorRampPalette(c("#00cc33", "#ece2f0"))(nrow(df))
+
+df |> 
+  mutate(score = paste0("<i class=\"fa-solid fa-ranking-star fa-lg\" style=\"color:", color, ";\"></i>",
+                        "<span style='font-family:\"Play\"; font-size: 12pt'> ", score,"</span>")) |>
+  select(-color) |> 
+  rename(`М1` = score_a, `М2` = score_b, `М3` = score_c, `М4` = score_d, 
+         `Итоговое место` = score, `Сокращенное название школы | Город | ИНН` = name) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 4. Рейтинг школ Калужской области со стабильным участием в ГИА-11 (группа А). Данные рассчитаны на основании сведений с сайта https://ege.kaluga.ru по моделям М1-М4 (см. пояснения в тексте).')), 
+            options = list(pageLength = 10, columnDefs = list(
+              list(width = '700px', targets = c(0)),
+              list(className = 'dt-center', targets = c(1:5)))))
+```
+
+Несмотря на различия между моделями десятка лидеров рейтинга оставалась неизменной -- 6 из 10 школ из Обнинска! 
+
+По мере движения вниз по рейтингу влияние модели увеличивается, но даже второй и третьей десятках рейтинга смена модели не приводила к существенной вариативности. 
+
+### Рейтинг школ группы Б
+
+```{r echo=FALSE}
+dfb <- rank4blog |> filter(cat=="B") |> 
+  select(name, score_a, score_b, score_c, score_d, score) |>
+  arrange(score)
+dfb$color <- colorRampPalette(c("#de833d", "#f6e8c3"))(nrow(dfb))
+
+dfb |> 
+  mutate(score = paste0("<i class=\"fa-solid fa-ranking-star fa-lg\" style=\"color:", color, ";\"></i>",
+                        "<span style='font-family:\"Play\"; font-size: 12pt'> ", score,"</span>")) |>
+  select(-color) |> 
+  rename(`М1` = score_a, `М2` = score_b, `М3` = score_c, `М4` = score_d, 
+         `Итоговое место` = score, `Сокращенное название школы | Город | ИНН` = name) |> 
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 5. Рейтинг школ Калужской области с меньшим количеством выпускников, участвовавших в ГИА-11 (группа Б). Данные рассчитаны на основании сведений с сайта https://ege.kaluga.ru по моделям М1-М4 (см. пояснения в тексте).')), 
+            options = list(pageLength = 10, columnDefs = list(
+              list(width = '700px', targets = c(0)),
+              list(className = 'dt-center', targets = c(1:5)))))
+```
+
+Рейтинг школ группы Б характеризуется меньшей стабильностью по сравнению с рейтингом группы А, поскольку группа Б объединяет небольшие школы, среди которых есть как частные образовательные организации ("Радуга", Обнинский колледж, "Чаша"), так и общеобразовательные школы из небольших населенных пунктов. Вполне возможно, что первые, занявшие более высокие места в рейтинге, могут себе позволить заниматься профотбором и более серьезно занимаются подготовкой выпускников к сдаче ЕГЭ.
+
+### Рейтинг школ группы В
+
+Из-за малого числа выпускников ранжирование школ группы В по результатам ЕГЭ лишено смысла, поскольку результат будет отражать не уровень школы, а редкие эпизоды (наблюдения).
+
+Например, если в небольшой сельской школе на ЕГЭ выйдет всего 1 выпускник и наберёт от 251 до 300 баллов, можно ли считать школу лидером региона? Несмотря на финансовые успехи "алкоиндустрии", земля Русская богата талантами, поэтому такие истории вовсе не редкость. 
+
+>В качестве примера можно привести [Асмоловскую среднюю общеобразовательную школу](https://shkolaasmolovskaya-r40.gosweb.gosuslugi.ru/){target="_blank"}, в которой за 5 лет ЕГЭ сдавали только 3 человека, но один (одна) из них в 2019 году дал школе 100%-ное попадание в группе Г4. Согласно [общедоступным данным (Википедия)](https://ru.wikipedia.org/wiki/%D0%A1%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%BE%D0%B5_%D0%BF%D0%BE%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%C2%AB%D0%94%D0%B5%D1%80%D0%B5%D0%B2%D0%BD%D1%8F_%D0%90%D1%81%D0%BC%D0%BE%D0%BB%D0%BE%D0%B2%D0%BE%C2%BB){target="_blank"} эта школа обслуживает 36 населенных пунктов, входящих в состав сельского поселения «Деревня Асмолово» с общей численностью населения менее 1000 человек. Из результатов [самообследования школы](https://shkolaasmolovskaya-r40.gosweb.gosuslugi.ru/netcat_files/30/69/otchet_po_samoobsledovaniyu_za_2022god.pdf){target="_blank"} можно узнать, что в 2022 году в ней обучалось всего 25 человек (ни одного в 10 и 11 классах) и, что "в школе качество знаний соответствует низкому уровню. Объяснение данной проблемы педагоги видят в невысоком уровне познавательных интересов обучающихся, низкой мотивации обучающихся к познавательной деятельности.". Но вот кто-то взял и как следует постарался!
+
+Что произойдет, если в школах из группы В перестанут стараться? 
+
+Ответ на этот вопрос приведен в таблице 6, где перечислены школы, имеющие лицензию на среднее общее образование, но не появлявшиеся ни разу в статистике ГИА-11 в период с 2019 по 2023 гг.
+
+```{r echo=FALSE}
+paste0(dir,"kaluga_open_data_207.xls") |> readxl::read_xls() |> 
+  select(name_full = 2, address = 3, geo = 4, ogrn = 6, licenses = 11) |> 
+  mutate(name_full = stringr::str_squish(name_full)) |>
+  filter(grepl("среднее", licenses) & !ogrn %in% rank$ogrn) |> 
+  select(ogrn) |> left_join(all, by = join_by(ogrn)) |> 
+  filter(!grepl("ИНТЕРНАТ", name_full)) |> 
+  filter(status=="ACTIVE") |> 
+  mutate(name_full = stringr::str_replace_all(name_full, 
+                            paste0(c("ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ КАЛУЖСКОЙ ОБЛАСТИ ",
+                            "ГОСУДАРСТВЕННОЕ КАЗ.ННОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ КАЛУЖСКОЙ ОБЛАСТИ ",
+                            "МУНИЦ.ПАЛЬНОЕ КАЗ.ННОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ",
+                            "МУНИЦ.ПАЛЬНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ",
+                            "МУНИЦ.ПАЛЬНОЕ БЮДЖЕТНОЕ ОБЩЕОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ "), collapse = "|"), "")) |> 
+  select(`Название общеобразовательного учреждения` = name_full, `ИНН` = inn) |> 
+  datatable(rownames = F, class = 'compact striped', caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 6. Школы Калужской области с лицензией на среднее общее образование, отсутствующие в статистике ГИА-11 (https://ege.kaluga.ru) с 2019 по 2023 гг.')))
+```
+
+## Школы Обнинска 
+
+Наукоград прекрасно представлен в первой десятке обоих рейтингов (А и Б), но не все школы одинаковы. На иллюстрации показаны школы из групп А и Б и их места в рейтингах А и Б (рейтинг устроен таким образом, что одно место могут занимать несколько школ Калужской области, поэтому 40-е место в рейтинге не означает, что впереди 39 школ, их может быть больше).  
+
+```{r, preview=TRUE}
+chart_schools <- paste0(dir_charts, "school_rank_map.png")
+knitr::include_graphics(chart_schools)
+```
+
+## Ограничения подхода
+
+Подход, использованный нами для оценки и ранжирования школ, не лишен изъянов.
+
+Показатели ЕГЭ не отражают всех достоинств и особенностей сравниваемых школ. В одной школе лучшие дополнительные курсы, в другой -- хорошие спортсекции, в третьей -- строгое соблюдение порядка, в четвертой -- преподаватели, "умеющие в олимпиады". Учесть подобные показатели мы не имели возможности в силу отсутствия данных.   
+
+Несмотря на [критику ЕГЭ](https://www.superjob.ru/research/articles/114546/uchitelya-stali-rezhe-kritikovat-ege/){target="_blank"}, на сегодняшний день это важнейшая дверь, отделяющая выпускников от поступления в вузы ("кующие интеллектуальную элиту России будущего"). Предлагаемый нами подход отражает способность школы подводить школьников к этой двери с необходимым запасом навыков и уверенности в силах. Хочется особенно подчеркнуть важность служб профориентации и психологического сопровождения для повышения эффективности подготовки учащихся.      
+
+### Источники данных
+
+- И1. Портал [Государственная итоговая аттестация в Калужской области](http://ege.kaluga.ru){target="_blank"} ГАОУ ДПО "Калужский государственный институт развития образования". В разделах ["Аналитические и методические материалы ГИА-11"](http://ege.kaluga.ru/index.php?option=com_phocadownload&view=section&id=13&Itemid=9){target="_blank"} и [Статистика](http://ege.kaluga.ru/index.php?option=com_phocadownload&view=category&id=16&Itemid=57){target="_blank"} опубликованы результаты сдачи ЕГЭ в школах. Конечно, данные с результатами ЕГЭ за 2019, 2022, 2023 доступны в файлах doc/docx, а данные 2020-2021 гг. -- в PDF, но и на том спасибо!
+
+- И2. На сайте ГАОУ ДПО «Калужский государственный институт развития образования» [http://kgiro.kalugaedu.ru/](http://kgiro.kalugaedu.ru/){target="_blank"} в разделе [Механизмы управления качеством образовательных результатов](http://kgiro.kalugaedu.ru/index.php?option=com_content&view=article&id=3331&Itemid=299){target="_blank"} доступны сведения по районам и городам КО.  
+
+- И3. В разделе ["Открытые данные Калужской области"](https://pre.admoblkaluga.ru/opendata/){target="_blank"} на старом портале органов власти Калужской области можно найти перечень организаций, осуществляющих образовательную деятельность. Эти данные также можно извлечь из [Открытых данных Рособрнадзора](https://obrnadzor.gov.ru/otkrytoe-pravitelstvo/opendata/7701537808-raoo/){target="_blank"}.
+
+Мы вдоволь наупражнялись в методах извлечения и очистки данных. В некоторых таблицах обнаружили несогласующиеся сведения и опечатки (там, где это было возможно, направили оператору данных письма с соответствующими указаниями).
+
+В будущем мы постараемся добавить новые данные о школах Калужской области.
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Открытый рейтинг школ Калужской области (часть 1) // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/. - Дата публикации: 10 марта 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

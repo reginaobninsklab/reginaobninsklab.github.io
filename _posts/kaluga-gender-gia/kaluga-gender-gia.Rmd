@@ -1,0 +1,266 @@
+---
+title: "Какие предметы ЕГЭ выбирают девушки и юноши Калужской области?"
+description: |
+  По каждому предмету показана динамика распределения по полу выпускников, выбиравших предмет дял ЕГЭ в 2019-2023 гг.
+date: 2024-03-10
+categories:
+  - школы
+  - ЕГЭ
+  - ГИА
+  - образование
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/gia_genders.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(DT)
+library(rmarkdown)
+library(ggplot2)
+library(magick)
+library(cropcircles)
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/alumnis/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 5, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Продолжаем изучать данные ЕГЭ школ Калужской области (см. также ["Открытый рейтинг школ Калужской области, часть 1"](https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/)). 
+
+По случаю 8 марта заглянули в таблицы с распределением выбранных предметов ЕГЭ между девушками и юношами, и подготовили несколько иллюстраций.
+
+<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="regina_lab/21" data-width="100%"></script>
+
+Собранные сведения приведены в интерактивной таблице ниже, которая позволяет не только сортировать и фильтровать строки, но также сохранять и копировать данные.
+
+```{r}
+gender0 <- paste0(dir, "gia/gia_11_data.xlsx") %>% 
+  readxl::read_xlsx(sheet = "gender") %>%  
+  mutate(year = as.numeric(year)) |> 
+  select(subject, gender, year_ref_doc, year, persons) |> 
+  arrange(subject, gender, year, year_ref_doc) 
+
+gender <- gender0 |> 
+  mutate(.by = c(gender, year, subject), persons = round(mean(persons),0)) |> 
+  select(-year_ref_doc) |> distinct() |>
+  mutate(subject = ifelse(grepl("англ|францу|немецк", subject, ignore.case = T), 
+                          enc2utf8("Иностранные языки"), subject)) %>% 
+  mutate(subject = ifelse(grepl("Математика", subject, ignore.case = T), 
+                          enc2utf8("Математика (проф)"), subject)) %>% 
+  summarize(.by = c(gender, year, subject), persons = sum(persons)) %>% 
+  mutate(.by = c(year, subject), total_yr_subj = sum(persons)) |>
+  mutate(share_yr_subj = persons/total_yr_subj) %>% 
+  mutate(.by = c(year, gender), total_yr_gender = sum(persons)) |>
+  mutate(share_yr_gender = persons/total_yr_gender) %>% 
+  filter(subject != "Русский язык")
+
+gender0 |> 
+  summarize(.by = c(gender, year, subject, persons), year_ref_doc = paste(year_ref_doc, collapse = "|")) |> 
+  select(`Предмет` = subject, `Пол` = gender, `Год отчёта` = year_ref_doc, 
+         `Год экзамена` = year, `Выпускников` = persons) |>
+  datatable(rownames = F, class = 'compact striped', extensions = 'Buttons', escape = F,
+            caption = htmltools::tags$caption(style = table_caption_css, 
+    paste0('Таблица 1. Выбор предметов ЕГЭ выпускниками школ Калужской области в 2017-2023 гг. В столбце "Год отчёта" указаны годы статистических отчётов, из которых извлечены данные. Для некоторых предметов данные из отчётов разных лет не совпадали, для этих случаев в таблице уникальные значения представлены в отдельных строках. Источник сведений: https://ege.kaluga.ru.')), 
+            options = list(pageLength = 10, columnDefs = list(
+              list(width = '200px', targets = c(0)),
+              list(className = 'dt-center', targets = c(2:4))))) 
+```
+
+В данных различающиеся значения для одного года усреднили, а французский, немецкий и английский языки объединили в одну группу "Иностранные языки". 
+
+Иллюстрация ниже показывает для каждого предмета абсолютное количество выпускников каждого пола. 
+
+Наиболее беспокоящий нас тренд -- сдающих профильную математику становится всё меньше, а информатику -- всё больше. 
+
+Серьёзно?
+
+```{r}
+chart_file <- paste0(dir_charts, "gia_genders.png")
+if(!file.exists(chart_file)){
+  source(paste0(Sys.getenv("OneDrive"), "/ODCity/chart_styles.R"), encoding = "utf8")
+ 
+chart <- gender %>%
+  mutate(subject = as.factor(subject)) %>% 
+  mutate(subject = factor(subject, 
+          levels = c("География", "Литература", "Иностранные языки", "Информатика","Обществознание", 
+                      "История",  "Химия", "Биология", "Математика (проф)",  "Физика"))) %>% 
+  ggplot(aes(x = year, y = persons, colour = gender)) + 
+  geom_line(aes(group = gender, colour = gender), linewidth = 0.5)+
+  geom_point(aes(colour = gender), fill = "grey20", size = 2.5, shape = 21, stroke = 1.3, alpha = 0.9) +
+  facet_wrap(~subject, ncol = 5) +
+  scale_y_continuous(breaks = scales::pretty_breaks(8), 
+                     expand = expansion(add = c(100,100))) + 
+  scale_colour_manual(values = c("gold","green3"), labels = c("Девушки", "Юноши"), name = NULL)+
+  labs(y = "Количество учащихся", x = "Год сдачи ЕГЭ", caption = regina_caption, 
+       subtitle = paste0("На основе сведений о выборе ЕГЭ выпускниками школ Калужской области в 2017-2023 гг.\n",
+        "Источник: http://ege.kaluga.ru (ГАОУ ДПО \"Калужский государственный институт развития образования\")"),
+       title = "КАКИЕ ПРЕДМЕТЫ ЕГЭ ВЫБИРАЮТ ДЕВУШКИ?") +
+  blankbg + 
+  theme(legend.position = "top")
+
+ggsave(chart, filename = chart_file, width = 28, height = 21, units = "cm", dpi = 192)
+
+flower_img <- magick::image_read(cropcircles::crop_heart(paste0(dir, "pics/mimosa.JPG"), border_size = 0)) 
+chart <- magick::image_read(chart_file)
+chartx <- image_composite(chart, image_scale(flower_img, "250"), offset = "+1770+30")  
+magick::image_write(chartx, chart_file) 
+}
+knitr::include_graphics(chart_file)
+```
+
+На второй иллюстрации показана динамика доли девушек и юношей для каждого предмета. Действительно, первые бегут от профильной математики, вторые -- от иностранных языков.
+
+```{r}
+chart_file2 <- paste0(dir_charts, "gia_genders2.png")
+if(!file.exists(chart_file2)){
+
+chart2 <- gender %>%
+  mutate(subject = as.factor(subject)) %>% 
+  mutate(subject = factor(subject, 
+          levels = c("География", "Литература", "Иностранные языки", "Информатика","Обществознание", 
+                      "История",  "Химия", "Биология", "Математика (проф)",  "Физика"))) %>% 
+  ggplot(aes(x = year, y = share_yr_subj, colour = gender)) + 
+  geom_line(aes(group = gender, colour = gender), linewidth = 0.5)+
+  geom_point(aes(colour = gender), fill = "grey20", size = 2.5, shape = 21, stroke = 1.3, alpha = 0.9) +
+  facet_wrap(~subject, ncol = 5) + 
+  scale_y_continuous(limits = c(0,1), breaks = scales::pretty_breaks(8), labels = scales::label_percent(1),
+                     expand = expansion(add = c(0,0.02))) + 
+  scale_colour_manual(values = c("gold","green3"), labels = c("Девушки", "Юноши"), name = NULL)+
+  labs(y = "% от всех выбравших предмет", x = "Год сдачи ЕГЭ", caption = regina_caption, 
+       subtitle = paste0("На основе сведений о выборе ЕГЭ выпускниками школ Калужской области в 2017-2023 гг.\n",
+        "Источник: http://ege.kaluga.ru (ГАОУ ДПО \"Калужский государственный институт развития образования\")"),
+       title = "ДИНАМИКА ВЫБОРА ПРЕДМЕТОВ ЕГЭ") +
+  blankbg + 
+  theme(legend.position = "top")
+
+ggsave(chart2, filename = chart_file2, width = 28, height = 21, units = "cm", dpi = 192)
+
+flower_img <- magick::image_read(cropcircles::crop_heart(paste0(dir, "pics/mimosa.JPG"), border_size = 0)) 
+chart2 <- magick::image_read(chart_file2)
+chartx2 <- image_composite(chart2, image_scale(flower_img, "250"), offset = "+1770+30")  
+magick::image_write(chartx2, chart_file2) 
+}
+knitr::include_graphics(chart_file2)
+```
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Какие предметы ЕГЭ выбирают девушки и юноши Калужской области? // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-gender-gia/. - Дата публикации: 10 марта 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'magick', 'cropcircles',
+          'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Oehm D (2023). _cropcircles: Crops an Image to a Circle_. R package version 0.2.4,
+<https://CRAN.R-project.org/package=cropcircles>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
