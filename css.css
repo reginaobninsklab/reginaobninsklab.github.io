@@ -280,8 +280,9 @@ d-article div.sourceCode pre {
 }
 
 d-article a {
-    border-bottom: 1px solid rgba(67, 28, 93, 0.4);
+    color: #036ecb;
     text-decoration: none;
+    border-bottom: 1px solid rgba(122, 124, 132, 0.75);
 }
 
 .d-article .ul,
