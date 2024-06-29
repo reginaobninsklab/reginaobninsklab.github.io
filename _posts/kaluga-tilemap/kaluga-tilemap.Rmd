@@ -1,0 +1,308 @@
+---
+title: "Плиточная карта Калужской области"
+description: |
+  Гибкий шаблон для сравнительной визуализации субъектов Калужской области (муниципальные районы, городы областного значения).
+date: 2024-06-26
+categories:
+  - визуализация
+  - калужская области
+  - плиточная карта
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/ko_maps.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "ggplot2", 
+     "ggtext", "showtext", "DT", "rmarkdown", "scales", "patchwork") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(DT.options = list(pageLength = 10, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+Плиточные карты (tilemaps) Российской Федерации вошли в обиход и российских новостных агентств. Такие картоиды удобны для сравнения количественных показателей территорий, чьи размеры на карте отличаются настолько существенно, что затрудняется восприятие надписей или цветовых кодировок. 
+
+Так, например, компактные небольшие шрифты, необходимые для подписей на карте России субъектов Северо-Кавказского федерального округа, затеряются над Красноярским краем и Магаданской областью. Аналогичная проблема возникает и при цветовой кодировке какого-нибудь количественного показателя -- вполне возможно, что размер оказывает влияние на восприятие разницы между цветами -- мозг лучше сравнивает цвета для обектов одинаковых форм (ссылку на исследование искать лень). И здесь на помощь приходят плиточные карты, на которых сравниваемые объекты представлены геометрическими одинаковыми фигурами, внутри которых значения количественных показателей можно показывать цветом заливки, цифрами и даже графиками.
+
+Единственная проблема плиточных карт -- абстрактный характер взаимного расположения плиток. Так, например, расположение субъектов РФ на карте невозможно представить в виде группы квадратов (или иных одинаковых многоугольников) таким образом, чтобы фигуры, соответствующие субъектам, соседствовали друг с другом строго так же как субъекты. Подробнее об этом в постах [Единой медиа группы](http://mediamaps.tilda.ws/page7307227.html){target="_blank"} и [Ивана Дианова](https://dianov.org/all/plitochnaya-karta-rossii/){target="_blank"}.
+
+И тут мы подумали, а почему бы не построить такую же карту для Калужской области? Сделали, конечно. 
+
+```{r}
+grid_file <- paste0(Sys.getenv("OneDrive"), 
+                    "/Russian_tilemaps/Russian_TileMap_grids.xlsx")
+
+temp_grid <- readxl::read_xlsx(grid_file, sheet = "kaluga_region")
+
+data <- temp_grid %>% 
+  mutate(value = map_dbl(row, ~sample(90:110,1,replace = F)+.x)/100) %>% 
+  rename(district = egryul_region)
+
+library(sf)
+my_sf <- read_sf(paste0(dir, "obn_maps/Kaluga region.geojson")) %>%
+  mutate(district = ifelse(grepl("Киров", district), 
+                           enc2utf8("Кировский район"), district)) %>% 
+  left_join(data)
+
+chart_map <- ggplot(my_sf) +
+  geom_sf(aes(fill = value), color = "grey70", alpha = 1) +
+  scale_fill_viridis_c(option = "C", name = NULL,begin = 0.2, end = 0.8,
+                       breaks = pretty_breaks(5), labels = label_percent(1))+
+  guides(fill = guide_legend())+
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "white", color = NA), 
+        plot.margin = margin(1,1,1,1,'cm'))
+
+chart2 <- data %>% 
+    mutate(value_label = ifelse(value<0.00001, "0%", 
+                              scales::percent(value, accuracy = 1))) %>% 
+  ggplot() + 
+    geom_rect(aes(xmin=col-0.45, xmax=col+0.45, ymin=row-0.45, ymax=row+0.45, 
+                  fill=value), colour="grey60", linewidth=0.15) +
+    geom_rect(aes(xmin=col-0.45, xmax=col+0.45, ymin=row-0.1, ymax=row-0.45), 
+              fill="#716991") +
+    geom_text(data = data %>% filter(!code %in% "040"),
+              aes(x=col, y=row-0.28, label=code),
+              size=3.2, color="white", family = "RobotoCondensed")+
+    geom_label(data = data %>% filter(code %in% "040"),
+              aes(x=col, y=row-0.28, label= "КАЛУГА"), fill = NA,
+              label.padding = unit(0.12, "lines"),
+              label.r = unit(0.1, "lines"), label.size = 0.2,
+               size=3.2, color="white", family = "RobotoCondensed")+
+    geom_text(aes(x=col, y=row+0.15, label= value_label), 
+              size=4, fontface="bold", color="white", 
+              family = "RobotoCondensed")+
+    scale_y_reverse(name = NULL)+ scale_x_continuous(name = NULL) + 
+    scale_fill_viridis_c(option = "C", name = NULL,begin = 0.2, end = 0.8,
+                       breaks = pretty_breaks(5), labels = label_percent(1))+
+  guides(fill = guide_legend())+
+  coord_equal() + theme_void() +
+  theme(plot.background = element_rect(fill = "white", color = NA), 
+        plot.margin = margin(1,1,1,1,'cm'))
+
+blogfile <- paste0(dir_charts, "ko_maps.png")
+if(!file.exists(blogfile)){
+  showtext::showtext_opts(dpi = 192)
+  
+  local_font_folder <- paste0(Sys.getenv("OneDrive"), "/gfonts/")
+  
+  font_add("RobotoC", regular = paste0(local_font_folder, 
+                            "Roboto_Condensed/RobotoCondensed-Regular.ttf"))
+  
+  font_add("Oswald", regular = paste0(local_font_folder,
+                                      "Oswald/Oswald-Regular.ttf"))
+  
+  font_add("Sofia", regular = paste0(local_font_folder,
+                            "Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf"),
+           bold = paste0(local_font_folder,
+                "Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf"))
+  
+  sysfonts::font_add("fa_brands",
+           regular = paste0(local_font_folder, 
+             "/fontawesome/otfs/Font Awesome 6 Brands-Regular-400.otf"))
+  
+  sysfonts::font_add("fa_solid", 
+           regular = paste0(local_font_folder, 
+                           "/fontawesome/otfs/Font Awesome 6 Free-Solid-900.otf"))
+  
+  wrap_fa_brands <- function(text, color, font_size){
+    paste0("<span style='font-family:\"fa_brands\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+  }
+  wrap_fa_solids <- function(text, color, font_size){
+    paste0("<span style='font-family:\"fa_solid\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+  }
+  wrap_text <- function(text, color, font_size){
+    paste0("<span style='font-family:\"Sofia\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+  }
+  
+  regina_caption <- paste0(
+  "<span style='font-family:\"fa_brands\"; font-size:\"12pt\"; color:#827C82;'>&#xf2c6;</span>  ", 
+  "<span style='font-family:\"Sofia\"; color:#827C82; font-size:\"12pt\"'> Regina_Lab</span>",
+  "<span style='font-family:\"Sofia\"; color:#827C82; font-size:\"22pt\"'> </span>",
+  "<br/>", wrap_fa_brands("&#xf25e;&#xf4e7;", color = "#827C82;", 10), " ",
+  wrap_text(paste0(" Иллюстрация доступна на условиях открытой лицензии Creative Commons CC BY 4.0.",
+  "<span> &nbsp;</span>",
+  " Шрифты: Font Awesome Free \\(SIL OFL 1.1\\), Sofia Sans Condensed \\(SIL OFL 1.1\\), ",
+  "Roboto Condensed \\(Apache License 2.0\\)."), color = "#827C82;", 9))
+  
+  showtext_auto()
+  
+  my_theme <- theme(
+    axis.line = element_blank(),  axis.ticks=element_blank(),  
+    axis.text=element_blank(), axis.title = element_blank(),
+    plot.background = element_rect(fill = "white", colour = "white"),
+    panel.background = element_rect(fill = "white", color = "white"),
+    panel.border = element_rect(fill = NA, colour = "white"),
+    panel.grid.minor = element_blank(), 
+    panel.grid.major = element_blank(),
+    plot.margin = unit(c(t=0.2,r=0.1,b=0.1,l=0.1), "cm"),
+    plot.title.position = "plot", 
+    plot.caption.position = "plot",
+    plot.title = element_text(size = 24, hjust = 0, margin = margin(0,0,0,0,'mm'),
+                              face = "bold", colour = "#232323", family = "Sofia"), 
+    plot.subtitle = element_markdown(halign = 0, hjust = 0, 
+                                     margin = margin(0,0,0,0,'mm')),
+    plot.caption = element_markdown(halign = 0, hjust = 0),
+    strip.text = element_markdown(halign = 0.5, hjust = 0.5, 
+                                  family = "RobotoC", margin = margin(0.5,1,2,1,'mm'),
+                                  face = "bold", size = rel(1.2), colour = "#292726"),
+    strip.background = element_rect(fill = "white", color = "white"))
+  
+  chart_ko <- (chart_map + 
+    theme(legend.position = "none") +
+    my_theme) + 
+    (chart2 + my_theme) + 
+    plot_layout(widths = c(1,1.1), guides = "collect") +  
+    plot_annotation(
+      title = 'Географическая и плиточная карты Калужской области',
+      subtitle = "Цифры выбраны случайным образом. Дизайн плиточной карты - Regina Lab.",
+      caption = regina_caption, 
+      theme = my_theme) 
+  
+  ggsave(chart_ko, filename = paste0(dir_charts, "ko_maps.png"), 
+         dpi = 192, width = 28, height = 14, units = "cm")
+} 
+knitr::include_graphics(blogfile)
+```
+
+### Детали
+
+В таблице ниже приведены номера строк и столбцов субъектов в воображаемой прямоугольной сетке (таблице), соответствующих субъекту Калужской области.
+
+Вы можете скопировать таблицу в Excel и, применив пару формул, создать автоматический построитель плиточных карт Калужской области для собственных задач. Или с помощью языков программирования, или руками... в общем, пользуйтесь на здоровье.   
+
+```{r}
+data %>% select(-value) %>% 
+  mutate(code = ifelse(code == "040", "Калуга", code)) %>% 
+  datatable(rownames = F, class = 'compact striped', 
+            extensions = 'Buttons', escape = F)
+```
+
+Мы выпускаем дизайн с открытой лицензией, соответствующей условиям международной  лицензии Public Domain (СС0), что означает следующее -- можно изменять и использовать дизайн (расположения, обозначения) карты в любых, в том числе в коммерческих целях. Ссылаться на Regina Blog не обязательно (но нам будет приятно). 
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Плиточная карта Калужской области // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-tilemap/. - Дата публикации: 26 июня 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'ggimage', 'knitr', 'magick', 'sf', 'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pebesma E (2018). “Simple Features for R: Standardized Support for
+Spatial Vector Data.” _The R Journal_, *10*(1), 439-446. doi:
+10.32614/RJ-2018-009 (URL: https://doi.org/10.32614/RJ-2018-009),
+<URL: https://doi.org/10.32614/RJ-2018-009>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+
+Yu G (2023). _ggimage: Use Image in 'ggplot2'_. R package version 0.3.3,
+<https://CRAN.R-project.org/package=ggimage>.
+

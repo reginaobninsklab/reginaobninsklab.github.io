@@ -7,7 +7,18 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 21 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Плиточная карта Калужской области</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-tilemap</link>
+      <description>Гибкий шаблон для сравнительной визуализации субъектов Калужской области (муниципальные районы, городы областного значения).</description>
+      <category>визуализация</category>
+      <category>калужская области</category>
+      <category>плиточная карта</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-tilemap</guid>
+      <pubDate>Tue, 25 Jun 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-tilemap/images/ko_maps.png" medium="image" type="image/png" width="2116" height="1058"/>
+    </item>
     <item>
       <title>Telegram Калужской области. Часть 3. Невидимая рука</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-tg-municipal-unique</link>
