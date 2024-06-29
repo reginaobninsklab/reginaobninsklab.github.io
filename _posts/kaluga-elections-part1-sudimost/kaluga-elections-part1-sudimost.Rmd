@@ -1,0 +1,548 @@
+---
+title: "Выборы Калужской области (Часть 1. Кандидаты с судимостью)"
+description: |
+  Проанализированы данные о кандидатах в депутаты представительных органов муниципальных образований и Законодательного собрания Калужской области в период с 2009 по 2023 год. Агрегированные сведения об участии кандидатов с судимостью представлены в виде плиточных карт.  
+date: 2024-06-30
+categories:
+  - калужская область
+  - выборы
+  - депутаты
+  - плиточная карта
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/cands_share_kaluga_tiles.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "ggplot2", 
+     "ggtext", "showtext", "DT", "rmarkdown", "scales", "patchwork") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+options(readr.show_col_types = FALSE)
+
+dir <- paste0(Sys.getenv("OneDrive"), "/ODCity/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+dir0 <- paste0(Sys.getenv("OneDrive"), "/ODCity/deps/")
+
+options(DT.options = list(pageLength = 10, lengthMenu = c(5, 10, 20), 
+                          dom = "Blfrtip", buttons = c('copy', 'csv', 'excel'),
+            deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+            language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+```{r ggplot_setup}
+showtext::showtext_opts(dpi = 192)
+
+local_font_folder <- paste0(Sys.getenv("OneDrive"), "/gfonts/")
+
+font_add("RobotoC", regular = paste0(local_font_folder, 
+                          "Roboto_Condensed/RobotoCondensed-Regular.ttf"))
+
+font_add("Oswald", regular = paste0(local_font_folder, 
+                            "Oswald/Oswald-Regular.ttf"))
+
+font_add("Sofia", 
+         regular = paste0(local_font_folder,
+                          "Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf"),
+         bold = paste0(local_font_folder,
+                          "Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf"))
+
+sysfonts::font_add("fa_brands",
+         regular = paste0(local_font_folder, 
+                         "/fontawesome/otfs/Font Awesome 6 Brands-Regular-400.otf"))
+
+sysfonts::font_add("fa_solid", 
+         regular = paste0(local_font_folder, 
+                         "/fontawesome/otfs/Font Awesome 6 Free-Solid-900.otf"))
+
+wrap_fa_brands <- function(text, color, font_size){
+  paste0("<span style='font-family:\"fa_brands\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+}
+wrap_fa_solids <- function(text, color, font_size){
+  paste0("<span style='font-family:\"fa_solid\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+}
+wrap_text <- function(text, color, font_size){
+  paste0("<span style='font-family:\"Sofia\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")
+}
+
+regina_caption <- paste0(
+"<span style='font-family:\"fa_brands\"; font-size:\"12pt\"; color:#232323;'>&#xf2c6;</span>  ", 
+"<span style='font-family:\"Sofia\"; color:#232323; font-size:\"12pt\"'> Regina_Lab</span>",
+"<span style='font-family:\"Sofia\"; color:#232323; font-size:\"22pt\"'> </span>",
+"<br/>", wrap_fa_brands("&#xf25e;&#xf4e7;", color = "#232323;", 9), " ",
+wrap_text(paste0(" Иллюстрация доступна на условиях открытой лицензии Creative Commons CC BY 4.0.",
+"<span> &nbsp;</span>",
+" Шрифты: Font Awesome Free \\(SIL OFL 1.1\\), Sofia Sans Condensed \\(SIL OFL 1.1\\), ",
+"Roboto Condensed \\(Apache License 2.0\\)."), color = "#232323;", 8))
+
+showtext_auto()
+
+my_theme <- theme(
+  axis.line = element_line(colour = "#827C82", linewidth = 0.2),  
+  axis.ticks=element_line(colour = "#827C82", linewidth = 0.2),  
+  axis.text=element_text(colour = "#6b676b", family = "RobotoC", size = rel(1)),
+  axis.title = element_text(colour = "#292726", 
+                            family = "RobotoC", size = rel(1.1)),
+  plot.background = element_rect(fill = "white", colour = NA),
+  panel.background = element_rect(fill = "white"),
+  panel.border = element_rect(fill = NA, colour = "white"),
+  panel.grid.minor = element_blank(), 
+  panel.grid.major.y = element_line(colour = "#827C82", linewidth = 0.1),
+  panel.grid.major.x = element_blank(),
+  plot.margin = unit(c(t=0.2,r=0.1,b=0.1,l=0.1), "cm"),
+  plot.title.position = "plot", 
+  plot.caption.position = "plot",
+  plot.title = element_text(size = 24, hjust = 0, margin = margin(0,0,0,0,'mm'),
+                            face = "bold", colour = "#232323", family = "Sofia"), 
+  plot.subtitle = element_markdown(halign = 0, hjust = 0, 
+                                   margin = margin(2,0,2,0,'mm')),
+  plot.caption = element_markdown(halign = 0, hjust = 0),
+  strip.text = element_text(hjust = 0.5, vjust = 0.5, 
+                            family = "RobotoC", margin = margin(1,0,1,1,'mm'),
+                            face = "bold", size = rel(1.2), colour = "#292726"),  
+  strip.background = element_rect(fill = "grey90", color = "grey90"))
+
+  my_theme_x <- my_theme + 
+    theme(axis.line = element_blank(),  axis.ticks=element_blank(),
+          axis.text=element_blank(), axis.title = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_blank())
+```
+
+В прошлой публикации мы показали как строить [плиточную карту Калужской области](https://reginaobninsklab.github.io/posts/kaluga-tilemap/){target="_blank"}, самое время применить её для отображения реальных данных. В качестве упражнения решили проанализировать сведения о выборах Калужской области. 
+
+```{r setting map}
+temp_grid <- paste0(Sys.getenv("OneDrive"), 
+                    "/Russian_tilemaps/Russian_TileMap_grids.xlsx") %>% 
+  readxl::read_xlsx(sheet = "kaluga_region") %>% 
+  bind_rows(tibble(row = 6, col = 7, code = "ЗакСоб", 
+                   egryul_region = "Калужская область"))
+```
+
+### Сведения о кандидатах
+
+```{r}
+sud <- readxl::read_xlsx(paste0(dir0, "sudim_m.xlsx"), col_types = "text") |> 
+  filter(articles!="нет данных") %>% 
+  mutate(n_crimes = str_count(articles, "\\|") + 1) %>% 
+  mutate(across(starts_with("god"), 
+                ~ifelse(str_detect(.x, "^\\d{5}$"),  
+                        format(as.Date(as.numeric(.x), origin = "1900-01-01"), 
+                               "%d.%m.%Y"), .x))) |> 
+  mutate(across(articles, ~str_split(.x, " \\| "))) %>% 
+  unnest(c(articles), keep_empty = T) |> distinct() %>% 
+  mutate(arts = str_split(articles, enc2utf8("\\,\\s(?=ст\\.\\d)|\\|"))) %>% 
+  unnest(arts,  keep_empty = T) %>% 
+  mutate(arts = str_extract_all(arts, enc2utf8('ст.\\d+[^\\"]*\\"[^\\"]+\\"'))) %>% 
+  unnest(arts, keep_empty = T) %>% 
+  summarize(.by = c(personId, n_crimes),
+            arts = paste(sort(unique(arts)), collapse = " | ")) %>% 
+  distinct()
+
+cand_stat <- arrow::read_parquet(paste0(dir0, "deps_stat_final.parquet")) |> 
+  filter(!grepl("ЕДИНА", event, ignore.case = T)) %>% 
+  mutate(rayon2 = ifelse(rayon2 == "Село Березичский стеклозавод",
+                         enc2utf8("Козельский район"), rayon2)) |> 
+  mutate(rayon2 = ifelse(grepl(enc2utf8("Киров.кий"), rayon2), 
+                        enc2utf8("Кировский район"), rayon2)) %>% 
+  select(- n_crimes, -arts) |> 
+  left_join(sud, by = join_by(personId))
+```
+
+Определимся с терминами, которые будем использовать:
+
+- **выдвижение** -- участие кандидата в выборах в конкретный орган в отдельный год. Некоторые кандидаты могут иметь несколько выдвижений -- в один и тот же орган представительной власти в разные годы, или в разные органы в один год, а иногда и то, и другое. 
+
+- **представительные органы** - этим терминов будем обозначать всякого рода думы и собрания муниципальных образований, которые в соответствии с определением ст.130-133 Конституции РФ и положениями Федерального закона от 06.10.2003 N 131-ФЗ (ред. от 15.05.2024) "Об общих принципах организации местного самоуправления в Российской Федерации" формируются путем выборов, а также Законодательное собрание Калужской области, которые являются представительным и единственным законодательным органом государственной власти Калужской области. 
+
+Мы проанализировали сведения о **`r nrow(cand_stat)`** выдвижениях, захватив 3 волны выборов -- 2010, 2015, 2020, а также всё то, что происходило между ними (повторные и дополнительные выборы).
+
+```{r}
+dynamic_chart <- paste0(dir_charts, "dynamic.png") 
+if(!file.exists(dynamic_chart)){
+  gg <- cand_stat |> 
+  summarize(.by = year, 
+            "Количество уникальных кандидатов" = n_distinct(personId),
+            "Количество выдвижений" = n_distinct(url_event)) |>
+  pivot_longer(-1, names_to = "type", values_to = "n") |> 
+  ggplot() + 
+  geom_col(aes(x = year, y = n, fill = type)) + 
+  facet_wrap(~type, scales = "free", ncol = 1) + 
+  labs(title = "Выдвижения и кандидаты - выборы Калужской области 2009-23 гг.",
+       subtitle = "Данные: веб-сайты ЦИК России и vyboroteka.ru<br/>",
+       x = "Год выборов", y = NULL,
+       caption = regina_caption) +
+    scale_fill_manual(values = c('#FF420EFF', '#004586FF'))+
+    guides(fill = "none") + 
+  my_theme
+
+  ggsave(gg, filename=dynamic_chart, width=22, height = 16.5, units="cm", dpi=196)
+}
+knitr::include_graphics(dynamic_chart)
+```
+
+```{r}
+sud_stat_all <- cand_stat %>% 
+  summarize(.by = rayon2, 
+            n_places = n(), 
+            n_cands = n_distinct(personId))
+
+sud_stat_wsud <- cand_stat %>% 
+  filter(!is.na(n_crimes)) %>% 
+  mutate(recid = ifelse(n_crimes>1, personId, NA_character_)) %>% 
+  summarize(.by = rayon2, 
+            n_places_wsud = n(), 
+            n_places_wsud2 = sum(!is.na(recid)),
+            n_cands_wsud = n_distinct(personId, na.rm = T),
+            n_cands_wsud2 = n_distinct(recid, na.rm = T))
+
+sud_stat <- sud_stat_all %>% 
+  left_join(sud_stat_wsud, by = join_by(rayon2)) %>%
+  mutate(across(contains("wsud"), ~ifelse(is.na(.x), 0, .x))) %>% 
+  mutate(sh_place = n_places_wsud/n_places, 
+         sh_place2 = n_places_wsud2/n_places,
+         sh_cand = n_cands_wsud/n_cands, 
+         sh_cand2 = n_cands_wsud2/n_cands) %>% 
+  rename(egryul_region = rayon2) %>% 
+  mutate(egryul_region = gsub("г. ", "", egryul_region)) %>%
+  right_join(temp_grid, by = join_by(egryul_region)) %>% 
+  replace_na(list(value = 0)) %>% 
+  arrange(-sh_cand)
+```
+
+### Сведения о судимости кандидатов
+
+Сведения о кандидатах на сайте ЦИК России приведены в нестандартных форматах (*что дали, то и есть*). Поэтому нам пришлось потратить некоторое время на проверку и унификацию данных:
+
+а) если в сведениях о судимости присутствовали несколько дат осуждения или погашения судимости, мы прикладывали максимум усилий, чтобы разделить статьи для каждого осуждения и выделить эти даты.
+
+б) если в сведениях о судимости присутсвовали несколько статей с указанием частей или пунктов, мы мы прикладывали максимум усилий, чтобы разделить статьи и унифицировать статьи. 
+
+> Мы не занимались сбором иных сведений о кандидатах, их преступлениях и т.д.
+
+### Статистика 
+
+Сведения о выдвижениях в представительные органы сельских и городских поселений агрегированы до муниципальных районов (всего -- 24),  сведения о выдвижениях в Городское Собрание города Обнинск, Городскую Думу Калуги и Законодательное собрание Калужской области показаны как есть. Таким образом, агрегированные сведения представлены для 27 субъектах.  
+
+В таблице ниже для каждого из 27 субъектов оказано количество выдвижений (Выдв) и уникальных кандидатов (Канд), в том числе с судимостью (Суд) и с более чем 1 судимостью (Суд+).
+
+```{r}
+sud_stat %>% 
+  select("Субъект" = egryul_region, 
+         "Выдв" = n_places, "ВыдвCуд" = n_places_wsud, "ВыдвCуд+" = n_places_wsud2, 
+         "Канд" = n_cands, "КандСуд" = n_cands_wsud, "КандСуд+" = n_cands_wsud2) %>% 
+  datatable(rownames = F, escape = F,
+             caption = htmltools::tags$caption(style = table_caption_css, paste0(' ')), 
+          options = list(columnDefs = list(list(className = 'dt-center', targets = c(1:6)))))
+```
+
+Эти же цифры, но теперь в виде плиточной карты.
+
+```{r}
+tilemap_base <- function(data){
+  ggplot(data) + 
+    # boxes
+    geom_rect(aes(xmin=col-0.45, xmax=col+0.45, ymin=row-0.45, ymax=row+0.45, 
+                  fill=log2(value)+1), colour="grey60", linewidth=0.15) +
+    geom_rect(aes(xmin=col-0.45, xmax=col+0.45, ymin=row-0.1, ymax=row-0.45), 
+              fill="#716991") +
+    # texts
+    geom_text(data = data %>% filter(!code %in% c("040", "Калужская область")),
+              aes(x=col, y=row-0.28, label=code),
+              size=3, color="white", family = "RobotoCondensed")+
+    geom_label(data = data %>% filter(code %in% "040"),
+              aes(x=col, y=row-0.28, label= "КАЛУГА"), fill = NA,
+              label.padding = unit(0.12, "lines"),
+              label.r = unit(0.1, "lines"), label.size = 0.2,
+               size=3, color="white", family = "RobotoCondensed")+
+    geom_label(data = data %>% filter(code %in% "Калужская область"),
+              aes(x=col, y=row-0.28, label= code), fill = NA,
+              label.padding = unit(0.12, "lines"),
+              label.r = unit(0.1, "lines"), label.size = 0.2,
+               size=3, color="white", family = "RobotoCondensed")+
+    geom_text(aes(x=col, y=row+0.15, label= value_label), 
+              size=4.5, fontface="bold", color="grey30", 
+              family = "RobotoCondensed")+
+    scale_y_reverse(name = NULL)+ scale_x_continuous(name = NULL) + 
+    scale_fill_gradient(low="#FFF68C", high="#F26111",na.value = "white")+
+    coord_equal() + 
+    guides(fill = "none")+ 
+    my_theme_x
+}
+```
+
+```{r}
+data_tag <- "cands_share"    # <- will be used in the chart filenames!
+
+sh_place1 <- paste0(dir_charts, data_tag, "_kaluga_tiles.png")
+if(!file.exists(sh_place1)){
+  gg1 <- sud_stat |> 
+   rename(value = sh_place) %>% 
+   mutate(value_label = ifelse(value<0.00001, "0%", 
+                              scales::percent(value, accuracy = 0.1))) %>% 
+   tilemap_base() + 
+   labs(subtitle = paste0("Частота участия кандидатов с судимостью, %", 
+                         "<br/>(рассмотрено выдвижений - ", 
+                         scales::number(nrow(cand_stat), 
+                                        big.mark = ","), ")"))
+  
+gg2 <- sud_stat |> 
+  rename(value = sh_cand) %>% 
+ mutate(value_label = ifelse(value<0.00001, "0%", 
+                              scales::percent(value, accuracy = 0.1))) %>% 
+  tilemap_base() + 
+  labs(subtitle = paste0("Доля кандидатов с судимостью, %", 
+                         "<br/>(уникальных кандидатов - ", 
+                         scales::number(n_distinct(cand_stat$personId), 
+                                        big.mark = ","), ")"))
+
+ggsave(plot = gg1 + gg2 + 
+         plot_annotation(caption= regina_caption,
+           title = "Участие в выборах  кандидатов с судимостью (2009-2023)", 
+           theme = my_theme_x), 
+       filename=sh_place1, width=22, height = 12.5, units="cm", dpi=196)
+}
+knitr::include_graphics(sh_place1) 
+```
+
+Аналогичную карту построим для кандидатов с несколькими судимостями.
+
+```{r}
+data_tag <- "cands_share2"    # <- will be used in the chart filenames!
+sh_place2 <- paste0(dir_charts, data_tag, "_kaluga_tiles2.png")
+if(!file.exists(sh_place2)){
+
+  gg1 <- sud_stat |> 
+    rename(value = sh_place2) %>% 
+    mutate(value_label = ifelse(value<0.00001, "0%", 
+                                scales::percent(value, accuracy = 0.1))) %>% 
+    tilemap_base() + 
+    labs(subtitle = paste0("Частота участия кандидатов с 1+ судимостями, %", 
+                           "<br/>(рассмотрено выдвижений - ", 
+                           scales::number(nrow(cand_stat), 
+                                          big.mark = ","), ")"))
+    
+  gg2 <- sud_stat |> 
+    rename(value = sh_cand2) %>% 
+   mutate(value_label = ifelse(value<0.00001, "0%", 
+                                scales::percent(value, accuracy = 0.1))) %>% 
+    tilemap_base() + 
+    labs(subtitle = paste0("Доля кандидатов с 1+ судимостями, %", 
+                           "<br/>(уникальных кандидатов - ", 
+                           scales::number(n_distinct(cand_stat$personId), 
+                                          big.mark = ","), ")"))
+  
+  ggsave(plot = gg1 + gg2 + 
+           plot_annotation(
+             caption= regina_caption,
+             title = "Участие в выборах  кандидатов с 1+ судимостями (2009-2023)", 
+             theme = my_theme), 
+         filename = sh_place2,  
+            width = 22, height = 12.5, units="cm", dpi=196
+         ) 
+}
+knitr::include_graphics(sh_place2) 
+```
+
+### О судимостях кандидатов
+
+> Кандидат, выдвигаясь на выборах, обязан указывать информацию о своей судимости, даже если она снята или погашена. Сведения об этом должны будут обязательно указываться в бюллетене и публиковаться на информационных стендах, где вывешивается информация о кандидате.[Сведения о судимости кандидатов будут доступны избирателям на выборах. РИА Новости. 19.02.2014](https://ria.ru/20140219/995752738.html){target="_blank"}
+
+> Кандидат вправе не предоставлять данные только в случае декриминализации статьи, по которой он был осужден. [КС РФ: при регистрации на выборах необходимо сообщать о судимости даже при амнистировании. ТАСС. 05.04.2016](https://tass.ru/politika/3177664){target="_blank"}
+
+> Сокрытие данных о судимости в последние годы стало достаточно частой причиной для отказа в регистрации: по данным ЦИК, в 2014 г. органы МВД выявили 240 кандидатов от 28 партий, представивших недостоверные сведения о судимости. Проблемы были у всех партий, подтверждает руководитель юридической службы КПРФ Вадим Соловьев: требование указывать судимость не вызывает возражений, конфликты возникали из-за отсутствия четких и однозначных правил. ["Избиратели вправе знать о судимости кандидатов даже в случае амнистии". Газета "Ведомости". 06.04.2016](https://www.vedomosti.ru/politics/articles/2016/04/06/636604-sudimosti-kandidatov){target="_blank"}
+
+> Законодатель обязал кандидатов в своих заявлениях о согласии баллотироваться указывать сведения о когда-либо полученных судимостях при наличии , – сказала Председатель ЦИК России. – А если судимость снята или погашена, необходимо представить сведения о дате снятия или погашения судимости. За три с половиной года действия этой нормы, – продолжила Элла Памфилова, – около 250 кандидатов не были допущены на выборы разных уровней, так как на день голосования не прошло 10 или 15 лет с момента снятия или погашения тяжких или особо тяжких судимостей соответственно. Или имелись судебные решения по их экстремистской деятельности». ["Разъяснение ЦИК России о действующих нормах по ограничению права быть избранными лиц, имевших судимость". Сайт ЦИК России. 15.11.2017](http://www.cikrf.ru/news/cec/23508/){target="_blank"}
+
+> Около 2,2% решивших баллотироваться 9 сентября в региональные и муниципальные депутаты имеют судимость. [Каждый 50-й: сколько претендентов в депутаты заявили о своей судимости. РБК. 04.09.2018](https://www.rbc.ru/politics/04/09/2018/5b87bc129a7947d592b5a193){target="_blank"}
+
+В Калужской области доля кандидатов с судимостью в выборах 2009-2023 гг. -- **`r scales::percent(171/n_distinct(cand_stat$personId),0.01)`** (в целом, как по стране).
+
+### Анализ статей УК
+
+В таблице представлена статистика по статьям УК. Статьи разных кодексов (РФ, СССР и некольких других стран) объединены в столбце "Статьи" и там, где это возможно, отнесены к разделам и главам действующего УК РФ. 
+
+```{r}
+statyi_m <- readxl::read_xlsx(paste0(dir0, "sudim_articles.xlsx")) |> 
+  select(razdel, glava, article, unified_cat) |> 
+  distinct()
+
+statyi <- cand_stat %>% filter(!is.na(n_crimes)) %>%  
+  mutate(st = str_split(arts, "\\|")) %>% 
+  unnest(st, keep_empty = T) %>% 
+  mutate(st = str_squish(st)) |> 
+  mutate(st = str_replace_all(st, 
+                              enc2utf8("(ст.[\\d]+)(.+?)(УК [^\\s]+)(.+)"), 
+                              "\\1 \\3|\\4")) |>
+  separate(st, c("article", "descr"),  "\\|") |> 
+  mutate(descr = str_squish(descr)) |>
+  replace_na(list(article = "xxx")) |> 
+  left_join(statyi_m, by = join_by(article))
+
+statyi1 <- statyi |> 
+  group_by(razdel, glava) |> 
+  arrange(desc(grepl("УК РФ", article)), article) |> 
+  summarize(articles = paste(unique(article), collapse = "; "),
+            n_cands = n_distinct(personId), 
+            n_elections = n_distinct(url_event)) |> 
+  arrange(razdel, glava, articles)
+
+statyi2 <- statyi |> 
+  group_by(razdel, glava, unified_cat) |> 
+  arrange(desc(grepl("УК РФ", article)), article) |> 
+  summarize(articles = paste(unique(article), collapse = "; "),
+            n_cands = n_distinct(personId), 
+            n_elections = n_distinct(url_event)) |> 
+  ungroup() %>% 
+  arrange(razdel, glava, articles)
+
+statyi2 |> 
+  mutate(razdel = gsub("\\.\\.\\. Российской Федерации", "...", razdel)) |> 
+  mutate(unified_cat = ifelse(is.na(glava), paste0(unified_cat, " (", razdel, ")"), unified_cat)) |> 
+  mutate(razdel = ifelse(is.na(glava), NA_character_, razdel)) |> 
+  mutate(unified_cat = ifelse(unified_cat=="NA (NA)", "Статья неизвестна", unified_cat)) |>
+  arrange(-n_elections) |> 
+  DT::datatable(rownames = F, 
+                caption = htmltools::tags$caption(style = table_caption_css, paste0(' ')), 
+          options = list(pageLength = 5, 
+                         columnDefs = list(list(className = 'dt-center', targets = c(4:5)),
+                                      list(width = '180px', targets = c(0,1)),
+                                      list(width = '120px', targets = c(3)),
+                                      list(width = '350px', targets = c(2)))),
+          colnames = c("Раздел" = "razdel", "Глава" = "glava", 
+                       "Унифицированное название статьи" = "unified_cat", 
+                       "Статьи" = "articles", 
+                       "Канд" ="n_cands", "Выдв" ="n_elections"))
+```
+
+> Самые частые статьи -- Кража и Хулиганство, но спектр впечатляет -- встречаются грабёж, побои, умышленное причинение тяжкого вреда здоровью, изнасилование, психологическое принуждение... именно по этой причине **стоит ходить на все выборы и смотреть за что так предлагают голосовать**. 
+
+***
+
+Нравятся наши материалы? 👉 ТГ-канал [Regina Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"}  
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Выборы Калужской области (Часть 1. Кандидаты с судимостью). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-elections-part1-sudimost/. - Дата публикации: 30 июня 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'ggimage', 'knitr', 'magick', 'sf', 'rmarkdown', 'scales', 'showtext', 'sysfonts', 'patchwork', 'ggtext')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Ooms J (2023). _magick: Advanced Graphics and Image-Processing in R_. R package version 2.8.2,
+<https://CRAN.R-project.org/package=magick>.
+
+Pebesma E (2018). “Simple Features for R: Standardized Support for
+Spatial Vector Data.” _The R Journal_, *10*(1), 439-446. doi:
+10.32614/RJ-2018-009 (URL: https://doi.org/10.32614/RJ-2018-009),
+<URL: https://doi.org/10.32614/RJ-2018-009>.
+
+Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.2.0,
+<https://CRAN.R-project.org/package=patchwork>.
+
+Qiu Y, details. aotifSfAf (2022). _sysfonts: Loading Fonts into R_. R package version 0.8.8,
+<https://CRAN.R-project.org/package=sysfonts>.
+
+Qiu Y, details. aotisSfAf (2023). _showtext: Using Fonts More Easily in R Graphs_. R package version 0.9-6,
+<https://CRAN.R-project.org/package=showtext>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN
+978-3-319-24277-4, <https://ggplot2.tidyverse.org>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2023). _readr: Read Rectangular Text Data_. R package version 2.1.4,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023). _tidyr: Tidy Messy Data_. R package version 1.3.0,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Wilke C, Wiernik B (2022). _ggtext: Improved Text Rendering Support for 'ggplot2'_. R package version
+0.1.2, <https://CRAN.R-project.org/package=ggtext>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
+
+Yu G (2023). _ggimage: Use Image in 'ggplot2'_. R package version 0.3.3,
+<https://CRAN.R-project.org/package=ggimage>.
+
+
