@@ -42,12 +42,21 @@ output:
 ### ДТП
 
 > 1. Статистика ДТП https://dtp-stat.ru/?center=55.09723963686176%3A36.60650628383811 [geojson]
+>
+> 2. Статистика ДТП 2015-2024 https://tochno.st/datasets/traffic_accidents [csv, xlsx]
 
 ### Закупки 
 
 > 1. Портал "Малые закупки" Калужской области: https://mimz.admoblkaluga.ru/Menu/Page/1 [XLSX]
 >
-> 2. ГосЗакупки: https://zakupki.gov.ru/epz/main/public/home.html []
+> 2. ГосЗакупки: https://zakupki.gov.ru/epz/main/public/home.html
+
+### Трудозатраты выпускников
+
+> 1. Трудоустройство и зарплаты выпускников по направлениям подготовки 2019-2023: https://tochno.st/datasets/graduates_fields [csv, xlsx]
+>
+> 2. Трудоустройство и зарплаты выпускников по образовательным организациям 2019-2023: https://tochno.st/datasets/graduates_university [csv, xlsx]
+
 
 ### Государственный надзор
 
@@ -75,6 +84,8 @@ output:
 > 2. Картелескоп: https://tenderscope.org/cartels.php?region=40 
 >
 > 3. Декларатор: https://declarator.org/ [API]
+>
+> 4. Выборотека: https://vyboroteka.org
 
 ### Обнинск
 
