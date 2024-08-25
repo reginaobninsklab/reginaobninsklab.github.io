@@ -1,0 +1,409 @@
+---
+title: "Выборы Калужской области (Часть 2. Гастролирующие кандидаты)"
+description: |
+  Из массива сведений о выборах в представительные органы муниципальных образований Калужской области в период с 2009 по 2024 год выделены кандидаты, выдвигавшиеся в разных населенных пунктах и районах.
+date: 2024-08-20
+categories:
+  - калужская область
+  - выборы
+  - депутаты
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/table_demo.png
+draft: null
+citation: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "ggplot2") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+knitr::knit_hooks$set(
+  inline = function(x) {
+    if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".", decimal.mark = ",") }
+    })
+
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+dir0 <- paste0(Sys.getenv("OneDrive"), "/ODCity/")
+dir <- paste0(dir0, "deps/")
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 3, lengthMenu = c(3, 5, 10, 15, 20, 50), dom = "Bflrtip",
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+```{r data}
+cand_stat <- arrow::read_parquet(paste0(dir, "deps_stat_part1.parquet")) |> 
+  filter(!grepl("ЕДИНА", event, ignore.case = T))
+
+cand24 <- left_join(
+  readxl::read_xlsx(paste0(dir, "2024/2024_candidates_.xlsx"), 
+                    sheet = "cands", col_types = "text"),
+  readxl::read_xlsx(paste0(dir, "2024/2024_candidates_.xlsx"), 
+                    sheet = "events", col_types = "text"),
+  by = join_by(url_event)
+  ) |> select(any_of(c(colnames(cand_stat)))) |> 
+  left_join(cand_stat[,c("cand_name", "personId", "bdate")] |> unique(), 
+            by = c("cand_name", "bdate")) |> relocate(personId) |> 
+  mutate(personId = ifelse(!is.na(personId), personId, 
+                           sapply(paste0(cand_name,bdate), 
+                                  function(x) digest::digest(x, algo = "md5")))) |> 
+  mutate(across(where(is.character), ~str_squish(enc2utf8(.x))))
+
+  cand_stat <- cand_stat |> bind_rows(cand24)
+
+cand_zak <- cand_stat |> filter(elect_level == "Региональный")
+cand_mun <- cand_stat |> filter(elect_level != "Региональный") |> 
+    mutate(rayon2 = str_squish(gsub(enc2utf8("[[:space:]\\s]*район"), "", rayon2))) |> 
+    mutate(.by = personId, n_rayons = n_distinct(rayon2, na.rm = T)) |> 
+    mutate(bdate = as.numeric(bdate), 
+           date = as.Date(date)) 
+
+sud <- readxl::read_xlsx(paste0(dir, "sudim_m.xlsx"), col_types = "text") |> 
+  filter(articles!="нет данных") %>% 
+  mutate(n_crimes = str_count(articles, "\\|") + 1) %>%
+  select(personId, n_crimes) |>  
+  distinct()
+```
+
+```{r categories}
+cat3_gast <- cand_mun |> filter(n_rayons > 1) |> 
+  arrange(personId, date) |> 
+  select(cand_name, personId, bdate, place_of_living, education, main_place_of_work, position, 
+         date, year, rayon2, party, reg_subject, elect_level, gov_body, url_cand) |> 
+  mutate(.by = personId, n_places = n_distinct(reg_subject, na.rm = T)) |> 
+  mutate(.by = personId, n_rayons = n_distinct(rayon2, na.rm = T)) |> 
+  left_join(sud, by = join_by(personId))
+
+cat2_local <- cand_mun |> 
+  filter(n_rayons == 1 & !grepl("район", reg_subject)) |>
+  mutate(.by = personId, n_places = n_distinct(reg_subject, na.rm = T)) |> 
+  filter(n_places > 1) |> 
+  arrange(personId, date) |> 
+  select(cand_name, personId, bdate, place_of_living, education, main_place_of_work, position, 
+         date, year, rayon2, party, reg_subject, elect_level, gov_body, url_cand) |> 
+    mutate(.by = personId, n_places = n_distinct(reg_subject, na.rm = T)) |> 
+  mutate(.by = personId, n_rayons = n_distinct(rayon2, na.rm = T)) |> 
+  left_join(sud, by = join_by(personId))
+
+cat1_mono <- cand_mun |> 
+  filter(!personId %in% cat2_local$personId) |> 
+  filter(!personId %in% cat3_gast$personId) |> 
+  arrange(personId, date) |> 
+  select(cand_name, personId, bdate, place_of_living, education, main_place_of_work, position, 
+         date, year, rayon2, party, reg_subject, elect_level, gov_body, url_cand) |> 
+  left_join(sud, by = join_by(personId))
+```
+
+```{r functions}
+text_colorizer <- function(text, text_color, text_size){
+  paste0("<span style='font-family:\"Roboto Condensed\"; background-color: ", text_color, 
+         "; padding: 0.2em 0.4em; border-radius: 10px; font-size: ", text_size ,
+         "pt'>", text, "</span>")}
+
+text_colorizer2 <- function(text, text_color, text_size){
+  paste0("<span style='font-family:\"Roboto Condensed\"; background-color: ", text_color, 
+         "; padding: 0.2em 0.4em; border-radius: 2px; font-size: ", text_size ,
+         "pt'>", text, "</span>")}
+
+text_resizer <- function(text, text_size){
+  paste0("<span style='font-family:\"Roboto Condensed\"; font-size: ", text_size ,"pt'>", text, "</span>")}
+
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+rayon_colors <- tibble(rayon2 = unique(cand_mun$rayon2),
+                       color_rayon = c("#00B7FF", "#004DFF", "#00FFFF", "#826400", "#580041", 
+                                       "#FF00FF","#00FF00", "#C500FF","#B4FFD7",  "#FFCA00", 
+                                       "#969600", "#B4A2FF", "#C20078", "#0000C1", "#FF8B00",
+                                       "#FFC8FF", "#666666", "#FF0000", "#CCCCCC", "#009E8F",
+                                       "#D7A870", "#8200FF", "#960000", "#BBFF00","#FFFF00", "#006F00"))
+```
+
+Продолжаем исследование данных о выборах в представительные органы муниципальных образований Калужской области.  В [первой части](https://reginaobninsklab.github.io/posts/kaluga-elections-part1-sudimost/){target="_blank"} мы проанализировали сведения о судимостях кандидатов, показав наиболее частые статьи УК и распределение по муниципальным районам и городам областного значения. 
+
+В этой статье мы займемся не менее интересным феноменом -- гастролирующими кандидатами. Скажем, живет в некотором селе Щепкино некто Х и решает стать депутатом, но по каким-то причинам выдвигает свою кандидатуру не только в Щепкино, но также в соседских Опилкино, Стружкино и Дровкино. На что он рассчитывает?
+
+Бывает, конечно, что слава человека обгоняет...
+
+>Пришла к Люшке большая слава. Газеты пишут про Люшку. Радио говорит про Люшку. Кинохроникеры снимают фильмы про Люшку. Журнал Огонек печатает на обложке Люшкин портрет. Красноармейцы пишут, хотят жениться. 
+>
+>*(из книги "Жизнь и необычайные приключения солдата Ивана Чонкина" В.Н.Войновича).*
+
+...но всё же народ склонен на всех засланных и пришлых смотреть искоса, а привечают -- своих.
+
+>Из дверцы выдвинулся сначала огромный зад, обтянутый синим, а затем показалась и вся обладательница зада, крупная женщина в бостоновом костюме, белой блузке и орденом на левой груди. 
+>
+>– Люшка, Люшка,– сухим листом зашелестело в толпе.
+>
+>– Здорово, землячки!– громко сказала приезжая и сквозь почтительно расступившуюся публику направилась к крыльцу.
+>
+>*(из книги "Жизнь и необычайные приключения солдата Ивана Чонкина" В.Н.Войновича).*
+
+Но всё таки депутатов не просто так называют "народными избранниками" -- это выражение соответствует установленному Конституцией РФ порядку отправления гражданами своих властных полномочий. Последние делегируются депутатам представительных органов, которые, в свою очередь, и так далее, наверх.... 
+
+Простая логика этих взаимоотношений понятна каждому гражданину РФ, а хорошо начитанные наши соотечественники могут вспомнить одну их самых красивых фантазий известного строителя государств нового типа:
+
+> Во всех передовых странах принято и введено, что только выборные могут говорить государственным законодательным языком. Но, давая право призывать для ведения государственной машины, буржуазия умышленно не дала права отзыва -- права действительного контроля. Однако во все исторические революционные времена, через все изменения конституций красной нитью проходит разрешение права отзыва. Демократическое представительство существует и признано везде, где есть парламентский строй, но это право представительства ограничено тем, что народ имеет право раз в два года голосовать, но часто оказывается, что его голосами прошли те, кто помогает его же подавлять, а демократического права сместить, принять действенные меры пресечения — народ не имеет. В странах же, где уцелели старые демократические традиции, как, например, в некоторых кантонах Швейцарии и некоторых штатах Америки — уцелело и демократическое право отзыва. 
+>
+> *(из статьи "ДОКЛАД О ПРАВЕ ОТЗЫВА НА ЗАСЕДАНИИ ВЦИК 21 НОЯБРЯ (4 ДЕКАБРЯ) 1917 г.) 35 том ПСС В.И. Ленина*
+
+И потому столь разителен диссонанс от встречи с персонажами, которые делают попытку гастролировать по населенным пунктам области в попытке получить заветный мандат. 
+
+Мы считаем, что подобные изъяны отечественной избирательной системы заслуживают анализа и описания.
+
+### Данные
+
+Сведения о кандидатах и выборах в представительные органы Калужской области мы собрали с сайтов Vyboroteka.org и ЦИК России (исключительно в исследовательских целях). Для новой статьи к имеющимся сведениям о выборах 2009-2023 гг. мы добавили данные о кандидатах, которые подавали в Калужский избирком заявки на участие в выборах 2024 года (выборка содержит сведения обо всех выдвиженцах, в том числе тех, кто получил отказ в регистрации).
+
+Данные содержат сведения приблизительно о  **`r n_distinct(cand_stat$personId)`** кандидатах, которые баллотировались в различные органы муниципальной и региональной власти в период с `r min(cand_stat$date)` по `r max(cand_stat$date)` (всего -- **`r nrow(cand_stat)`** выдвижения). Приблизительно потому, что Vyboroteka.org использует свой собственный индентификатор personId, который (по нашим наблюдениям) не всегда точно соответствует одному физическому лицу.
+
+Нас прежде всего интересуют местные выборы, где предполагается, что голосующие знают своего "избранника" не по портрету на заборе, поэтому мы игнорировали выдвижения кандидатов на выборах:
+
+а) за пределами Калужской области,
+
+б) в Законодательное собрание Калужской области. 
+
+На наш взгляд, и в первом, и во втором случае, большая часть выдвиженцев участвуют не по зову сердца, а по зову партии или "кошелька" с заранее предопределенной задачей -- выдвинуться / подвинуться / продвинуться. 
+
+***
+
+### Категории кандидатов
+
+Для изучения феномена гастролирующих выдвиженцев мы решили разделить всех кандидатов в депутаты на следующие категории:  
+
+**Категория 1. "Свои кандидаты"** -- баллотировались в представительный орган только 1 населенного пункта, но также мог участвовать в выборах в в представительный орган района, к которому этот населенный пункт принадлежит. Пример: кандидат участвовал в выборах в Городскую Думу г. Балабаново и в Районное Собрание Боровского района Калужской области. 
+
+**Категория 2. "Районные авторитеты" ** -- баллотировались в представительные органы более чем 1 населенного пункта, но в пределах 1 района (Таблица 2). Пример: кандидат участвовал в выборах в выборах в сельские думы д. Озеро и д. Рыляки Юхновского муниципального района Калужской области.
+
+**Категория 3. "Областные гастролёры" ** -- выдвигались на выборах в представительные органы населенных пунктов разных районов Калужской области (Таблица 3). 
+
+```{r}
+bind_rows(cat1_mono |> mutate(cat = "К1. Свои кандидаты"),
+          cat2_local |> mutate(cat = "К2. Районные авторитеты"),
+          cat3_gast |> mutate(cat = "К3. Областные гастролёры")
+) |>
+  mutate(crime_tag = ifelse(!is.na(n_crimes), personId, NA_character_)) |>
+  mutate(work = ifelse(grepl("безработ|не работ|неработающ", position), personId , NA_character_)) |>
+  mutate(party = ifelse(is.na(party), "Сведения осутствуют", party)) |>
+  mutate(.by = c(cat, party), n_cat_party = n()) |>
+  mutate(party  = paste0(party, "::", n_cat_party)) |>
+  arrange(cat, -n_cat_party) |>
+  summarize(.by = cat,
+            n_events = n_distinct(url_cand),
+            n_persons = n_distinct(personId),
+            w_crimes = n_distinct(crime_tag, na.rm = T),
+            no_work = n_distinct(work, na.rm = T),
+            party_share = paste(unique(party), collapse = "|")) |>
+  mutate(party_share = str_split(party_share, "\\|")) |>
+  unnest(party_share) |>
+  separate(col = "party_share", into = c("party", "n"), sep = "::", fill = "right") |>
+  mutate(n = as.numeric(n)) |>
+  group_by(cat) |> filter(row_number()<6) |> ungroup() |>
+  mutate(w_crimes = w_crimes/n_persons,
+         no_work = no_work/n_persons,
+         party_share = scales::percent(n/n_events, 1)) |>
+  unite(c("party", "party_share"), col = "parties", sep = "&nbsp;-&nbsp;") |>
+  mutate(.by = cat, parties = paste(parties, collapse = "<br/>")) |>
+  # mutate(parties = text_resizer(parties, 10)) |>
+  select(`Категории<br/>кандидатов` = cat, "&#x1F469;&#x1F468;<br/>(всего)" = n_persons,
+         `% &#x1F469;&#x1F468;<br/>с&nbsp;судимостью` = w_crimes,
+         `% &#x1F469;&#x1F468;<br/>без&nbsp;места&nbsp;работы` = no_work,
+         `Количество<br/>выдвижений` = n_events,
+         `Выдвигались&nbsp;от... <br/>(топ-5)` = parties) |> 
+  distinct() |>
+  DT::datatable(rownames = F, escape = F, 
+                options = list(dom = "Btip", 
+                                 deferRender = TRUE, ordering = TRUE, autoWidth = TRUE, 
+                               columnDefs = list(
+                                 list(width = '140px', targets = c(5)),
+                                 list(width = '50px', targets = c(0:4)))),
+                caption = htmltools::tags$caption(style = table_caption_css,
+                  'Таблица 1. ', htmltools::em('Основные характеристики групп (категорий) кандидатов в депутаты представительных органов муниципальных образований Калужской области, баллотировавшиеся в период с 2009.01 по 2024.09. Принципы категорирования см. в тексте.'))) |> 
+  DT::formatPercentage(c(3:4), digits = 1) |> 
+  DT::formatRound(c(2,5), digits = 0, mark = ".")
+  
+```
+
+***
+
+### К2. Районные авторитеты
+
+Как следует из таблицы 1 к категории 2 отнесены **`r n_distinct(cat2_local$personId)`** кандидатов, на долю которых приходится **`r scales::percent(nrow(cat2_local)/nrow(cand_mun), 0.1)`** выдвижений. Среди этих кандидатов каждый 19-ый имеет судимость, каждый 6-ой в графе "Занимаемая должность (или род занятий)" хотя бы единожды заявлял об отсутствии работы. 30% выдвижений этих кандидатов поддержаны ЛДПР.           
+
+```{r, layout="l-body"}
+cat2_local |> 
+ left_join(rayon_colors, by = "rayon2") |>
+ mutate(cand_name = str_remove(cand_name, "^[^\\s]+\\s"),
+        cand_name = paste0(cand_name, "<br/>", "(", bdate, ")")) |> 
+  mutate(rayon = paste0(text_colorizer2("&nbsp;", color_rayon, 9), "&nbsp;", text_resizer(rayon2, 11))) |> 
+  mutate(url = paste0("(", make_url(url_cand, "&#8680;"),")")) |> 
+  mutate(place = paste0(text_colorizer("&nbsp;&nbsp;", color_rayon, 4), "&nbsp;", 
+                        text_resizer(reg_subject, 11), "&nbsp;", url)) |>
+  summarize(.by = c(cand_name, personId, n_places, year),
+            rayon = paste(unique(rayon), collapse = "<br/>"),
+            place = paste(unique(place), collapse = " ")) |> 
+  mutate(year = paste0("<b>", year, "</b>")) |> 
+  arrange(-n_places, cand_name, desc(year)) |> 
+  unite(c("year", "place"), col = "place", sep = ":  ") |> 
+  summarize(.by = c(cand_name, personId), 
+            across(everything(), ~paste(unique(.x), collapse = "<br/>"))) |> 
+  select(`ИО кандидата<br/>(год рожд.)` = cand_name, `НП` = n_places, `МР КО` = rayon, 
+         `Год и место выдвижения<br/>(&#8680; гиперссылка на ЦИК России)` = place) |> 
+  DT::datatable(rownames = F, escape = F, 
+                caption = htmltools::tags$caption(
+                  style = 'caption-side: bottom; text-align: left;',
+                  'Таблица 2. ', htmltools::em('Кандидаты в депутаты представительных органов муниципальных образований Калужской области, баллотировавшиеся в период с 2009.01 по 2024.09 более чем в 1 населенном пункте, но в пределах одного района. Сокращения: ИО - имя и отчество (фамилии скрыты), НП - число населённых пунктов, где выдвигался кандидат, МР КО - муниципальный район Калужской области. Поисковое окно позволяет выполнить поиск по всем столбцам (ИО или название населённого пункта) и возвращает отфильтрованные строки.')
+  ),
+  options = list(autoWidth = TRUE, pageLength = 5,
+    columnDefs = list(list(width = '5px', targets = c(1)),
+                           list(width = '100px', targets = c(0,2)),
+                           list(width = '500px', targets = c(3)))))
+```
+
+***
+
+### К3. Областные гастролёры
+
+Как следует из таблицы 1 к категории 3 отнесены **`r n_distinct(cat3_gast$personId)`** кандидатов, на долю которых приходится **`r scales::percent(nrow(cat3_gast)/nrow(cand_mun), 0.1)`** выдвижений. Среди этих кандидатов каждый 16-ый имеет судимость, каждый 5-ый в графе "Занимаемая должность (или род занятий)" хотя бы единожды заявлял об отсутствии работы. 40% выдвижений этих кандидатов поддержаны ЛДПР.
+
+```{r, layout="l-body"}
+cat3_gast |> 
+  left_join(rayon_colors, by = "rayon2") |> 
+  mutate(cand_name = str_remove(cand_name, "^[^\\s]+\\s"),
+         cand_name = paste0(cand_name, "<br/>", "(", bdate, ")")) |> 
+  mutate(rayon = paste0(text_colorizer2("&nbsp;", color_rayon, 9), "&nbsp;", text_resizer(rayon2, 11))) |> 
+  mutate(url = paste0("(", make_url(url_cand, "&#8680;"),")")) |> 
+  mutate(place = paste0(text_colorizer("&nbsp;&nbsp;", color_rayon, 4), "&nbsp;", 
+                        text_resizer(reg_subject,11), "&nbsp;", url)) |>
+  mutate(.by = c(cand_name, personId, n_rayons, n_places, year),
+            place = paste(unique(place), collapse = " ")) |> 
+  mutate(year = paste0("<b>", year, "</b>")) |> 
+  arrange(-n_rayons, -n_places, cand_name, desc(year)) |> 
+  unite(c("year", "place"), col = "place", sep = ":  ") |> 
+  summarize(.by = c(cand_name, personId, n_rayons, n_places), 
+            across(everything(), ~paste(unique(.x), collapse = "<br/>"))) |> 
+  select(`ИО кандидата<br/>(год&nbsp;рожд.)` = cand_name, `Р` = n_rayons, 
+         `НП` = n_places, `МР/ГОЗ КО` = rayon, 
+          `Год и место выдвижения<br/>(&#8680; гиперссылка на ЦИК России)` = place) |> 
+  DT::datatable(rownames = F, escape = F, 
+                caption = htmltools::tags$caption(
+                  style = 'caption-side: bottom; text-align: left;',
+                  'Таблица 3. ', htmltools::em('Кандидаты в депутаты представительных органов муниципальных образований Калужской области, баллотировавшиеся в период с 2009.01 по 2023.09 более чем в 1 населенном пункте и более чем в 1 районе или ГОЗ. Сокращения: ИО - имя и отчество (фамилии скрыты), Р - число муниципальных районов или городов областного значения Калужской области, где выдвигался кандидат, НП - количество населённых пунктов, где выдвигался кандидат, МР/ГОЗ КО - муниципальный район или город областного значения Калужской области. Поисковое окно позволяет выполнить поиск по всем столбцам (ИО или название населённого пункта) и возвращает отфильтрованные строки.')),
+  options = list(columnDefs = list(list(width = '5px', targets = c(1,2)))))
+```
+
+***
+
+### Наблюдения 
+
+> Из числа кандидатов в депутаты, выдвигавшихся в представительные органы муниципальных образований Калужской области в 2009-2023 гг., около 5.3% выдвигались в представительные органы разных населенных пунктов (2% -- в представительные органы населенных пунктов, находящихся в разных муниципальных районах). 
+>
+> В сравнении с общей выборкой кандидатов среди гастролирующих больше (а) лиц с судимостью, (б) безработных, (в) выдвинутых ЛДПР.
+
+***
+
+Нравятся наши материалы? 👉 ТГ-канал [Regina Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"}  
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Выборы Калужской области (Часть 2. Гастролирующие кандидаты). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-elections-part2-placeholders/. - Дата публикации: 16 августа 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

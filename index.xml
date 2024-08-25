@@ -7,7 +7,18 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 30 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Выборы Калужской области (Часть 2. Гастролирующие кандидаты)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-elections-part2-placeholders</link>
+      <description>Из массива сведений о выборах в представительные органы муниципальных образований Калужской области в период с 2009 по 2024 год выделены кандидаты, выдвигавшиеся в разных населенных пунктах и районах.</description>
+      <category>калужская область</category>
+      <category>выборы</category>
+      <category>депутаты</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-elections-part2-placeholders</guid>
+      <pubDate>Tue, 20 Aug 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-elections-part2-placeholders/images/table_demo.png" medium="image" type="image/png" width="1380" height="843"/>
+    </item>
     <item>
       <title>Выборы Калужской области (Часть 1. Кандидаты с судимостью)</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-elections-part1-sudimost</link>
