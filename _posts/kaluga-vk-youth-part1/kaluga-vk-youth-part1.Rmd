@@ -1,0 +1,1018 @@
+---
+title: "Интересы подростков Калужской области в социальной сети VK (Часть 1)"
+description: |
+  Исследование популярности сообществ в социальной сети VK на основании анализа профилей 5.990 подростков (14-20 лет) из 33 населённых пунктов Калужской области. Охватывает 559.115 VK-сообществ (уникальных - 142.980), для которых были построены рейтинги популярности.
+date: 2024-08-28
+categories:
+  - калужская область
+  - VK
+  - социология
+  - ВКонтакте
+  - молодёжь
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/vk_pick.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT", "ggplot2", "showtext", "ggtext", "highcharter") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/vk_adols/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), dom = "Bflrtip",
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+numeros_pattern <- "8\\s\\(\\d{3}\\)[0-9\\s\\-]+\\d|\\+7\\s*9[0-9\\s\\-]+"
+urls_pattern <- enc2utf8("[^\\s]+\\.(me|рф|ru|com|net|su|org)[\\/]*[^\\s]*")
+dirty <- regex(pattern = read_rds(paste0(dir, "dirty_words.RDS")), multiline = T, dotall = T, ignore_case = T) |> 
+  enc2utf8()
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+showtext::showtext_opts(dpi = 192)
+local_font_folder <- paste0(Sys.getenv("OneDrive"), "/gfonts/")
+font_add("RobotoC", regular = paste0(local_font_folder, 
+                                     "Roboto_Condensed/RobotoCondensed-Regular.ttf"))
+
+font_add("Sofia", 
+         regular = paste0(local_font_folder,
+                          "Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf"),
+         bold = paste0(local_font_folder,
+                          "Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf"))
+sysfonts::font_add("fa_brands",
+         regular = paste0(local_font_folder, 
+                         "/fontawesome/otfs/Font Awesome 6 Brands-Regular-400.otf"))
+sysfonts::font_add("fa_solid", 
+         regular = paste0(local_font_folder, 
+                         "/fontawesome/otfs/Font Awesome 6 Free-Solid-900.otf"))
+wrap_fa_brands <- function(text, color, font_size){
+  paste0("<span style='font-family:\"fa_brands\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")}
+wrap_fa_solids <- function(text, color, font_size){
+  paste0("<span style='font-family:\"fa_solid\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")}
+wrap_text <- function(text, color, font_size){
+  paste0("<span style='font-family:\"Sofia\"; font-size:", font_size, "pt; color:", color, ";'>", text, "</span>")}
+
+regina_caption <- paste0(
+  "<span style='font-family:\"fa_brands\"; font-size:\"14pt\"; color:#827C82;'>&#xf2c6;</span>  ", 
+  "<span style='font-family:\"Sofia\"; color:#827C82; font-size:\"14pt\"'> Regina_Lab</span>",
+  "<span style='font-family:\"Sofia\"; color:#827C82; font-size:\"24pt\"'> </span>",
+  "<br/>", wrap_fa_brands("&#xf25e;&#xf4e7;", color = "#827C82;", 10), " ",
+  wrap_text(paste0(" Иллюстрация доступна на условиях открытой лицензии Creative Commons CC BY 4.0.",
+  "<span> &nbsp;</span>",
+  " Шрифты: Font Awesome Free \\(SIL OFL 1.1\\), Sofia Sans Condensed \\(SIL OFL 1.1\\), ",
+  "Roboto Condensed \\(Apache License 2.0\\)."), color = "#827C82;", 9))
+
+showtext_auto()
+
+my_theme <- theme(text = element_text(family = "RobotoC", size = 14),
+                  axis.line = element_line(),  axis.text=element_text(), axis.title = element_text(),
+  plot.background = element_rect(fill = "white", colour = NA),
+  panel.background = element_rect(fill = "white"),
+  panel.border = element_rect(fill = NA, colour = "white"),
+  panel.grid.minor = element_blank(), panel.grid.major = element_line(linewidth = 0.2),
+  plot.margin = unit(c(t=0.2,r=0.1,b=0.1,l=0.1), "cm"),
+  plot.title.position = "plot", 
+  plot.caption.position = "plot",
+  plot.title = element_text(size = 20, hjust = 0, margin = margin(0,0,0,0,'mm'),
+                            face = "bold", colour = "#232323", family = "Sofia"), 
+  plot.subtitle = element_markdown(size = 11, face = "plain", halign = 0, hjust = 0, margin = margin(1,0,2,0,'mm')),
+  plot.caption = element_markdown(halign = 0, hjust = 0),
+  strip.text = element_markdown(halign = 0.5, hjust = 0.5, 
+                                family = "RobotoC", margin = margin(2.5,1,0.5, 1,'mm'),
+                                face = "bold", size = rel(0.8), colour = "#292726"),
+  strip.background = element_rect(fill = "white", color = "white"))
+```
+
+### Вступление
+
+О том, какую опасность представляет плохо воспитанная молодежь, писали ещё эллинские поэты: 
+
+>Старых родителей скоро совсем почитать перестанут;</br>
+Будут их яро и зло поносить нечестивые дети</br>
+Тяжкою бранью, не зная возмездья богов; не захочет</br>
+Больше никто доставлять пропитанья родителям старым.</br>
+Правду заменит кулак. Города подпадут разграбленью.</br>
+И не возбудит ни в ком уваженья ни клятвохранитель,</br>
+Ни справедливый, ни добрый. Скорей наглецу и злодею</br>
+Станет почет воздаваться. Где сила, там будет и право.</br>
+><i>(из поэмы "Труды и дни" Гесиода [в переводе В.В. Вересаева](https://ancientrome.ru/antlitr/t.htm?a=1425407002){target="_blank"})</i>
+
+Современная молодёжь внушает не меньшее беспокойство. Куда взор ни обрати, найдешь стайку несмышленышей с открытыми ртами -- глазами хлопают и чужие глупости на сотый раз повторяют. Вокруг них так и вьются всякие хайпотрейдеры, вейподилеры, торговцы сладостями, видеоинфлюенсеры, производители трэш-контента, косплейщики пионерии. А чуть поодаль ещё более жуткая и шерстистая нечисть стоит, своего людоедского часа дожидается. 
+
+И сколько депутатов и чиновников в соцсетях не тэгай и кляуз в АПэшечку не пиши, тревога за будущее поколение не уменьшится. 
+
+Именно по этой причине мы решили погрузиться в мир подростковых интересов и посмотреть, чем сегодня заняты их мозги и куда их тянет спираль нашего лихолетья.
+
+План исследования выбран примерно такой:
+
+**Часть 1.**
+
+- сформировать выборку VK-профилей подростков 14-20 лет из населенных пунктов Калужской области 
+
+- собрать перечень VK-сообществ, на которые они подписаны
+
+- построить рейтинги VK-сообществ
+
+**Часть 2.** 
+
+- выделить крупные кластеры сообществ и пользователей
+
+- ~~сделать выводы о невиданном упадке нравов~~  
+
+### Почему VK?
+
+Во-первых, выбор не особо велик. Почти половина этой выборки успешно преодолело пубертат без доступа к ресурсам Цукерберга и Маска.
+
+Во-вторых, у VK в России, очевидно, большое будущее! Это признают даже [министры образования](https://m.vk.com/wall-197047847_22321){target="_blank"}, которые [педагогов направляют](https://t.me/Evgeniy_Serkin/45922){target="_blank"} к внедрению современных инструментов слежки и скоринга.
+
+В-третьих, VK предоставляет готовые инструменты для анализа [VK API](https://dev.vk.com/ru){target="_blank"}, которыми мы и воспользуемся.
+
+## Данные 
+
+```{r}
+cities <- readxl::read_xlsx(paste0(dir, "cities.xlsx"), col_types = "text")
+
+all_users <- list.files(paste0(dir, "data/"), "users.parquet", full.names = T) |>
+  map_df(~arrow::read_parquet(.x) |> mutate(city_id = .x)) |> 
+  mutate(city_id = str_extract(city_id, "\\d+")) |> 
+  left_join(cities |> select(city_id = id, city_name = title), by = "city_id") |> 
+  select(id, city_name, bdate, last_seen_time, sex, screen_name, site, interests, books, activities) |> 
+  distinct() |> 
+  mutate(last_seen_date = strftime(as.POSIXct(last_seen_time, origin='1970-01-01'), "%Y-%m-%d")) |> 
+  mutate(last_seen_date = as.Date(last_seen_date))
+
+xusers_file <- paste0(dir, "xusers_final.RDS")
+if(!file.exists(xusers_file)){
+  xusers <- paste0(dir, "xusers.RDS") |>
+    read_rds() |> filter(str_count(bdate, "\\.") == 2) |> 
+    separate(col = "bdate", into = c("d", "m", "y"), sep = "\\.", remove = F) |> 
+    mutate(across(c("d", "m"), ~str_extract(paste0('00', .x), "\\d{2}$"))) |> 
+    unite(col = "date", c("y", "m", "d"), sep = "-") |> 
+    mutate(age = as.numeric(as.Date("2024-08-17") - as.Date(date))) |>
+    mutate(age1 = round(age/365, 1)) |> 
+    mutate(age = floor(age/365)) |> 
+    relocate(age, age1, .after = bdate) |> 
+    mutate(city_name = gsub("\\(.+\\)", "", city_name)) |> 
+    filter(age %in% 14:20) |> 
+    group_by(id) |> arrange(desc(last_seen_date)) |> 
+    filter(row_number()==1) |> ungroup()
+  write_rds(xusers, xusers_file, compress = "gz") 
+} else { xusers <- read_rds(xusers_file) }
+
+all_groups <- arrow::read_parquet(paste0(dir, "all_groups_data.parquet")) |>
+  select(-city_id, -city_title) |> 
+  left_join(xusers[,c("id", "city_name", "sex", "age", "age1")] |> distinct(), by = join_by(id)) |> 
+  filter(id %in% xusers$id)
+```
+
+Средствами [VK API](https://dev.vk.com/ru) собрали **`r n_distinct(all_users$id)`** профилей подростков с 14 до 20 лет, указавших в качестве места проживания следующие населенные пункты Калужской области (всего -- 33):
+
+```{r, layout="l-body"}
+cities |> mutate(title = paste0(title, " (", id, ")")) |> 
+  select("Населенный пункт (идентификатор в VK)" = title, "Район" = area) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          'Таблица 1. ', htmltools::em('Населённые пункты Калужской области, из которых отбирали профили пользователей в выборку подростков Калужской области в возрасте с 14 до 20 лет). Механизм формирования выборки см. в тексте.')))
+```
+
+### Пользователи без подтверждённой активности
+
+В целях исключения давно не использовавшихся профилей из первоначальной выборки отобрали **`r n_distinct(xusers$id)`** профилей, для которых была зарегистрирована активность после 30 апреля 2024 года. Таким образом, мы исключили из исследования около половины первоначально отобранных пользователей, поскольку их последняя активность либо недоступна в силу настроек безопасности в личном профиле, либо была зарегистрирована до мая 2024 года.  
+
+Из профилей пользователей мы средствами [VK API](https://dev.vk.com/ru) собрали список VK-сообществ, на которые подписаны владельцы профилей.
+
+```{r}
+glist_basic <- arrow::read_parquet(paste0(dir, "data/groups_descr_basic.parquet")) |> 
+  group_by(group_id) |> arrange(-n_members) |> 
+  filter(row_number()==1) |> 
+  ungroup()
+
+all_groups_no <- all_groups |> filter(is.na(group_id)) |> distinct()
+all_groups_yes <- all_groups |> filter(!id %in% all_groups_no$id) |>  distinct()
+```
+
+### Профили без доступа к подпискам
+
+Настройки конфиденциальности позволяют скрыть список сообществ, на которые подписан пользователь. Для **`r n_distinct(all_groups_no$id)`** профилей сведения о группах оказались недоступны, для оставшихся **`r n_distinct(all_groups_yes$id)`** профилей было собрано **`r nrow(all_groups_yes)`** пар {пользователь-группа}, в которых **`r n_distinct(all_groups_yes$group_id)`** уникальных сообществ.
+
+### Исключение ботов и неразборчивых пользователей
+
+Мы предположили, что некоторые пользовательские профили могли быть созданы не для личного пользования, а для иных задач (например, для маркетинга или мониторинга настроений). Разумеется, такие профили делаются очень похожими на профили реальных людей, но скорее всего они подписаны на большое количество сообществ, чтобы иметь доступ к зкрытым записям сообществ.
+
+На рисунке ниже показано распределение VK-профилей пользователей по количеству VK-сообществ, на которые они подписаны. Крайний слева столбец соответствует группе пользователей, у которых от 0 до 9 VK-сообществ в подписках, второй слева -- пользователям, у которых от 10 до 19 VK-сообществ, и так далее. Указанные 2 группы являются самыми крупными по количеству профилей пользователей. Далее, по мере движения слева направо, с увеличением количества сообществ, количество VK-профилей пользователей уменьшается.
+
+```{r, fig.align="center", warning=FALSE, fig.height=5.5, fig.width=10}
+profile_groups <- all_groups_yes |> summarize(.by = id, n_groups = n_distinct(group_id)) |> arrange(-n_groups)
+
+bots2exclude <- profile_groups |> filter(n_groups>=500)
+
+profile_groups |> 
+  mutate(cat = ifelse(n_groups>=500, "боты и неразборчивые пользователи", "остальные пользователи")) |> 
+  ggplot() + 
+  geom_histogram(aes(x = n_groups, fill = cat), binwidth = 25,  boundary = 0.5,
+                 alpha = 0.9, color = "grey20", linewidth = 0.2) + 
+  scale_y_continuous(expand = expansion(mult = c(0,0.1)))+
+  scale_x_continuous(limits = c(-10, 980), 
+                     expand = expansion(add = c(0,0)), breaks = scales::pretty_breaks(20))+
+  scale_fill_manual(name = NULL, 
+                    values = c("#FD5300FF", "#E6BCACFF")) + 
+  labs(x = "Количество VK-сообществ, на которые подписан пользователь", 
+       y = "Количество профилей\nпользователей", caption = regina_caption,
+       title = "Распределение VK-профилей пользователей по количеству сообществ", 
+       subtitle = paste0(nrow(profile_groups), " профилей подростков 14-20 лет из Калужской области"))+
+  my_theme + theme(legend.position = c(0.8,0.8))
+```
+
+Будем считать, что профили, которые подписаны на 500 и более сообществ -- это либо боты, либо такие пользователи, которые подписываются на группы без особого внимания. **`r nrow(bots2exclude)`** таких профилей мы исключили из дальнейшего исследования.
+
+```{r}
+all_groups_yes <- all_groups_yes |> filter(!id %in% bots2exclude$id)
+```
+
+Итоговая выборка выглядит так:
+
+* уникальных профилей -- **`r n_distinct(all_groups_yes$id)`**, из них **`r scales::percent(n_distinct(all_groups_yes$id[all_groups_yes$sex==2])/n_distinct(all_groups_yes$id),0.1)`** -- юноши.
+
+* уникальных сообществ -- **`r n_distinct(all_groups_yes$group_id)`**
+
+* уникальных строк вида {пользователь-группа} -- **`r nrow(all_groups_yes)`**.
+
+### Заблокированные сообщества
+
+В выборку попали **`r n_distinct(glist_basic$group_id[!is.na(glist_basic$deactivated)])`** сообществ, заблокированных ВК по разным причинам. У некоторых сообществ в названии или в адресе угадываются тематики, признаваемые госрегуляторами благопристойности и правопорядка как запрещенные или небезопасные. Заблокированные сообщества не исключались из настоящего исследования, но при упоминаниях в тексте или в таблицах имеют соответствующую отметку.
+
+## Характеристики выборки
+
+### Распределение по городам
+
+Наибольшее количество профилей отобралось из Калуги и Обнинска, следом идут Людиново и Малоярославец.
+
+```{r, fig.align="center", warning=FALSE, fig.height=5.5, fig.width=10}
+xusers |> filter(id %in% all_groups_yes$id) |> count(city_name) |> 
+  ggplot() + 
+  geom_col(aes(x = city_name, y = n), fill = "#8BAC54FF", 
+           alpha = 0.9, color = "grey20", linewidth = 0.2) + 
+  geom_text(aes(x = city_name, y = n+25, label = n), vjust = 0, size = 3.1)+
+  scale_y_continuous(expand = expansion(mult = c(0,0.1)))+
+  labs(x = NULL, y = "Количество профилей\nпользователей",
+       title = "Распределение VK-профилей пользователей по населённым пунктам", 
+       subtitle = paste0(n_distinct(all_groups_yes$id), " профилей подростков 14-20 лет из Калужской области"),
+       caption = regina_caption)+
+  guides(fill = "none")+ my_theme + 
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+```
+
+### Распределение по возрасту 
+
+Выборка имеет смещение в сторону более старшего возраста, самые малочисленные группы пользователей -- с 14 до 15 лет.  
+
+```{r, fig.align="center", warning=FALSE, fig.height=5, fig.width=10}
+xusers |> filter(id %in% all_groups_yes$id) |> 
+  mutate(gender = ifelse(sex == 2,"Юноши", "Девушки")) |> 
+  ggplot() + 
+  geom_histogram(aes(x = age1, fill = gender), binwidth = 0.5,  
+                 alpha = 0.9, boundary = 0.5, color = "grey20", linewidth = 0.2) + 
+  facet_wrap(~gender)+
+  scale_y_continuous(expand = expansion(mult = c(0,0.1)))+
+  scale_x_continuous(breaks = 14:21)+
+  scale_fill_manual(name = "Пол", 
+                    values = c("#F0742AFF", "#4CBED9FF")) +
+  labs(x = "Возраст", y = "Количество профилей\nпользователей",
+       title = "Гендерное распределение VK-профилей пользователей", 
+       subtitle = paste0(n_distinct(all_groups_yes$id), " профилей подростков 14-20 лет из Калужской области"),
+       caption = regina_caption)+
+  guides()+ my_theme 
+```
+
+### Распределение по датам календаря 
+
+Прежде чем приступать к анализу VK-сообществ, на которые подписаны владельцы профилей, мы проверили распределение указанных дней рождения. Резонно предположить, что некоторые пользователи, не желая указывать настоящую дату рождения, могли использовать те цифры, которые быстрее всего выбрать -- например, 01 января. 
+
+Распределение дней рождения на иллюстрации ниже подтверждает существование таких пользователей -- доля профилей с датой рождения 01 января в несколько раз выше, чем доля профилей с другими датами, но масштаб искажений, которые такие "фейковые" профили привносят в выборку, не превышает 1%.  
+
+```{r, fig.align="center", warning=FALSE, fig.height=6, fig.width=10}
+bdates <- xusers |> filter(id %in% all_groups_yes$id) |>
+  mutate(day = str_extract(bdate, "^\\d*"),
+         month = str_extract(bdate, "(?<=\\.)\\d*(?=\\.)")) |> 
+  mutate(across(c("day", "month"),  ~ifelse(grepl("^\\d$", .x), paste0("0", .x), .x))) |> 
+  mutate(xdate = paste0("2024-", month, "-", day)) |> 
+  count(xdate) |> 
+  mutate(xdate = as.Date(xdate), 
+         month = paste0("(", format(xdate, "%m"),") ", format(xdate, "%B")))
+
+bdates |> ggplot() + 
+  geom_col(aes(x = xdate, y = n/sum(bdates$n), fill = n), alpha = 1, 
+           color = "grey20", linewidth = 0) +
+  facet_wrap(~month, ncol = 6, scales = "free_x") + 
+  scale_x_date(expand = expansion(mult = c(0.02,0.02)), labels = NULL)+
+  scale_y_continuous(expand = expansion(mult = c(0,0.02)), 
+                     breaks = c(0.0025, 0.005, 0.0075),
+                     labels = scales::percent_format(accuracy = 0.01))+
+  scale_fill_gradientn(colors = c("#0084D1FF", "#E7A7D1", "#D32F2FFF")) +
+  labs(x = "Дни месяца", y = "Доля профилей\nпользователей", 
+       caption = regina_caption,
+       subtitle = paste0(n_distinct(all_groups_yes$id), " профилей подростков 14-20 лет из Калужской области"),
+       title = "Распределение дат рождения профилей пользователей")+
+  guides(fill = "none") + my_theme 
+```
+
+Показанное на иллюстрации распределение не доказывает, что в профилях с датами рождения, отличными от 01.01, приведены настоящие даты рождения, но указывает на то, что доля придуманных дней рождения относительно невелика, т.е. в большинстве профилей указан реальный возраст. 
+
+## Исследование популярности VK-сообществ
+
+> 1. В таблицах ниже отражаются данные о VK-сообществах, собранные из сервиса vk.com в период исследования, со следующими изменениями:  (а) телефонные номеры и адреса веб-сайтов заменены на *******, (б) обсценные слова на {censored}.
+>
+> 2. Актуальные названия VK-сообществ могут отличаться от тех, что представлены в таблицах (так как названия сообществ могут быть изменены), но все гиперссылки должны открываться в веб-браузере.
+>
+> 3. Упоминание любых VK-сообществ не носит рекламный характер и не является рекомендацией вступать в эти сообщества.
+
+### Рейтинг VK-сообществ (юноши)
+
+```{r}
+rank_m_file <- paste0(dir, "rank_m.rds")
+if(!file.exists(rank_m_file)){
+  rank_m_ages <- all_groups_yes |> filter(sex == 2) |> 
+    mutate(n_users_total = n_distinct(id)) |> 
+    mutate(.by = group_id, n_users_group = n_distinct(id)) |> 
+    mutate(.by = age,  n_users_age = n_distinct(id)) |> 
+    summarize(.by = c(n_users_total,  n_users_age, age,  n_users_group,  group_id), 
+              n_users = n_distinct(id)) |> 
+    mutate(share_age = n_users/n_users_age,
+           share_group = n_users/n_users_group,
+           share_total = n_users/n_users_total) |>
+    # rank of group
+    mutate(col_group = dense_rank(-n_users_group)) |> 
+    # rank of group within age
+    arrange(age, -n_users) |> 
+    mutate(.by = age, col_age = row_number()) |> 
+    left_join(glist_basic[, 
+            c("group_id", "name", "screen_name", "activity", "status", "description", "n_members", "deactivated")
+            ], by = join_by(group_id)) |> 
+    mutate(share = n_users_group/n_users_total) |> 
+    mutate(across(c(name, status), ~str_replace_all(.x, dirty, "{censored}")),
+           status = str_replace_all(status, paste0(numeros_pattern,"|",urls_pattern), "*******"),
+           vk_url = make_url(url = paste0("https://vk.com/", screen_name), text = "vk"),
+           name = ifelse(!is.na(deactivated), paste0(name, " {заблокирована}"), name)) |> 
+    mutate(vkg = paste0("<b>", name, "</b> [", vk_url, "]", 
+                   ifelse(is.na(n_members), "", 
+                          paste0("<br/><b>",
+                                 scales::number(n_members, big.mark = ".", decimal.mark = ","),
+                                 "</b> | ", activity, 
+                                 ifelse(!is.na(status), paste0("<br/>Статус: <i>", status, "</i>"), "")))))
+  write_rds(rank_m_ages, rank_m_file, compress =  "gz")
+} else { rank_m_ages <- read_rds(rank_m_file) }
+```
+
+В таблице 2 приведен рейтинг VK-сообществ по количеству подписчиков, показаны только сообщества, на которые подписаны не менее 0.5% юношей из исследуемой выборки.
+
+```{r, layout="l-body"}
+rank_m_ages |> 
+  filter(share >= 0.005) |> arrange(-n_users_group) |> 
+  select("Информация о VK-сообществе<br/>(размер группы | категория / статус)" = vkg,
+         "Подписчиков&nbsp;&#x1F468;<br/>(в выборке)" = n_users_group, 
+         "Доля,&nbsp;%" = share) |> 
+  distinct() |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0('Таблица 2. Рейтинг VK-сообществ по количеству подписчиков среди юношей ',
+                  'из выборки подростков Калужской области в возрасте с 14 до 20 лет (всего - ',
+                  rank_m_ages$n_users_total[1], ' юношей).',
+                  'Показаны только сообщества, на которые подписаны не менее 0.5% юношей из исследуемой выборки. ',
+                  'Механизм формирования выборки см. в тексте. ',
+                  'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                  'отфильтрованные строки, содержащие результаты поиска.')))) |> 
+  DT::formatPercentage('Доля,&nbsp;%', digits = 1)
+
+```
+
+В Таблице 3 для наиболее популярных VK-сообществ рейтинга показана доля подписчиков среди пользователей определенного возраста из исследуемой выборки.
+
+```{r, layout="l-body"}
+brks <- quantile(0:1, probs = seq(0, .4, .025), na.rm = TRUE)
+# clrs <- round(seq(255, 50, length.out = length(brks) + 1), 0) %>% {paste0("rgb(", . ,",", ., ", 255)")}
+clrs <- colorRampPalette(c("#FFFFFF", "#4CBED9"))(length(brks) + 1)
+
+t3 <- rank_m_ages |> filter(share >= 0.005) |> 
+  select(rank = col_group, group_id, name, age, share_age) |>
+  pivot_wider(names_from = age, values_from = share_age, names_glue = "{age}<br/>лет") |> 
+  select(-group_id) |> arrange(rank)
+
+sketch = htmltools::withTags(table(class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, htmltools::HTML('Место&nbsp;<br/>в&nbsp;общем<br/>рейтинге')),
+      th(rowspan = 2, htmltools::HTML('Наименование VK-сообщества')),
+      th(colspan = 7, htmltools::HTML('&#x1F468; Доля юношей (%) , подписанных на VK-сообщество'), class = "dt-center")
+    ),
+    tr(
+      lapply(colnames(t3[,-c(1:2)]), function(x) th(htmltools::HTML(x), class = "dt-center"))
+    )
+  )
+))
+
+DT::datatable(t3, escape = F, rownames = F, container = sketch,
+              options = list(columnDefs = list(
+                list(className = 'dt-center', targets = c(0)))),
+              caption = htmltools::tags$caption(
+                style = table_caption_css,
+          htmltools::em('Таблица 3. Рейтинг VK-сообществ по доле юношей указанного возраста ',
+                  'из выборки подростков Калужской области (всего -',
+                  rank_m_ages$n_users_total[1], ' юношей), подписанных на VK-сообщество. ', 
+                  'Механизм формирования выборки см. в тексте. ',
+                  'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                  'отфильтрованные строки, содержащие результаты поиска.'))) |> 
+    DT::formatPercentage(3:9, digits = 1) |> 
+    DT::formatStyle(3:9,backgroundColor = styleInterval(brks, clrs))
+```
+
+В таблице 4 приведены рейтинги VK-групп для юношей различного возраста.  
+
+```{r, layout="l-body"}
+t4 <- rank_m_ages |> filter(col_age <= 200) |> 
+      select(age, name, rank = col_age) |>
+      pivot_wider(names_from = age, values_from = name, names_glue = "{age}<br/>лет") |> 
+      arrange(rank)
+
+sketch = htmltools::withTags(table(class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, htmltools::HTML('Место&nbsp;в&nbsp;<br/>рейтинге')),
+      th(colspan = 7, htmltools::HTML('Возрастные группы юношей &#x1F468;'), class = "dt-center")
+    ),
+    tr(
+      lapply(colnames(t4[,-1]), function(x) th(htmltools::HTML(x), class = "dt-center"))
+    )
+  )
+))
+
+DT::datatable(t4, escape = F, rownames = F, container = sketch,
+              options = list(columnDefs = list(list(className = 'dt-center', targets = c(0)))),
+              caption = htmltools::tags$caption(
+                style = table_caption_css,
+          htmltools::em(paste0('Таблица 4. ', 'Рейтинг VK-сообществ в группах юношей указанного возраста ',
+                  '(всего -', rank_m_ages$n_users_total[1], ' юношей). ', 
+                  'Механизм формирования выборки см. в тексте. ',
+                  'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                  'отфильтрованные строки, содержащие результаты поиска.'))))
+```
+
+***
+
+### Рейтинг VK-сообществ (девушки)
+
+```{r}
+rank_f_file <- paste0(dir, "rank_f.rds")
+if(!file.exists(rank_f_file)){
+  rank_f_ages <- all_groups_yes |> filter(sex == 1) |> 
+    mutate(n_users_total = n_distinct(id)) |> 
+    mutate(.by = group_id, n_users_group = n_distinct(id)) |> 
+    mutate(.by = age,  n_users_age = n_distinct(id)) |> 
+    summarize(.by = c(n_users_total,  n_users_age, age,  n_users_group,  group_id),  
+              n_users = n_distinct(id)) |> 
+    mutate(share_age = n_users/n_users_age,
+           share_group = n_users/n_users_group,
+           share_total = n_users/n_users_total) |>
+    # rank of group
+    mutate(col_group = dense_rank(-n_users_group)) |> 
+    # rank of group within age
+    arrange(age, -n_users) |> 
+    mutate(.by = age, col_age = row_number()) |> 
+    left_join(glist_basic[, 
+            c("group_id", "name", "screen_name", "activity", "status", "description", "n_members", "deactivated")
+            ], by = join_by(group_id)) |> 
+    mutate(share = n_users_group/n_users_total) |> 
+    mutate(across(c(name, status), ~str_replace_all(.x, dirty, "{censored}")),
+           status = str_replace_all(status, paste0(numeros_pattern,"|",urls_pattern), "*******"),
+           vk_url = make_url(url = paste0("https://vk.com/", screen_name), text = "vk"),
+           name = ifelse(!is.na(deactivated), paste0(name, " {заблокирована}"), name)) |> 
+    mutate(vkg = paste0("<b>", name, "</b> [", vk_url, "]", 
+                   ifelse(is.na(n_members), "", 
+                          paste0("<br/><b>",
+                                 scales::number(n_members, big.mark = ".", decimal.mark = ","),
+                                 "</b> | ", activity, 
+                                 ifelse(!is.na(status), paste0("<br/>Статус: <i>", status, "</i>"), "")))))
+  write_rds(rank_f_ages, rank_f_file, compress = "gz")
+} else {rank_f_ages <- read_rds(rank_f_file) }
+```
+
+В таблице 5 приведен рейтинг VK-сообществ по количеству подписчиков, показаны только сообщества, на которые подписаны не менее 0.5% девушек из исследуемой выборки.
+
+```{r, layout="l-body"}
+rank_f_ages |> 
+  filter(share >= 0.005) |> arrange(-n_users_group) |> 
+  select("Информация о VK-сообществе<br/>(размер группы | категория / статус)" = vkg,
+         "Подписчиков&nbsp;&#x1F469;<br/>(в выборке)" = n_users_group, 
+         "Доля,&nbsp;%" = share) |> 
+  distinct() |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0('Таблица 5. Рейтинг VK-сообществ по количеству подписчиков среди девушек ',
+                  'из выборки подростков Калужской области в возрасте с 14 до 20 лет (всего - ',
+                  rank_f_ages$n_users_total[1], ' девушек).',
+                  'Показаны только сообщества, на которые подписаны не менее 0.5% девушек из исследуемой выборки. ',
+                  'Механизм формирования выборки см. в тексте. ',
+                  'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                  'отфильтрованные строки, содержащие результаты поиска.')))) |> 
+  DT::formatPercentage('Доля,&nbsp;%', digits = 1)
+
+```
+
+В Таблице 6 для наиболее популярных VK-сообществ рейтинга показана доля подписчиков среди пользователей определенного возраста из исследуемой выборки.
+
+```{r, layout="l-body"}
+# clrs2 <- round(seq(255, 50, length.out = length(brks) + 1), 0) %>% {paste0("rgb(255,", ., ",", . , ")")}
+clrs2 <- colorRampPalette(c("#FFFFFF", "#F0742A"))(length(brks) + 1)
+
+t6 <- rank_f_ages |> filter(share >= 0.005) |>  
+      select(rank = col_group, group_id, name, age, share_age) |>
+      pivot_wider(names_from = age, values_from = share_age, names_glue = "{age}<br/>лет") |> 
+      arrange(rank) |> select(-group_id)
+
+sketch = htmltools::withTags(table(class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, htmltools::HTML('Место&nbsp;<br/>в&nbsp;общем<br/>рейтинге')),
+      th(rowspan = 2, htmltools::HTML('Наименование VK-сообщества')),
+      th(colspan = 7, htmltools::HTML('&#x1F469; Доля девушек (%) , подписанных на VK-сообщество'), class = "dt-center")
+    ),
+    tr(
+      lapply(colnames(t6[,-c(1:2)]), function(x) th(htmltools::HTML(x), class = "dt-center"))
+    )
+  )
+))
+
+DT::datatable(t6, escape = F, rownames = F, container = sketch,
+              options = list(columnDefs = list(
+                list(className = 'dt-center', targets = c(0)))),
+        caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em('Таблица 6. Рейтинг VK-сообществ по доле девушек указанного возраста ',
+                  'из выборки подростков Калужской области (всего -',
+                  rank_f_ages$n_users_total[1], ' девушек), подписанных на VK-сообщество. ', 
+                  'Механизм формирования выборки см. в тексте. ',
+                  'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                  'отфильтрованные строки, содержащие результаты поиска.'))) |> 
+    DT::formatPercentage(3:9, digits = 1) |> 
+    DT::formatStyle(3:9,backgroundColor = styleInterval(brks, clrs2))
+```
+
+В таблице 7 приведены рейтинги VK-групп для юношей различного возраста.  
+
+```{r, layout="l-body"}
+t7 <- rank_f_ages |>  filter(col_age <= 200) |>  
+      select(age, name, rank = col_age) |>
+      pivot_wider(names_from = age, values_from = name, names_glue = "{age}<br/>лет") |> 
+      arrange(rank) 
+
+sketch = htmltools::withTags(table(class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, htmltools::HTML('Место&nbsp;в&nbsp;<br/>рейтинге')),
+      th(colspan = 7, htmltools::HTML('Возрастные группы девушек &#x1F469;'), class = "dt-center")
+    ),
+    tr(
+      lapply(colnames(t7[,-1]), function(x) th(htmltools::HTML(x), class = "dt-center"))
+    )
+  )
+))
+
+DT::datatable(t7, escape = F, rownames = F, container = sketch,
+              options = list(columnDefs = list(list(className = 'dt-center', targets = c(0)))),
+              caption = htmltools::tags$caption(
+                style = table_caption_css,
+                htmltools::em(paste0('Таблица 7. ','Рейтинг VK-сообществ в группах девушек указанного возраста ',
+                                     '(всего - ', rank_f_ages$n_users_total[1], ' девушек). ', 
+                                     'Механизм формирования выборки см. в тексте. ',
+                                     'Поисковое поле позволяет выполнять поиск по всем столбцам и возвращает ',
+                                     'отфильтрованные строки, содержащие результаты поиска.'))))
+```
+
+***
+
+### Гендерные различия
+
+Очевидно, что одни группы более популярны среди парней (например, GGSTANDOFF: 260 из 269 профилей из выборки -- юноши), другие -- среди девушек (например, GIRL MEMES: 206 из 213 профилей из выборки -- девушки). На иллюстрации ниже VK-сообщества представлены в виде кругов (радиус пропорционален количеству профилей любого пола в выборке), которые распределены следующим образом: слева -- VK-сообщества более популярные среди девушек, справа -- среди юношей. Наведение курсора на круг позволяет увидеть сведения о группе, клик -- открывает VK-страницу сообщества в новом окне веб-браузера.
+
+```{r}
+rank_diff <- bind_rows(
+  rank_f_ages |> select(group_id, name, screen_name, n_users_group, n_users_total) |> mutate(sex = "f"),
+  rank_m_ages |> select(group_id, name, screen_name, n_users_group, n_users_total) |> mutate(sex = "m")
+) |> distinct() |> 
+  mutate(share = round(100*n_users_group/n_users_total, 3)) |> 
+  arrange(name, screen_name, sex) |> 
+  select(-n_users_total) |> 
+  pivot_wider(names_from = sex, values_from = c("n_users_group", "share"), values_fill = 0) |> 
+  mutate(n_users_group_total = n_users_group_f + n_users_group_m) |> 
+  filter(n_users_group_total >= 20) |> 
+  mutate(angle = pi * share_f/(share_m + share_f)) |> 
+  mutate(url = paste0("https://vk.com/", screen_name)) |> 
+  mutate(namex = str_remove_all(name, "[^[:letter:]^\\s^\\*^\\{^\\}]")) |> 
+  mutate(vk = paste0("<b>", namex, "</b>",
+                     # " [", vk_url, "]",
+                     "<br/><b>", "\U1F469 ", n_users_group_f, " | \U1F468 ", n_users_group_m, "</b><br/>",
+                     "(клик = открыть)")) |> 
+  mutate(x = sqrt(n_users_group_total) * cos(angle),
+         y = 1.25*sqrt(n_users_group_total) * sin(angle))
+
+rank_diff$color <- highcharter::colorize(rank_diff$angle, colors = c("#4CBED9FF", "grey80", "#F0742AFF"))
+rank_diff$zt <- as.character(round(rank_diff$n_users_group_total,0))
+rank_diff$zm <- as.character(round(rank_diff$n_users_group_m,0))
+rank_diff$zf <- as.character(round(rank_diff$n_users_group_f,0))
+```
+
+```{r}
+export <- list(
+  list(text="PNG image",
+       onclick=JS("function () { 
+                  this.exportChart({ type: 'image/png' }); }")),
+  list(text="JPEG image",
+       onclick=JS("function () { 
+                  this.exportChart({ type: 'image/jpeg' }); }")),
+  list(text="SVG vector image",
+       onclick=JS("function () { 
+                  this.exportChart({ type: 'image/svg+xml' }); }")),
+  list(separator=TRUE),
+  list(text="CSV document",
+       onclick=JS("function () { this.downloadCSV(); }")),
+  list(text="XLS document",
+       onclick=JS("function () { this.downloadXLS(); }"))
+  )
+
+```
+
+```{r}
+x <- c("VK-сообщество", "Подписчиков (всего):", "Юношей (выборка) \U1F468:", "Девушек (выборка) \U1F469:")
+y <- sprintf("{point.%s:.2f}", c("name", "zt", "zm", "zf"))
+tltip <- tooltip_table(x, y)
+
+highchart() |>
+  hc_add_dependency(name = "modules/exporting.js") %>%
+  hc_add_dependency(name = "modules/export-data.js") %>%
+  hc_chart(backgroundColor = "black") %>% 
+  hc_add_series(rank_diff, "scatter", minSize = 2, maxSize = 30, allowPointSelect = TRUE,
+                hcaes(x = x, y = y, size = n_users_group_total, color = color)) |>
+  hc_colorAxis(
+    stops = color_stops(3, c("#4CBED9FF", "grey80", "#F0742AFF")),
+    labels = list(align = "center")) |> 
+  hc_plotOptions(series = list(
+    pointFormat = "{point.y}%",
+    events = list(click = JS("function(self) { window.open(self.point.url); }" )),
+    marker = list(lineColor = "white", lineWidth = 0.25,
+    states = list(hover = list(fillColor = "red"))))) |> 
+  hc_title(
+    text = "Популярность VK-сообществ и пол подписчиков", align = "left",
+    style = list(color = 'white', fontSize = "32px", fontFamily = "Sofia Sans Condensed")) |> 
+  hc_subtitle(
+    text = "Кругами показаны VK-сообщества, на которые подписаны 20 или более подписчиков из выборки 5990 VK-профилей подростков Калужской области 14-20 лет. Слева - VK-сообщества более популярные среди девушек, справа - среди юношей. При наведении на круг отражаются сведения о VK-сообществе, при клике - в веб-браузере открывается VK-страница.", 
+    align = "left", 
+    style = list(color = 'white', fontSize = "11px")) |>
+  hc_caption(
+    text = "&#169; ReginaLab. Иллюстрация доступна на условиях открытой лицензии Creative Commons CC BY 4.0.<br/>Шрифты: Font Awesome Free (SIL OFL 1.1), Sofia Sans Condensed (SIL OFL 1.1), Roboto Condensed (Apache License 2.0)", 
+    useHTML = TRUE,
+    style = list(color = 'white',  fontSize = "10px")) |>
+  hc_credits(text = "https://reginaobninsklab.github.io",
+             style = list(color = '#229ED9', fontSize = "11"),
+             enabled = TRUE, href = "https://reginaobninsklab.github.io") |> 
+  hc_legend(reversed = F, enabled = F) %>% 
+  hc_yAxis(title = list(), gridLineWidth = 0, lineWidth = 0,
+           labels = list(enabled = FALSE), tickLength = 0,
+           showFirstLabel = FALSE, showLastLabel = FALSE) |> 
+  hc_xAxis(title = list(), gridLineWidth = 0, lineWidth = 0,
+           labels = list(enabled = FALSE),tickLength = 0,
+           showFirstLabel = FALSE, showLastLabel = FALSE) |> 
+  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip) |>
+  hc_size(height = 650, width = 900) |> 
+  hc_exporting(enabled=TRUE, formAttributes=list(target="_blank"),
+               buttons=list(contextButton=list(
+                 text="Экспорт", menuItems=export)))
+```
+
+## Наблюдения
+
+Интерактивные таблицы 2-7 показывают не все сообщества, а только те, что преодолели 0.5% порог популярности (т.е. на сообщество должны быть подписаны 0.5% или более от общего числа девушек или юношей). Таблицы содержат поле для быстрого поиска сообществ по названию или описанию -- заинтересованные пользователи могут проверить собственные предположения. 
+
+> Например, можно обнаружить, что популярность сообщества "Типичный Обнинск" с возрастом заметно растёт, а популярность сообщества "Типичная Калуга" -- снижается, причем эффект наблюдается как для девушек, так и для юношей.
+
+Однако, количество собранных нами сообществ существенно больше и ниже мы приведем несколько примеров рейтингов, построенных для сообществ, объединенных нами в условные мини-группы.
+
+### 1. Правительственные и околоправительственные паблики
+
+```{r, layout="l-body"}
+s <- regex(enc2utf8("правительств|министерство|минспорт|минобр|управа|минпросве|агентство|парламент|законодательн|заксобр|мвд|следств|прокуратура"), ignore_case = T)
+
+sdf <- bind_rows(
+  rank_m_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity")),
+  rank_f_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity"))
+  ) |> 
+  distinct() 
+
+xtags <- c('kalugaoblgov', 'kalugagov', 'minsporta40', 'minprosvet', 'obninsk_today', 'minobr_40', 'minzdrav40', 'kalugaoblmintrud', '40mvdru') |> 
+  paste0(collapse = "|")
+
+full_join(
+  rank_m_ages |> filter(grepl(xtags, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F468;&nbsp;(%)" = share) |>  distinct(),
+  rank_f_ages |> filter(grepl(xtags, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F469;&nbsp;(%)" = share) |> distinct(),
+  by = join_by(vkg)
+  ) |> 
+  arrange(-`Доля&nbsp;&#x1F469;&nbsp;(%)`) |> 
+  rename("Информация о VK-сообществе<br/>(количество подписчиков | категория / статус)" = vkg) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0(
+            'Таблица 8. Популярность VK-сообществ, связанных с Правительством КО или Правительством РФ, у юношей (всего - ',
+            rank_m_ages$n_users_total[1], ') и девушек (всего - ',
+            rank_f_ages$n_users_total[1], ') Калуvжской области в возрасте с 14 до 20 лет. ',
+            'Показаны только сообщества, на которые подписаны не менее 0.5% подростков из исследуемой выборки.')
+            ))) |> 
+  DT::formatPercentage(2:3, digits = 1)
+
+```
+
+Эти группы не преодолевают 5% порог популярности, что, наверное, правильно. Негоже несовершеннолетним читать посты чиновников, многие из которых пребывают в перманентном отчаянии и бездарно симулируют энтузиазм.   
+
+### 2.  Молодёжные организации и движения
+
+```{r, layout="l-body"}
+s2 <- regex(enc2utf8("молод.ж|рсм|первые|твой ход|юнарми|юннат|скаут"), ignore_case = T)
+
+s2df <- bind_rows(
+  rank_m_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s2))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity")),
+  rank_f_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s2))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity"))
+  ) |> 
+  distinct() 
+
+xtags2 <- c('mypervie', 'mypervie40', 'koorsm', 'mypervielyudinovo', 'mypervieobninsk', 'mypervie_smeni', 'myperviezhukov', 'myperviekirov', 'rosmolodez', 'omckaluga', 'un.armia', 'molodezhsuhinichi', 'myperviemaloyaroslavec', 'rso_40', 'myperviemeschovsk', 'myperviekozelsk', 'myperviekaluga', 'omc40', 'obninsk_rsm', 'molodezh.kaluga', 'myperviebabynino', 'ymp40', 'rsmofficial', 'mypervieyuhnov', 'mkckirov40', 'yunarmy_40', 'mypervie_tvorchestvo', 'razvitie40klg', 'rosmolodez.grants', 'dobroinrussia', 'fest2024', 'yavde1e', 'forumkaluga', 'yavdele.kaluga',
+            'first_media_public') |> 
+  paste0(collapse = "|")
+
+full_join(
+  rank_m_ages |> filter(grepl(xtags2, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F468;&nbsp;(%)" = share) |>  distinct(),
+  rank_f_ages |> filter(grepl(xtags2, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F469;&nbsp;(%)" = share) |> distinct(),
+  by = join_by(vkg)
+  ) |>
+  arrange(-`Доля&nbsp;&#x1F469;&nbsp;(%)`) |> 
+  rename("Информация о VK-сообществе<br/>(количество подписчиков | категория / статус)" = vkg) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0(
+      'Таблица 9. Популярность VK-сообществ, связанных с молодёжной политикой Российской Федерации, у юношей (всего - ',
+            rank_m_ages$n_users_total[1], ') и девушек (всего - ',
+            rank_f_ages$n_users_total[1], ') Калуvжской области в возрасте с 14 до 20 лет. ',
+            'Показаны только сообщества, на которые подписаны не менее 0.5% подростков из исследуемой выборки.')
+            ))) |> 
+  DT::formatPercentage(2:3, digits = 1)
+
+```
+
+Здесь рулит Движение Первых со своими региональными филиалами, но им тоже нечем похвастаться. Если посмотреть внимательно на таблицы 3 и 6, то видно, что популярность главного паблика Движения Первых с 16 до 20 лет неумолимо снижается и у девушек, и у парней (в движении возрастной ценз до 18 лет).   
+
+### 3. Сообщества заведений культуры 
+
+В эту группу мы включили сообщества библиотек, музеев, театров... почти всё менее 1%.
+
+```{r, layout="l-body"}
+s3 <- regex(enc2utf8("библиотек|музей|музеи|выставка|театр|картинная гал|художественная гал|филармон|дом культуры|КДЦ"), ignore_case = T)
+
+s3df <- bind_rows(
+  rank_m_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s3))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity")),
+  rank_f_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s3))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity"))
+  ) |> 
+  distinct() 
+
+xtags3 <- c('zhukovmuseum', 'club204901832', 'filarmonikaru', 'icckaluga', 'mkukgdk2', 'sosprometey',
+            'pushkakartaofficial', 'publicmeshovskiyrdk', 'gmikmuseum', 'mu_bgdk', 'museumxxvek',  'kosmo_museum', 'dramteatrkaluga', 'ethnomirru', 'mbiblioteka40', 'dk_malinniki', 'museyo', 'club170732467', 'med_library') |> 
+  paste0(collapse = "|")
+
+full_join(
+  rank_m_ages |> filter(grepl(xtags3, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F468;&nbsp;(%)" = share) |>  distinct(),
+  rank_f_ages |> filter(grepl(xtags3, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F469;&nbsp;(%)" = share) |> distinct(),
+  by = join_by(vkg)
+  ) |> 
+  arrange(-`Доля&nbsp;&#x1F469;&nbsp;(%)`) |> 
+  rename("Информация о VK-сообществе<br/>(количество подписчиков | категория / статус)" = vkg) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0(
+      'Таблица 10. Популярность VK-сообществ, связанных с потреблением культуры в традиционных формах (театры, музеи, библиотеки, дома культуры), у юношей (всего - ',
+            rank_m_ages$n_users_total[1], ') и девушек (всего - ',
+            rank_f_ages$n_users_total[1], ') Калуvжской области в возрасте с 14 до 20 лет. ',
+            'Показаны только сообщества, на которые подписаны не менее 0.5% подростков из исследуемой выборки.')
+            ))) |> 
+  DT::formatPercentage(2:3, digits = 1)
+```
+
+### 3. Сообщества для поиска работы
+
+```{r, layout="l-body"}
+s4 <- regex(enc2utf8("работ. |работ.$|подработка|биржа труда|фриланс|freelance|free lance|ваканси|удал(е|ё)нк"), ignore_case = T)
+
+s4df <- bind_rows(
+  rank_m_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s4))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity")),
+  rank_f_ages |> 
+    filter(if_any(c("status", "description", "activity", "name"), ~str_detect(.x, s4))) |> 
+    select(c("group_id", "screen_name", "name", "status", "description", "activity"))
+  ) |> 
+  distinct() 
+
+xtags4 <- c("club68413312", "rabota040rus", "samara_vakansii_163", "moskva_rabota_190", "rabotaspb_an", "ijobmoscow", "loomkrask", "club185749185", "rabota_moskva_95", "club163959120", "lu.rabota", "rabotaspeterburg", "freelans_work", "magnitogorsk.rabota_74", "klgkaluga", "kalugawork", "freelans_udalenno", "club211130797", "moskva.rabota750", "klga_job", "mskloom", "ufarabotas", "ijobspb", "kaluga_hrs", "krasnoyarsk_rabota88", "vakansii_kaliningrad1", "avito_jobs", "raboty_vahta", "moskva_rabota_190", "vrnrabotas", 
+"ulyansk", "club151348784", "yekaterinburg_rabota_96", "freelance_job", "rabotaa40", "vologda.rabota_35", "rg.kaluga", "rabota_v_1kaluge", "headhunter") |>  
+  paste0(collapse = "|")
+  
+full_join(
+  rank_m_ages |> filter(grepl(xtags4, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F468;&nbsp;(%)" = share) |>  distinct(),
+  rank_f_ages |> filter(grepl(xtags4, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F469;&nbsp;(%)" = share) |> distinct(),
+  by = join_by(vkg)
+  ) |> 
+    arrange(-`Доля&nbsp;&#x1F469;&nbsp;(%)`) |> 
+  rename("Информация о VK-сообществе<br/>(количество подписчиков | категория / статус)" = vkg) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0(
+      'Таблица 11. Популярность VK-сообществ, связанных с поиском работы, у юношей (всего - ',
+            rank_m_ages$n_users_total[1], ') и девушек (всего - ',
+            rank_f_ages$n_users_total[1], ') Калуvжской области в возрасте с 14 до 20 лет. ',
+            'Показаны только сообщества, на которые подписаны не менее 0.5% подростков из исследуемой выборки.')
+            ))) |> 
+  DT::formatPercentage(2:3, digits = 1)
+```
+
+Популярность у наиболее популярных групп достигает 2-3%. 
+
+
+### 5. Сообщества, посвященные изучению иностранных языков
+
+```{r, layout="l-body"}
+xtags5 <- paste0(
+  "beginenglish_ru|teachenglishlanguage|english_is_fun|koreanesch|ienglishman|enskazki|engchickdeutschonline|",
+  "ddankest|engl4you|english_is_fun|ksu_fofl|deutschonline|pub293|sz_jp|headline_korean|lazyenglish|ienglishman|koryaz",
+  "|teachenglishlanguage|englishpolls")
+
+full_join(
+  rank_m_ages |> filter(grepl(xtags5, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F468;&nbsp;(%)" = share) |>  distinct(),
+  rank_f_ages |> filter(grepl(xtags5, vk_url)) |> 
+    select(vkg, "Доля&nbsp;&#x1F469;&nbsp;(%)" = share) |> distinct(),
+  by = join_by(vkg)
+  ) |> 
+    arrange(-`Доля&nbsp;&#x1F469;&nbsp;(%)`) |> 
+  rename("Информация о VK-сообществе<br/>(количество подписчиков | категория / статус)" = vkg) |> 
+  DT::datatable(escape = F, rownames = F, options = list(pageLength = 5),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::em(paste0(
+      'Таблица 11. Популярность VK-сообществ, связанных с обучением иностранным языкам, у юношей (всего - ',
+            rank_m_ages$n_users_total[1], ') и девушек (всего - ',
+            rank_f_ages$n_users_total[1], ') Калуvжской области в возрасте с 14 до 20 лет. ',
+            'Показаны только сообщества, на которые подписаны не менее 0.5% подростков из исследуемой выборки.')
+            ))) |> 
+  DT::formatPercentage(2:3, digits = 1)
+```
+
+Те же 1-2%.
+
+> Вы тоже заметили, что девушки в выбранных нами примерах более активны? Мальчишки, по большей части, страдают ~~фигнёй~~ в сообществах, посвященных знакомствам и другим ресентиментам (не у всех "хромосомка" в правильном месте надломлена).
+
+### Что дальше?
+
+В первой части мы ограничились базовым описанием собранных данных и построением первичных рейтингов. В следующих частях мы предполагаем:
+
+- выполнить анализ ассоциативной близости сообществ (подобно тому, как злоупотребление одной субстанцией часто приводит к знакомству с другими, увлечение одной дуростью оставляет в человеческую психике приоткрытую дверь для других)
+
+- сформировать кластеры похожих сообществ (у некоторых артистов помимо официального паблика в VK есть многочисленные фан-сообщества)
+
+- сформировать кластеры пользователей и попытаться субъективно оценить доли толковых ребят и откровенных дуралеев в исследуемой выборке.   
+
+В будущем мы планируем опубликовать обезличенный массив сообществ для тех исследователей будущего, кто заинтересуется этой темой. 
+
+***
+
+Нравятся наши материалы? 👉 ТГ-канал [Regina Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"}  
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Интересы подростков Калужской области в социальной сети VK (Часть 1). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-vk-youth-part1/. - Дата публикации: 28 августа 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales',
+          'highcharter')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Kunst J (2022). _highcharter: A Wrapper for the 'Highcharts' Library_. R package version 0.9.4,
+<https://CRAN.R-project.org/package=highcharter>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

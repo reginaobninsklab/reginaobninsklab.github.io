@@ -7,7 +7,20 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 20 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 28 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Интересы подростков Калужской области в социальной сети VK (Часть 1)</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-vk-youth-part1</link>
+      <description>Исследование популярности сообществ в социальной сети VK на основании анализа профилей 5.990 подростков (14-20 лет) из 33 населённых пунктов Калужской области. Охватывает 559.115 VK-сообществ (уникальных - 142.980), для которых были построены рейтинги популярности.</description>
+      <category>калужская область</category>
+      <category>VK</category>
+      <category>социология</category>
+      <category>ВКонтакте</category>
+      <category>молодёжь</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-vk-youth-part1</guid>
+      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-vk-youth-part1/images/vk_pick.png" medium="image" type="image/png" width="1339" height="1045"/>
+    </item>
     <item>
       <title>Выборы Калужской области (Часть 2. Гастролирующие кандидаты)</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-elections-part2-placeholders</link>
