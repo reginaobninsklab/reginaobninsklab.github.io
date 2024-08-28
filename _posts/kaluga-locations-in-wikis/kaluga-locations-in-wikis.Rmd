@@ -1,0 +1,190 @@
+---
+title: "Населённые пункты Калужской области в разных Википроектах"
+description: |
+  В материале приведен перечень муниципальных районов, городов, сёл и деревень Калужской области с координатами и гиперссылками на их страницы в проектах Wikipedia (RU), Wikidata, РУВИКИ и Руниверсалис. 
+date: 2024-08-29
+categories:
+  - калужская область
+  - рувики
+  - руниверсалис
+  - википедия
+  - викиданные
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/pic.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/wiki_tile_maps/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), 
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+
+nodes <- readxl::read_xlsx(paste0(dir, "data/wikidata_kaluga_region_wikis.xlsx"),  sheet = "nodes") |> 
+  mutate(wikipedia_text = sapply(str_remove(wikipedia, "https://ru.wikipedia.org/wiki/"), 
+                                 function(x) URLdecode(x))) |> 
+                                   # iconv(URLdecode(x), from = "UTF-8", "CP1251"))) |> 
+  mutate(runi_text =  str_extract(runi_url, "[^\\/]+$")) |> 
+  mutate(ruwiki_text =  str_extract(ruwiki_url, "[^\\/]+$")) |> 
+  mutate(across(ends_with("_text"), ~str_replace_all(.x, "\\_", " ")))
+
+edges <- readxl::read_xlsx(paste0(dir, "data/wikidata_kaluga_region_wikis.xlsx"), sheet = "edges")
+
+```
+
+Борьба за единственную "правильную" онлайн-энциклопедию, как альтернативу проекту Wikipedia, не прекращается уже несколько лет. Для тех, кто понимает, что из себя представляют проекты Wikimedia Foundations и каков их вклад в развитие сети Интернет, можно больше ничего не объяснять.
+
+Поясним лишь, что мы собрали в таблице ниже:
+
+1. Перечень населённых пунктов Калужской области
+
+2. Координаты
+
+3. Ссылки на страницы населённых пунктов в проектах Wikipedia (ru), Wikidata, [РУВИКИ](https://ru.ruwiki.ru){target="_blank"} и [Руниверсалис](https://%D1%80%D1%83%D0%BD%D0%B8.%D1%80%D1%84){target="_blank"}.  
+
+Кнопка Column visibility позволяет открыть скрытые столбцы с URL-гиперссылками, кнопки CSV и Excel -- выгружать данные в указанных форматах.
+
+```{r message=FALSE, warning=FALSE, layout="l-body"}
+nodes |> 
+  mutate(loc = paste0("<b>", name, "</b>",
+                      ifelse(is.na(lat), "", 
+                             paste0("<br/>{", round(lat,6), " с.ш.,<br/>", 
+                                    round(lon, 6), " в.д.}")),
+                      ifelse(is.na(disstime), "", paste0("<br/>не существует с ", disstime)))) |> 
+  mutate(wiki = ifelse(is.na(wikipedia), "", make_url(wikipedia, wikipedia_text)),
+         runi = ifelse(is.na(runi_url), "", make_url(runi_url, runi_text)),
+         ruwiki = ifelse(is.na(ruwiki_url), "", make_url(ruwiki_url, ruwiki_text)), 
+         wikidata = ifelse(is.na(wikidata), "", 
+                           make_url(paste0("https://www.wikidata.org/wiki/", wikidata), wikidata))) |> 
+  mutate(gov_klg_region = as.factor(gov_klg_region)) |> 
+  select(`Наименование / координаты ` = loc, `Уровень` = level, `Принадлежит к` = gov_klg_region, 
+         `Руниверсалис` = runi, `Руниверсалис URL` = runi_url, 
+         `РуВики` = ruwiki, `РуВики URL`  = ruwiki_url, 
+         `Википедия` = wiki, `Википедия URL` = wikipedia, 
+         `Викиданные` = wikidata) |>
+  DT::datatable(escape = F, rownames = F, extensions = 'Buttons', filter = "top",
+                  options = list(dom = "Blrtip",
+                    deferRender = TRUE, ordering = TRUE, autoWidth = TRUE,
+                    buttons = c('csv', 'excel', 'colvis'),
+                    columnDefs = list(
+                      list(visible = F, targets = c(4,6,8)),
+                      list(width = '200px', targets = c(0,2:8)),
+                      list(width = '150px', targets = c(1)))),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          'Таблица 1. ', htmltools::em('Населённые пункты Калужской области и их страницы в wiki-проектах.')))
+```
+
+Пользуйтесь!
+
+***
+
+Нравятся наши материалы? 👉 ТГ-канал [Regina Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"}  
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Населённые пункты Калужской области в разных Википроектах. // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis/. - Дата публикации: 29 августа 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales',
+          'highcharter')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

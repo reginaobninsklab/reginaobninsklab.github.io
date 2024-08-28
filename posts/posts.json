@@ -1,5 +1,25 @@
 [
   {
+    "path": "posts/kaluga-locations-in-wikis/",
+    "title": "Населённые пункты Калужской области в разных Википроектах",
+    "description": "В материале приведен перечень муниципальных районов, городов, сёл и деревень Калужской области с координатами и гиперссылками на их страницы в проектах Wikipedia (RU), Wikidata, РУВИКИ и Руниверсалис.",
+    "author": [],
+    "date": "2024-08-29",
+    "categories": [
+      "калужская область",
+      "рувики",
+      "руниверсалис",
+      "википедия",
+      "викиданные"
+    ],
+    "contents": "\r\n\r\nContents\r\nПоделиться\r\nСсылка для цитирования\r\nПрава\r\nОтказ от ответственности\r\nСофт\r\n\r\nБорьба за единственную “правильную” онлайн-энциклопедию, как альтернативу проекту Wikipedia, не прекращается уже несколько лет. Для тех, кто понимает, что из себя представляют проекты Wikimedia Foundations и каков их вклад в развитие сети Интернет, можно больше ничего не объяснять.\r\nПоясним лишь, что мы собрали в таблице ниже:\r\nПеречень населённых пунктов Калужской области\r\nКоординаты\r\nСсылки на страницы населённых пунктов в проектах Wikipedia (ru), Wikidata, РУВИКИ и Руниверсалис.\r\nКнопка Column visibility позволяет открыть скрытые столбцы с URL-гиперссылками, кнопки CSV и Excel – выгружать данные в указанных форматах.\r\n\r\n\r\n\r\nПользуйтесь!\r\nНравятся наши материалы? 👉 ТГ-канал Regina Lab\r\nПоделиться\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nСсылка для цитирования\r\nНаселённые пункты Калужской области в разных Википроектах. // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis/. - Дата публикации: 29 августа 2024 г.\r\nПрава\r\nЕсли не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии Creative Commons CC BY 4.0 Deed Attribution 4.0 International.\r\nОтказ от ответственности\r\nСм. соответствующий раздел на странице “О проекте”.\r\nСофт\r\nAllaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,\r\nIannone R (2023). rmarkdown: Dynamic Documents for R. R package version 2.22,\r\nhttps://github.com/rstudio/rmarkdown.\r\nWickham H (2022). stringr: Simple, Consistent Wrappers for Common String Operations. R package version\r\n1.5.0, https://CRAN.R-project.org/package=stringr.\r\nWickham H, François R, Henry L, Müller K, Vaughan D (2023). dplyr: A Grammar of Data Manipulation. R\r\npackage version 1.1.2, https://CRAN.R-project.org/package=dplyr.\r\nWickham H, Henry L (2023). purrr: Functional Programming Tools. R package version 1.0.1,\r\nhttps://CRAN.R-project.org/package=purrr.\r\nWickham H, Hester J, Bryan J (2024). readr: Read Rectangular Text Data. R package version 2.1.5,\r\nhttps://CRAN.R-project.org/package=readr.\r\nWickham H, Vaughan D, Girlich M (2024). tidyr: Tidy Messy Data. R package version 1.3.1,\r\nhttps://CRAN.R-project.org/package=tidyr.\r\nXie Y (2023). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version\r\n1.43, https://yihui.org/knitr/.\r\nXie Y (2015). Dynamic Documents with R and knitr, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.\r\nISBN 978-1498716963, https://yihui.org/knitr/.\r\nXie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD\r\n(eds.), Implementing Reproducible Computational Research. Chapman and Hall/CRC. ISBN 978-1466561595.\r\nXie Y, Cheng J, Tan X (2024). DT: A Wrapper of the JavaScript Library ‘DataTables’. R package version 0.33,\r\nhttps://CRAN.R-project.org/package=DT.\r\nXie Y, Allaire J, Grolemund G (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC, Boca Raton,\r\nFlorida. ISBN 9781138359338, https://bookdown.org/yihui/rmarkdown.\r\nXie Y, Dervieux C, Riederer E (2020). R Markdown Cookbook. Chapman and Hall/CRC, Boca Raton, Florida.\r\nISBN 9780367563837, https://bookdown.org/yihui/rmarkdown-cookbook.\r\n\r\n\r\n\r\n",
+    "preview": "posts/kaluga-locations-in-wikis/images/pic.png",
+    "last_modified": "2024-08-28T23:33:04+03:00",
+    "input_file": {},
+    "preview_width": 1066,
+    "preview_height": 651
+  },
+  {
     "path": "posts/kaluga-vk-youth-part1/",
     "title": "Интересы подростков Калужской области в социальной сети VK (Часть 1)",
     "description": "Исследование популярности сообществ в социальной сети VK на основании анализа профилей 5.990 подростков (14-20 лет) из 33 населённых пунктов Калужской области. Охватывает 559.115 VK-сообществ (уникальных - 142.980), для которых были построены рейтинги популярности.",

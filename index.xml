@@ -7,7 +7,20 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 28 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Населённые пункты Калужской области в разных Википроектах</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis</link>
+      <description>В материале приведен перечень муниципальных районов, городов, сёл и деревень Калужской области с координатами и гиперссылками на их страницы в проектах Wikipedia (RU), Wikidata, РУВИКИ и Руниверсалис.</description>
+      <category>калужская область</category>
+      <category>рувики</category>
+      <category>руниверсалис</category>
+      <category>википедия</category>
+      <category>викиданные</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis</guid>
+      <pubDate>Thu, 29 Aug 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis/images/pic.png" medium="image" type="image/png" width="1066" height="651"/>
+    </item>
     <item>
       <title>Интересы подростков Калужской области в социальной сети VK (Часть 1)</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-vk-youth-part1</link>
