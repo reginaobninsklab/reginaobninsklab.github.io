@@ -7,7 +7,20 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 29 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Правки статей о Калужской области в русскоязычных вики-энциклопедиях</title>
+      <link>https://reginaobninsklab.github.io/posts/kaluga-locations-wiki-revisions</link>
+      <description>Выполнен анализ правок в веб-энциклопедиях Википедия, РУВИКИ и Руниверсалис статей, посвященных Калужской области и входящих в её состав муниципальных районов и населенных пунктов.</description>
+      <category>калужская область</category>
+      <category>рувики</category>
+      <category>руниверсалис</category>
+      <category>википедия</category>
+      <category>викиданные</category>
+      <guid>https://reginaobninsklab.github.io/posts/kaluga-locations-wiki-revisions</guid>
+      <pubDate>Mon, 09 Sep 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-locations-wiki-revisions/images/pic.png" medium="image" type="image/png" width="2657" height="1771"/>
+    </item>
     <item>
       <title>Населённые пункты Калужской области в разных Википроектах</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis</link>

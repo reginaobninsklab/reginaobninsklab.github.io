@@ -18,6 +18,8 @@ navbar:
       href: about.html
     - icon: fa-brands fa-telegram
       href: https://t.me/regina_lab
+    - icon: fa-brands fa-vk
+      href: https://vk.com/reginaobninsklab
     - icon: fa-regular fa-envelope
       href: mailto:regina.obninsk@gmail.com
     - icon: fa fa-rss

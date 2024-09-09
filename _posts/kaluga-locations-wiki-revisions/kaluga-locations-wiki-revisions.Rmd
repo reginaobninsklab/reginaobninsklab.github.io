@@ -1,0 +1,267 @@
+---
+title: "Правки статей о Калужской области в русскоязычных вики-энциклопедиях"
+description: |
+  Выполнен анализ правок в веб-энциклопедиях Википедия, РУВИКИ и Руниверсалис статей, посвященных Калужской области и входящих в её состав муниципальных районов и населенных пунктов.
+date: 2024-09-09
+categories:
+  - калужская область
+  - рувики
+  - руниверсалис
+  - википедия
+  - викиданные
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/pic.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT", "fontawesome") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/wiki_edits/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), 
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+```
+
+В опубликованном нами в прошлой [статье "Населённые пункты Калужской области в разных Википроектах"](https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis/){target="_blank"} ссылки на статьи об одном объекте похожи как братья-близнецы (о причинах см. раздел [Почему это важно](#%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-%D1%8D%D1%82%D0%BE-%D0%B2%D0%B0%D0%B6%D0%BD%D0%BE)). 
+
+Мы решили выяснить, насколько отличается интенсивность правок в оригинальной Википедии и вики-энциклопедиях [РУВИКИ](https://ru.ruwiki.ru){target="_blank"} и [Руниверсалис](https://%D1%80%D1%83%D0%BD%D0%B8.%D1%80%D1%84){target="_blank"}. Иными словами, добились ли успеха импортозамещающие сервисы? Смогли ли донести информацию о своих ресурсах до калужских летописцев?
+
+Для ответа на этот вопрос мы использовали базовый функционал ПО MediaWiki, на основе которого работают все вышеперечисленные сервисы, и для каждой из 3433 статей выгрузили полную историю правок с 01 января 2023 года по 31 августа 2024 года. Выражаем признательность руководству РУВИКИ и Руниверсалиса, что они не закрыли эту возможность. 
+
+### Пользователи и боты
+
+Использование ботов для управления контентом онлайн-энциклопедий не является чем-то преступным. Боты могут проверять оценивать достоверность внесённых пользователями правок и при необходимости их отменять, проверять статус ссылок на веб-страницы, присваивать статьям категории, добавлять новые сведения из других источников (например, географические координаты или ссылки на нормативные документы).    
+
+Хотя правила использование ботов рекомендуют называть их соответствующим образом, мы не стали угадывать роботов среди имен пользователей, а попросту приняли, что авторизованные пользователи, которые имели эпизоды высокой активности (более 20 отредактированных статей в день) -- боты. Конечно, это могут быть редакторы, которые работают в режиме бота 😂.
+
+```{r}
+dates_dfx <- readxl::read_xlsx(paste0(dir, "/dates_dfx.xlsx")) |> 
+  select(-is_anon, -is_bot) |> 
+  pivot_wider(names_from = cat, values_from = c(n_users, n_pages), 
+              values_fill = 0)
+
+sketch = htmltools::withTags(table(class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, htmltools::HTML('Вики-энциклопедия')),
+      th(colspan = 3, htmltools::HTML('Количество уникальных пользователей'), class = "dt-center"),
+      th(colspan = 3, htmltools::HTML('Количество исправленных страниц'), class = "dt-center")
+    ),
+    tr(
+      lapply(gsub('n_[^\\_]+_', '', colnames(dates_dfx[2:4])), function(x) th(htmltools::HTML(x), class = "dt-center")),
+      lapply(gsub('n_[^\\_]+_', '', colnames(dates_dfx[2:4])), function(x) th(htmltools::HTML(x), class = "dt-center"))
+    )
+  )
+))
+
+dates_dfx |> 
+  mutate(src = case_when(
+    src == "Wikipedia RU" ~ "Википидия (рус.яз)",
+    src == "RuWiki" ~ "РУВИКИ",
+    src == "Runiversalis" ~ "Руниверсалис"
+  )) |> 
+  DT::datatable(escape = F, rownames = F, filter = "none", container = sketch,
+                  options = list(dom = "Brt",
+                    deferRender = TRUE, ordering = TRUE, autoWidth = TRUE,
+                    columnDefs = list(
+                      list(width = '100px', targets = c(1:6)),
+                      list(className = 'dt-center', targets = c(1:6)),
+                      list(width = '150px', targets = c(0)))),
+                caption = htmltools::tags$caption(style = table_caption_css,
+          htmltools::p(
+            paste0('Таблица 1. ', 
+                   'Сравнение интенсивности правок в популярных wiki-энциклопедиях статей о Калужской области и входящих в неё населенных пунктах (всего - 3433 статьи, полный список см. в '),
+          htmltools::HTML('<a href="https://reginaobninsklab.github.io/posts/kaluga-locations-in-wikis/">Населённые пункты Калужской области в разных Википроектах</a>'),
+          ') в период с 01 января 2023 года по 31 августа 2024 года.',
+          'Ботом считали пользователя, у которого за указанный период времени был эпизод редактирования более 20 страниц за день.'
+          )))
+
+```
+
+За период с 01 января 2023 года по 31 августа 2024 года в статьи о Калужской области и входящих в неё населенных пунктах (всего -- 3433 статьи) в русскоязычной Википедии правки вносили приблизительно 500+ пользователей (из них 5, вероятно, боты, 196 -- анонимные пользователи), для сравнения в РУВИКИ общее число уникальных пользователей было ~ в 3 раза меньше, в Руниверсалис -- в 20 раз меньше.
+
+За указанный период авторизованные пользователи внесли правки в 593 статьи в Википедии, в 498 -- в РУВИКИ, в 130 -- в Руниверсалис. Анонимные пользователи внесли правки в меньшее число статей -- 114 (Википедия), 31 (РУВИКИ), 0 (Руниверсалис).
+
+> По всей видимости, у Руниверсалис более консервативная политика по сравнению с РУВИКИ -- по статьям из выборки работали лишь 4 бота и всего 22 автора (за выбранный период), при этом никаких анонимов. 
+
+### Динамика правок
+
+На иллюстрации ниже показано количество уникальных пользователей, которые правили статьи из выборки в течение месяца в период времени с 1 января 2023 года по 31 августа 2024 года. Авторизованные пользователи и боты подсчитывались по имени (user_id), неавторизованные пользователи по IP-адресу (да-да, они сохраняются в истории, сюрприз?).  
+
+***
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch1_filename <- paste0(dir, "chart_demo.png")
+ch1_blogfile <- paste0(dir_charts, "pic.png")
+if(!file.exists(ch1_blogfile)){ s<- file.copy(from = ch1_filename, to = ch1_blogfile, overwrite = T) }
+knitr::include_graphics(ch1_blogfile)
+```
+
+***
+
+> У РУВИКИ количество авторов в апреле-мае 2023 года резко снизилось (вероятно, предыдущая активность поддерживалась рекламными кампаниями) и к концу 2023 года в статьи из выборки вносили правки не более 5 пользователей в месяц. В 2024-ом году владельцы РУВИКИ придали новый импульс своей энциклопедии -- с марта начали работать боты, а к концу лета количество пользователей, правивших страницы (из выборки) почти достигло 10.
+
+> в русскоязычной Википедии в статьи из выборки ежемесячно вносили правки 30-40 пользователей. Некоторые из этих правок были отменами правок. Например, если какой-нибудь аноним написал бы в статье про Обнинск, что "это город с самой грязной рекой Калужской области", такую правку позже могли бы отменить, как необъективную оценку или вандализм.
+
+Не менее интереснее посмотреть, сколько статей из выборки получили правки за указанный период? Ведь может статься, что все правки вносились в 1-2 статьи.
+
+***
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch2_filename <- paste0(dir, "chart_demo2.png")
+ch2_blogfile <- paste0(dir_charts, "pic2.png")
+if(!file.exists(ch2_blogfile)){ s<- file.copy(from = ch2_filename, to = ch2_blogfile, overwrite = T) }
+knitr::include_graphics(ch2_blogfile)
+```
+
+***
+
+На фоне активности ботов, которые в РУВИКИ в 2024 году внесли изменения практически во все статьи, правки пользователей попросту незаметны. На иллюстрации ниже удалены правки ботов, что позволяет увидеть активность пользователей.
+
+***
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ch3_filename <- paste0(dir, "chart_demo3.png")
+ch3_blogfile <- paste0(dir_charts, "pic3.png")
+if(!file.exists(ch3_blogfile)){ s<- file.copy(from = ch3_filename, to = ch3_blogfile, overwrite = T) }
+knitr::include_graphics(ch3_blogfile)
+```
+
+***
+
+### Почему это важно? 
+
+Википедия имеет огромное информационное влияние. Во-первых, поисковые сервисы (Google, Yandex) выдают Wikipedia в первой пятерке результатов; во-вторых, массивы статей используются для машинного обучения и извлечения фактов. А если принять во внимание, известным всем обывателям факт, что любой пользователь сети Интернет может зарегистрироваться в Wikipedia и написать туда любую глупость или гадость, тогда становится понятным, почему депутаты и сенаторы так боятся, что неразумный школьник, задающий вопрос чат-боту, вдруг может получить ответ, который не понравится его родителям, учителям и прочим уполномоченным лицам. 
+
+На деле механизм не так прост... у большинства статей есть авторы, которые подписываются на уведомления о появлении новых правок. И если какой-нибудь умозрительный "Полиграф Полиграфович" решит "вальнуть в статью настоящей правды", то его действия очень скоро станут предметом рассмотрения небезразличных авторов и модераторов, которые имеют возможность новые правки отменить. Если новоявленный борзописец вместо предъявления обоснований начнет горячиться, то закончится всё его блокировкой. Добиться внесения в статью своей точки зрения можно только представив обоснование для правок -- например, подтвержденный факт из какого-нибудь авторитетного источника. Понятное дело, что подобные системы управления, основанные на консенсусе, хрупки в силу того, что рано или поздно в национальных комитетах (отвечающих за развитие википедии на определенном языке) образуются "тусовочки", которые начинают тянуть идеологическое одеялко на себя... 
+
+По этой причине с началом СВО дискуссии об ангажированности сервиса Wikipedia и необходимости её скорейшего импортозамещения наводнили СМИ. Так появились РуВики и Руниверсалис, где бывшие энтузиасты русскоязычной википедии (многие из которых ранее были изгнаны из нацкомитетов и заблокированы в русскоязычной Wikipedia) решили, что смогут создать более справедливую википедию. Справедливости ради, следует сказать, что действительно многие члены "национального комитета" по развитию русскоязычной википедии проживают не в России и не могут смотреть канал М.Симоньян без конской дозы антацида. 
+
+Для быстрого запуска и скорейшего достижения своих благих целей обе "конкурирующие фирмы", разумеется, скромничать не стали -- взяли открытое программное обеспечение MediaWiki и массив русскоязычных статей из Wikipedia (последние также распространяются на условиях открытых лицензий). 
+
+Задачи перед отечественными вики-энциклопедиями стоят совершенно утопичные -- надо переносить и обновлять статьи, переводить новые статьи с других языков, воспитывать отечественных авторов и редакторов, формировать общественное отношение к энциклопедиям, искать финансирование для долгосрочного развития.
+
+Как показывает наш анализ, это почти утопическая цель и причин здесь несколько:
+
+1. Помимо РУВИКИ и Руниверсалиса есть ещё вики-проект [Общества "Знание"](https://znanierussia.ru/articles/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0){target="_blank"}, на которой сегодня всего 35 тысяч статей, и [Большая российская энциклопедия](https://greatbook.ru/){target="_blank"}, получившие в наследство Большую советскую энциклопедию. И все они не без покровителей, которые хотят кушать. А значит будут рвать бюджет "на нитки" и грызть друг друга. В живых останутся те, кому энциклопедии нужны лишь для галочки.
+
+2. Уровень образования и культуры в России снижается, а зарегулированность и зависимость от Центра растёт. Это означает только одно -- вместо рекомендации школам открыть факультативы по вики-разметке и создавать открытые данные о родном крае, региональное министер скорее спустит на учителей обязательный план написать по 100 слов [в очередное многотиражное издание](https://vk.com/wall-33072543_28766){target="_blank"} или зарегистрироваться в сервисе очередной АНО, с которой губернатор чего-то отпарафинировал. Потому что денюжка, а не вот этот ваш [креатив-коммонс](https://creativecommons.org/licenses/by/4.0/){target="_blank"}. А само по себе описание калужских деревень не напишется. 
+
+А почему всё-таки так важны продукты Wikimedia Foundations? Положим, 10 лет назад среднестатистический житель Калужской области, слабо владеющий иностранными языками, мог бы сказать: "Да ну и бес с ними". Но сегодня браузеры вполне добротно переводят веб-страницы, а это значит, что в распоряжении тех же школьников и студентов не только тексты на русском языке, но и статьи на других языках, которых... намного больше. А также связанные со статьями категории, отношения, словари, произведения, образовательные курсы, библиотеки изображений, объекты культурного наследия, маршруты и т.д. 
+
+Пользуйтесь... пока не заблокировали.
+
+***
+
+Нравятся наши материалы? 👉 подписывайтесь на `r fa("fab fa-telegram", fill = "#24A1DE")`-канал [@Regina_Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"} или `r fa("fab fa-vk", fill = "#24A1DE")`-группу [@reginaobninsklab](https://vk.com/reginaobninsklab){target="_blank"}.    
+
+***
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Правки статей о Калужской области в русскоязычных вики-энциклопедиях. // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/kaluga-locations-wiki-revisions/. - Дата публикации: 09 сентября 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales',
+          'ggh4x')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+van den Brand T (2024). _ggh4x: Hacks for 'ggplot2'_. https://github.com/teunbrand/ggh4x,
+https://teunbrand.github.io/ggh4x/.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
