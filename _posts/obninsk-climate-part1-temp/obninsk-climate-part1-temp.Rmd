@@ -1,0 +1,437 @@
+---
+title: "Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 1. Температура)"
+description: |
+  На данных о температурах сентября в период с 1940 по 2024 г. доказано существование глобального потепления в городе Обнинск (Калужская область) и движение по направлению к апокалиптическим сценариям.
+date: 2024-09-21
+categories:
+  - обнинск
+  - климат
+  - погода
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/demo_obninsk_stat_years_by_years.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT", "fontawesome", 
+     "ggplot2", "ggtext", "showtext") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/meteo/")
+dir_data <- paste0(dir, "data/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), 
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+
+source(paste0(dir, "styles.R"), encoding = "UTF-8")
+```
+
+```{js zoom-jquery, echo = FALSE}
+ $(document).ready(function() {
+    $('body').prepend('<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>');
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src')).css({width: '100%'});
+      $('.zoomDiv').css({opacity: '1', width: 'auto', border: '1px solid white', borderRadius: '5px', position: 'fixed', top: '50%', left: '50%', marginRight: '-50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 50px #888888', zIndex: '50', overflow: 'auto', maxHeight: '100%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'}); 
+    });
+  });
+```
+
+```{r data, message=FALSE, warning=FALSE}
+all_meteo <- list.files(dir_data, full.names = T, pattern = "Q175651") |> 
+  map_df(~arrow::read_parquet(.x)) |> 
+  filter(!is.na(temperature_2m) & !is.na(relative_humidity_2m)) |> 
+  distinct() |>  
+  mutate(year = as.numeric(str_extract(time, "^\\d{4}")), 
+         day = as.numeric(str_extract(time, "\\d{2}(?=T)")),
+         hour = str_extract(time, "(?<=T)\\d{2}")) |> 
+  filter(!(day==19 & year == 2024)) |> 
+  select(-time) |> 
+  relocate(city, year, day, hour) |> 
+  arrange(city, year, day, hour)
+```
+
+В первой половине сентября погода в Обнинске почти ежедневно обновляла рекорды, поэтому мы не выдержали и решили обратиться к анализу климатических изменений. И сразу поняли, что тема это вдвойне деликатная. 
+
+*Во-первых*, большинство наших знакомых к глобальному потеплению относятся как к высадке американцев на Луну. Проверить факт никто не может, поэтому одни верят в аргументы "за", другие -- в аргументы "против". Причем, как нередко случается с массово обсуждаемыми феноменами, принимаемая позиция имеет для человека большее значение, чем истина.    
+
+*Во-вторых*, в Обнинске лезть с аматорским подходом в анализ погоды, когда за углом сидят главные синоптики страны -- это риск попасть под критику со стороны самых настоящих учёных.
+
+В поиске данных (или готовых ответов) мы отправились на [сайт](http://meteo.ru/svc/ams-obninsk/){target="_blank"} обнинских метеорологов, где: 
+
+- узнали, что ВНИИГМИ-МЦД собирает так много данных, что некоторые им приходится хранить [на бобинах и компакт-дисках](http://meteo.ru/activity/world-data-center/){target="_blank"}. 
+
+- нашли много всяких [отчётов в формате PDF](http://meteo.ru/activity/climate/russian-climate-monitoring/){target="_blank"}. Читать сложно -- язык такой, словно писала нейросеть, обученная на прогнозах погоды, но картинки весёленькие.
+
+- обнаружили упоминания о [бюллетенях "Изменение климата"](http://meteo.ru/activity/climate/climate-change/){target="_blank"}, которые могли бы дать нам все ответы, но гиперссылки привели на сайт global-climate-change.ru, который "приказал долго ждать". 
+
+А вот данные мы получить не смогли -- то [пароль](http://aisori-m.meteo.ru/climsprn/faces/index0a.xhtml){target="_blank"} спрашивают, то [хоздоговор](http://meteo.ru/services/climate-character/){target="_blank"} предлагают.
+
+Зато данные о погоде в г. Обнинск с 1940 по 2024 гг. мы без труда получили с помощью [API-интерфейса сервиса open-meteo.com](https://open-meteo.com/en/docs/historical-weather-api){target="_blank"}, который, не требуя регистрации, позволяет забирать данные с открытой лицензией.
+
+### Суточная температура (макс/мин)
+
+```{r}
+temps <- all_meteo |> 
+  summarize(.by = c(city, year, day),
+            t_max = max(temperature_2m),
+            t_min = min(temperature_2m)) |> 
+  mutate(.by = c(day, city), 
+         z_tmax = (t_max - mean(t_max))/sd(t_max),
+         z_tmin = (t_min - mean(t_min))/sd(t_min))
+
+max_color <- "#ff5c00"
+min_color <- "#0DD6D6"
+```
+
+Сначала нам показалось, что нам обязательно нужны сведения с почасовой детализацией показателей, но на практике данных оказалось многовато, поэтому мы решили начать с анализа максимальной и минимальной суточных температур.
+
+На рисунке ниже показана динамика максимальной и минимальной суточной температуры в сентябрьские дни разных лет. 
+
+```{r chart abs 1, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts,"demo_obninsk_abs_years_by_days.png")
+if(!file.exists(xfilename)){
+  gg2 <- temps |> ggplot() + 
+    geom_line(aes(x = day, y = t_max, group = year), color = max_color, linewidth = 0.2) +
+    geom_line(aes(x = day, y = t_min, group = year), color = min_color, linewidth = 0.2) + 
+    geom_smooth(formula = 'y ~ x', aes(x = day, y = t_max), method = "lm", linewidth = 0.3, color = max_color)+
+    geom_smooth(formula = 'y ~ x', aes(x = day, y = t_min), method = "lm", linewidth = 0.3, color = min_color)+
+    geom_point(aes(x = day, y = t_max), color = max_color, size = 0.45, stroke = 0.2, shape = 21, fill = "red3") +
+    geom_point(aes(x = day, y = t_min), color = min_color, size = 0.45, stroke = 0.2, shape = 21, fill = "#0d88d6")+ 
+    facet_wrap(~ year, scales = "free_x", ncol = 10) + 
+    scale_x_continuous(expand = expansion(add = c(0, 0.2)), limits = c(1,30),
+                       breaks = c(1, 7, 14, 21, 28))+
+    scale_y_continuous(expand = expansion(add = c(0, 1)))+
+    labs(title = paste0(
+      wrap_text("Максимальные", color = max_color, 30), " и ", 
+      wrap_text("минимальные", color = min_color, 30), " t<sup>o</sup>C сентября в г.Обнинск (1940-2024)"),
+      subtitle = 'Данные: open-meteo.com. На оси X показаны дни месяца.', 
+      caption = regina_caption_dark, x = NULL,  y = "Температура (<sup>o</sup>С)") + 
+    dark_theme_right + 
+    theme(axis.title.y = element_markdown(), axis.text.x = element_text(size = rel(0.65)))
+   
+  ggsave(gg2, filename = xfilename, width = 21, height = 28, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+```
+
+Такая картина хорошо подойдет для воспоминаний *"Ах какой был сентябрь в 1994-ом, а какой в 2012-ом!"*, но её сложно использовать для анализа изменения. 
+
+Одно из простых решений -- для каждого года расчитать значение какой-нибудь очевидной метрики и построить линейные тренды. Например, это может быть медиана -- такое значение температуры, которое делит дни месяца на 2 равные группы (дни, в которые значение было выше медианы, и дни, в которые оно было ниже). 2024 год мы исключим, поскольку на момент построения графика сентябрь ещё не закончился и отсутствие последней декады окажет скорее всего окажет влияние на значение медианы.
+
+```{r chart abs 2, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts, "demo_obninsk_abs_years_median.png")
+if(!file.exists(xfilename)){
+  ch6_data <- temps |> filter(year!=2024) |> 
+    pivot_longer(starts_with("t_"), names_to = "stat", values_to = "value") |> 
+    mutate(.by = c(stat, year), mm = median(value))
+  
+  gg6 <-  ch6_data |> ggplot() +
+    geom_boxplot(aes(x = year, y = value, group = year, color = stat, fill = stat),
+                 outlier.alpha = 0.7, outlier.size = 0.75, outlier.stroke = 0.5,
+                 linewidth = 0.25, alpha = 0.35)+
+    geom_line(aes(x = year, y = mm, color = stat), linewidth = 0.8) +
+    geom_point(aes(x = year, y = mm, color = stat), size = 1.2, shape = 21, 
+               fill = "white", stroke = 0.4, alpha = 0.8) + 
+    geom_smooth(data = ch6_data |> select(stat, year, mm) |> distinct(),
+                aes(x = year, y = mm), 
+                color = "white", formula = 'y ~ x', method = "lm",  
+                linewidth = 0.4, linetype = 5)+
+    facet_wrap(~ stat, ncol = 1, scales = "free",
+               labeller = as_labeller(c("t_max" = "", "t_min" = ""))) +
+    scale_color_manual(values = c("t_max" = max_color, "t_min" = min_color)) + 
+    scale_fill_manual(values = c("t_max" = max_color, "t_min" = min_color)) + 
+    scale_x_continuous(expand = expansion(add = c(0.2, 0.2)), breaks = scales::pretty_breaks(20))+
+   scale_y_continuous(expand = expansion(add = c(1, 3)),
+                      breaks = scales::pretty_breaks(8))+
+  labs(title = paste0(
+    wrap_text("Максимальные", color = max_color, 30), " и ", 
+    wrap_text("минимальные", color = min_color, 30), " суточные t<sup>o</sup>C сентября в г.Обнинск (1940-2023)"),
+    subtitle = 'Данные: open-meteo.com. Белыми точками отмечены медианные значения. Показатели 2024 года не включены.', 
+    caption = regina_caption_dark, 
+    x = "Год", y = "Температура (<sup>o</sup>С)") + 
+  guides(color = "none", fill = "none")+
+  dark_theme_bottom + theme(axis.title.y = element_markdown())
+
+ggsave(gg6, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)  
+    
+}
+knitr::include_graphics(xfilename)  
+```
+
+На верхней панели изображено распределение максимальных суточных температур сентября, на нижней -- минимальных. 
+
+* вертикальные прямоугольники с выступающими отрезками называются boxplots (коробки с усами) -- они отражают разброс значений. В область, закрытую коробкой, попадают центральные 50% значений (оставшиеся 50% распределены снаружи -- 25% ниже коробки и другие 25% -- выше коробки). Усики показывают границы более широкой группы наблюдений, но и они не покрывают всю выборку
+
+* точки на центральной перекладине "коробки с усами" соответствуют медианным значениям (т.е. 15 дней были теплее этого значения, 15 -- холоднее)
+
+* толстые цветные линии показывают изменения медианных значений по годам
+
+* тонкие серые линии с тенью соответствуют линейным трендам, построенным для медианных значений
+
+* отдельные точки над и под boxplot'ами называются экстремумами. Название вполне оправдывано, когда речь о погоде -- оранжевая точка в самом низу 2001 года напоминает про какой-то сентябрьский день, когда максимальная суточная температура не поднялась выше 7 градусов.
+
+> Тренд медианных значений максимальнйо суточной температуры почти горизонтальный, для минимальной, как будто, немного устремлен вверх. Что нам кажется более важным -- теплые и холодные года чередуются и медианные значения обнаруживаются то выше, то ниже тренда. Получается, что изменения от потепления гораздо слабее годичных колебаний и 2025-ый или какой-нибудь следующий за ним год могут заставить нас забыть про жаркий сентябрь 2024-ого.   
+
+***
+
+### Альтернативный сценарий
+
+Нет, это не про побег на другую планету после того, как растаявшие айсберги смешаются с водами Протвы и на Земле не останется воды, пригодной для питья.
+
+Попробуем чуть более скрупулёзно оценить изменение обнинского климата, построив распределение максимальных и минимальных суточных температур.
+
+```{r chart2, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts,"demo_obninsk_abs_years_by_years.png")
+if(!file.exists(xfilename)){
+  gg1 <- temps |> ggplot() + 
+    geom_line(aes(x = year, y = t_max, group = day), color = max_color, linewidth = 0.2) +
+    geom_line(aes(x = year, y = t_min, group = day), color = min_color, linewidth = 0.2) + 
+    geom_smooth(formula = 'y ~ x', aes(x = year, y = t_max), method = "lm", linewidth = 0.3, color = max_color)+
+    geom_smooth(formula = 'y ~ x', aes(x = year, y = t_min), method = "lm", linewidth = 0.3, color = min_color)+
+    geom_point(aes(x = year, y = t_max), color = max_color, size = 0.45, stroke = 0.2, shape = 21, fill = "red3")+
+    geom_point(aes(x = year, y = t_min), color = min_color, size = 0.45, stroke = 0.2, shape = 21, fill = "#0d88d6")+
+    facet_wrap(~ day, labeller = as_labeller(function(x, suffix = " сентября") paste0(x, suffix)), 
+               scales = "free_x", ncol = 6) + 
+    scale_x_continuous(expand = expansion(add = c(0.8, 0.8)), 
+                       breaks = seq.int(1940, 2020, 20))+
+    scale_y_continuous(expand = expansion(add = c(0, 2)), breaks = scales::pretty_breaks(8)) +
+    labs(title = paste0(wrap_text("Максимальные", color = max_color, 30), " и ", 
+      wrap_text("минимальные", color = min_color, 30), " суточные t<sup>o</sup>C  сентября в г.Обнинск (1940-2024)"),
+      subtitle = 'Данные: open-meteo.com', 
+      caption = regina_caption_dark, x = NULL,  y = "Температура (<sup>o</sup>С)") + 
+  dark_theme_bottom + 
+    theme(axis.title.y = element_markdown(),  
+          axis.text.x = element_text(size = rel(0.7)),
+          panel.spacing.x = unit(3, 'mm'))
+   
+  ggsave(gg1, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+```
+
+Такое представление забавно тем, что в некоторые дни можно наблюдать отрицательный тренд -- если верить линейным трендам, то дни 26 сентября становятся холоднее.
+
+В разные годы один и тот же день календаря мог быть как особенно теплым (выше тренда), так и особенно холодным, поэтому значения для каждого года представим в виде распределения.
+
+```{r chart3, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts,"demo_obninsk_stat_years_by_years.png")
+if(!file.exists(xfilename)){
+  ch1s_data <- temps |> select(-contains("z_t")) |> 
+    pivot_longer(starts_with("t_"), names_to = "stat", values_to = "value") |>
+     mutate(.by = c(day, stat), z = (value - mean(value))/sd(value)) |> 
+    mutate(ppc = pnorm(z)) |> 
+    mutate(stat = case_when(stat == "t_max" ~ "T max", stat == "t_min" ~ "T min"))
+  
+  gg1s <- ch1s_data |> ggplot() + 
+    geom_dotplot(aes(x = factor(stat), y = value, fill = factor(stat)),
+                 binaxis = "y", dotsize = 0.7, color = "grey10", alpha = 0.8, stroke = 0.2,
+                 method="histodot", binwidth = 1, stackdir="centerwhole", stackratio = 1) +
+    geom_segment(data = ch1s_data |> filter(year == 2019),
+                 aes(x = stat, xend = ifelse(stat == "T max", "T min", "T max"), 
+                     y = value, yend = ifelse(stat == "T max", (value + 30)/2.1, (value - 0)/2.9)), 
+                 color = "#A59866", linewidth = 0.3) + 
+    geom_dotplot(data = ch1s_data |> filter(year == 2019), 
+                 aes(x = factor(stat), y = value),
+                 fill = "yellow", binaxis = "y", dotsize = 0.85, color = "grey20", alpha = 0.8,
+                 method="histodot", binwidth = 1, stackdir="centerwhole", stackratio = 1) +
+    geom_label(fill = "yellow", alpha = 0.6, color = "grey20", 
+               family = "RobotoC", size = 3.9, label.padding = unit(0.6, 'mm'),
+               data = ch1s_data |> filter(year == 2019) |> 
+                 mutate(value = ifelse(stat == "T max", (value + 30)/2.1, (value - 0)/2.9),
+                        stat = ifelse(stat == "T max", "T min", "T max")),
+               aes(x = factor(stat), y = value, label = scales::percent(ppc, 1)))+
+    facet_wrap(~ day, labeller = as_labeller(function(x, suffix = " сентября") paste0(x, suffix)), 
+               scales = "free_x", ncol = 10) + 
+    scale_fill_manual(values = c("T max" = max_color, "T min" = min_color)) + 
+    scale_y_continuous(expand = expansion(add = c(0.5, 1)), 
+                        breaks = scales::pretty_breaks(8)) +
+    labs(title = paste0(wrap_text("Максимальные", color = max_color, 30), " и ", 
+      wrap_text("минимальные", color = min_color, 30), " суточные t<sup>o</sup>C сентября в г.Обнинск (1940-2024)"),
+      subtitle = 'Желтой точкой показаны значения 2019 года, в выносках - соответствующие значениям процентили. Данные: open-meteo.com', 
+      caption = regina_caption_dark, 
+      x = NULL,  y = "Температура (<sup>o</sup>С)") + 
+    guides(fill = "none")+
+  dark_theme_bottom + 
+    theme(axis.title.y = element_markdown(),
+           axis.text.x = element_text(size = rel(0.7)))
+   
+  ggsave(gg1s, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+```
+
+На иллюстрации на примере значений для 2019 года показано, как соотносятся абсолютные значения максимальной и минимальной суточной температуры с более универсальной категорией -- процентилем. 
+
+> Если говорят, что в выборке {d1, d2,....dn} значение X соответствует 90-ому процентилю, это означает, что 90% значений в выборке {d1, d2,....dn} не превышают Х.     
+
+На рисунке выше видно, что 27 сентября 2019 года минимальная суточная температура попала в 3% самых низких минимальных суточных температур, наблюдавшихся с 1940 года в день 27 сентября, а максимальная температура 11 сентября 2019 года была в 1% самых тёплых дней 11 сентября.
+
+Использованием процентилей позволяет перейти от абсолютных значений (температура в градусах Цельсия) к безразмерным (процентилям). Теперь, вместо сомнительной процедуры расчета "средней сентябрьской температуры", мы можем рассчитать средний процентиль для сентября любого года. Например, медиана для процентильных значений максимальной температуры в 2019 (показаны в выносках для желтых точек на иллюстрации выше) равна **`r temps |> filter(city == "Обнинск") |> filter(year == 2019) |> arrange(day) |> mutate(ppc = pnorm(z_tmax)) |> pull(ppc) |> median() |> scales::percent(accuracy = 1)`**. Это означает, что в половине дней сентября 2019 максимальная температура попадала в 59-ый или более высокий процентиль (в сравнении с этими же календарными днями в другие годы). Аналогичный показатель для минимальных суточных температур холодного 1993 года -- **`r temps |> filter(city == "Обнинск") |> filter(year == 1993) |> arrange(day) |> mutate(ppc = pnorm(z_tmin)) |> pull(ppc) |> median() |> scales::percent(accuracy = 1)`**, то есть в половине дней сентябре 1993 минимальные температуры попадали в 12% самых низких значений (в сравнении с этими же календарными днями в другие годы).
+
+Теперь мы можем посчитать такие медианные значения для каждого года, чтобы построить тренд...
+
+```{r chart4, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts,"demo_obninsk_ppc_years_median.png")
+if(!file.exists(xfilename)){
+  ch3_data <- temps |> 
+    pivot_longer(starts_with("z_t"), names_to = "stat", values_to = "value") |>
+    mutate(ppc = pnorm(value)) |> 
+    mutate(.by = c(stat, year), mm = median(ppc))
+  
+  gg3 <-  ch3_data |> ggplot() +
+    geom_boxplot(aes(x = year, y = ppc, group = year, color = stat, fill = stat),
+                 outlier.alpha = 0.7, outlier.size = 0.75, outlier.stroke = 0.5,
+                 linewidth = 0.25, alpha = 0.35)+
+    geom_line(aes(x = year, y = mm, color = stat), linewidth = 0.8) +
+    geom_point(aes(x = year, y = mm, color = stat), size = 1.2, shape = 21, 
+               fill = "white", stroke = 0.4, alpha = 0.8) + 
+    geom_smooth(data = ch3_data |> select(stat, year, mm) |> distinct(),
+                aes(x = year, y = mm), 
+                color = "white", formula = 'y ~ x', method = "lm",  
+                linewidth = 0.4, linetype = 5)+
+    facet_wrap(~ stat, ncol = 1, scales = "free",
+               labeller = as_labeller(c("z_tmax" = "", "z_tmin" = ""))) +
+    scale_color_manual(values = c("z_tmax" = max_color, "z_tmin" = min_color)) + 
+    scale_fill_manual(values = c("z_tmax" = max_color, "z_tmin" = min_color)) + 
+    scale_x_continuous(expand = expansion(add = c(0.2, 0.2)), breaks = scales::pretty_breaks(20))+
+    scale_y_continuous(expand = expansion(add = c(0.02, 0.02)), 
+                      labels = scales::percent_format(accuracy = 1),
+                      breaks = scales::pretty_breaks(5))+
+  labs(title = paste0(
+    wrap_text("Максимальные", color = max_color, 30), " и ", 
+    wrap_text("минимальные", color = min_color, 30), " суточные t<sup>o</sup>C сентября в г.Обнинск"),
+    subtitle = 'Данные: open-meteo.com', 
+    caption = regina_caption_dark, 
+    x = "Год", y = "Процентиль значения температуры, %") + 
+  guides(color = "none", fill = "none")+
+  dark_theme_bottom + theme(axis.title.y = element_markdown())
+
+ggsave(gg3, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)  
+    
+}
+knitr::include_graphics(xfilename)  
+```
+
+Использование процентилей сделало наглядным не только тренды, но и горячий 2024-ый год -- максимальные температуры первой половины сентября текущего года практически полностью попали в 90-ые процентили. Итак, факт глобального потепления в городе Обнинск можем считать доказанным.     
+
+<div style="text-align:center"><b><span>YEAH SCIENCE, B***H !<br/></span></b></div>
+
+***
+
+Так как данных мы скачали много, то продолжение следут... 
+
+***
+
+Нравятся наши материалы?
+
+👉  `r fa("fab fa-telegram", fill = "#24A1DE")` [@Regina_Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"} 
+
+👉  `r fa("fab fa-vk", fill = "#447bba")` [@reginaobninsklab](https://vk.com/reginaobninsklab){target="_blank"}    
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Глобальное потепление и сентябрьская погода в г. Обнинск  (Часть 1. Температура). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/. - Дата публикации: 21 сентября 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

@@ -57,6 +57,9 @@ output:
 >
 > 2. Трудоустройство и зарплаты выпускников по образовательным организациям 2019-2023: https://tochno.st/datasets/graduates_university [csv, xlsx]
 
+### Климат
+
+> Open Meteo https://open-meteo.com/en/docs/historical-weather-api [API]
 
 ### Государственный надзор
 
@@ -75,6 +78,7 @@ output:
 > 8. Реестр некоммерческих организаций (Минюст России): https://minjust.gov.ru/ru/pages/reestr-nekommercheskih-organizacij/ [xls]
 >
 > 9. Сведения из государственного сводного реестра выданных, приостановленных и аннулированных лицензий на производство и оборот этилового спирта, алкогольной и спиртосодержащей продукции: https://fsrar.gov.ru/licens/reestr [web]
+>
 > 10. Реестр лицензий на осуществление деятельности по организации и проведению азартных игр в букмекерских конторах или тотализаторах: https://www.nalog.gov.ru/opendata/7707329152-reestrlicbookmaker/ [csv]
 
 ### Общественный надзор

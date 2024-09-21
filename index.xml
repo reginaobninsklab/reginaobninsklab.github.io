@@ -7,7 +7,18 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 09 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 1. Температура)</title>
+      <link>https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp</link>
+      <description>На данных о температурах сентября в период с 1940 по 2024 г. доказано существование глобального потепления в городе Обнинск (Калужская область) и движение по направлению к апокалиптическим сценариям.</description>
+      <category>обнинск</category>
+      <category>климат</category>
+      <category>погода</category>
+      <guid>https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp</guid>
+      <pubDate>Sat, 21 Sep 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/images/demo_obninsk_stat_years_by_years.png" medium="image" type="image/png" width="2755" height="2066"/>
+    </item>
     <item>
       <title>Правки статей о Калужской области в русскоязычных вики-энциклопедиях</title>
       <link>https://reginaobninsklab.github.io/posts/kaluga-locations-wiki-revisions</link>
