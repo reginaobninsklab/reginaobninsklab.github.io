@@ -1,0 +1,384 @@
+---
+title: "Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 2. Осадки)"
+description: |
+  Как менялась частота и интенсивность сентябрьских дождей с 1940 по 2024 в городе Обнинск (Калужская область)? Стало ли больше солнечных дней? На эти вопросы пытаемся ответить с помощью данных open-meteo.com.
+date: 2024-09-23
+categories:
+  - обнинск
+  - климат
+  - погода
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/rain_obninsk_aggr_days.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT", "fontawesome", 
+     "scales", "ggplot2", "ggtext", "showtext") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/meteo/")
+dir_data <- paste0(dir, "data/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), 
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+
+source(paste0(dir, "styles.R"), encoding = "UTF-8")
+```
+
+```{js zoom-jquery, echo = FALSE}
+ $(document).ready(function() {
+    $('body').prepend('<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>');
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src')).css({width: '100%'});
+      $('.zoomDiv').css({opacity: '1', width: 'auto', border: '1px solid white', borderRadius: '5px', position: 'fixed', top: '50%', left: '50%', marginRight: '-50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 50px #888888', zIndex: '50', overflow: 'auto', maxHeight: '100%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'}); 
+    });
+  });
+```
+
+```{r data, message=FALSE, warning=FALSE}
+all_meteo <- list.files(dir_data, full.names = T, pattern = "Q175651") |> 
+  map_df(~arrow::read_parquet(.x)) |> 
+  filter(!is.na(temperature_2m) & !is.na(relative_humidity_2m)) |> 
+  distinct() |>  
+  mutate(year = as.numeric(str_extract(time, "^\\d{4}")), 
+         day = as.numeric(str_extract(time, "\\d{2}(?=T)")),
+         hour = str_extract(time, "(?<=T)\\d{2}")) |> 
+  filter(!(day==19 & year == 2024)) |> 
+  select(-time) |> 
+  relocate(city, year, day, hour) |> 
+  arrange(city, year, day, hour)
+```
+
+Продолжаем тему климатических изменений в городе Обнинск. 
+
+В [первой части](https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/){target="_blank"} мы рассматривали изменение маскимальной и минимальной суточной температуры сентября с 1940 года. О том, что важна не только температура, выразительно свидетельствуют загоревшиеся в Калужской области торфяные болота ([в г. Сосенский Козельского района](https://t.me/Evgeniy_Serkin/50016){target="_blank"}). 
+
+В данных, которые мы получили с помощью [API-интерфейса сервиса open-meteo.com](https://open-meteo.com/en/docs/historical-weather-api){target="_blank"} есть почасовые показатели осадков.
+
+### Хроники дождей
+
+```{r}
+prec <- all_meteo |> 
+  summarize(.by = c(year, day),
+            rain_sum = sum(rain),
+            rain_hs = sum(rain>0)) |> 
+  mutate(.by = c(day), n_yrs_w_rain = sum(rain_sum>0)) |> 
+  mutate(cat = case_when(
+    rain_hs == 0 ~ "a",
+    rain_hs > 0 & rain_hs <= 3 ~ "b",
+    rain_hs > 3 & rain_hs <= 9 ~ "c",
+    rain_hs > 9 & rain_hs <= 15 ~ "d",
+    rain_hs > 15 & rain_hs <= 24 ~ "e"))
+
+clrs <- colorRampPalette(c(colorspace::lighten("yellow",0.5),
+                           colorspace::lighten("#7Cfbf3", 0.5),
+                           colorspace::lighten("#41b6c4",0.2), 
+                           colorspace::lighten("#225ea8",0.1)))(5)
+icons <- c('&#xf185;', '&#xf743;', '&#xf73d;', '&#xf740;', '&#xe4e4;')
+xlabs <- paste0(
+  map2_chr(clrs, icons, ~wrap_fa_solids(.y, .x, 15)), "<br/>",
+  map_chr(c("0", " 1-3", "4-9", "10-15", "16+"), ~ wrap_text(.x, "white", 9.5))
+)
+
+prec_cat <- prec |> select(year, day, rain_hs, cat) |> distinct()
+  
+prec_df <- expand.grid(year = 1940:2024, day = 1:30) |> 
+  left_join(prec_cat, by = join_by(year, day)) |> 
+  group_by(year) |> 
+  arrange(day) |> 
+  mutate(y = 7-ceiling(row_number()/6),
+         x = ((row_number()+5) %% 6) + 1) |> 
+  ungroup()
+```
+
+```{r chart_rain1, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts, "rain_obninsk_cat_tiles.png")
+if(!file.exists(xfilename)){
+  gr1 <- ggplot(prec_df) + 
+    geom_tile(aes(x = x, y = y, fill = cat), linewidth = 0.2, color = "grey40") + 
+    geom_text(aes(x = x, y = y, label = day), color = "grey10", family = "RobotoC", size = 2.7) + 
+    facet_wrap(~ year) + 
+    scale_x_continuous(expand = expansion(add = c(0, 0)), 
+                       breaks = NULL, labels = NULL)+
+    scale_y_continuous(expand = expansion(add = c(0, 0)),
+                       breaks = NULL, labels = NULL)+
+    scale_fill_manual(values = clrs |> set_names(letters[1:5]), 
+                      labels = xlabs, na.value = "grey50", name = NULL,
+                      breaks = letters[1:5]) +
+    guides(fill = guide_legend(reverse = T))+
+    labs(title = paste0("Дождливые и не очень дни сентября в г.Обнинск (1940-2024)"),
+          subtitle = 'Цвет передает количество часов с дождём (см. легенду) в указанные сутки. Данные: open-meteo.com', 
+         caption = regina_caption_dark, 
+            x = NULL, y = NULL) + 
+    dark_theme_right + 
+    theme(legend.text = element_markdown(halign = 0.5))
+
+  ggsave(gr1, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+```
+
+> Обращаем внимание, что иллюстрация выше не передаёт объем выпавших осадков, а иллюстрирует частоту и длительность "мокрых" и "сухих" периодов.  
+
+***
+
+### Сухие дни
+
+Те, кому не выпало "чилить на удаленке" или ездить на работу в "служебной машине", вряд ли будут возражать против пары лишних солнечных дней в сентябре. График ниже показывает, становится ли их больше?  
+
+```{r chart_rain2, message=FALSE, warning=FALSE}
+xfilename <- paste0(dir_charts, "rain_obninsk_aggr_days.png")
+if(!file.exists(xfilename)){
+  library(ggfx)
+  gr3 <- prec |>
+    summarize(.by = year, n_clear = sum(rain_hs==0)/n_distinct(day)) |>
+    mutate(city = "city") |> 
+    ggplot() + 
+    geom_line(aes(x = year, y = n_clear, group = city), alpha = 0.4,
+                  color = colorspace::darken('#FFFFB3', 0.1), linetype = 1, linewidth = 0.6) + 
+     with_blur(
+       geom_point(aes(x = year, y = n_clear), fill = colorspace::lighten("#feb24c", 0.5), size = 5, shape = 21), 
+       sigma = unit(1.5, 'mm')
+     ) + 
+    geom_smooth(aes(x = year, y = n_clear), color = "white", 
+                formula = 'y ~ x', method = "loess",  linewidth = 0.4, linetype = 5)+
+    geom_textbox(aes(x = year, y = n_clear,
+                 label = wrap_fa_solids(text = '&#xf185;', color = '#FFFFB3', font_size = 12)),
+                 fill = "transparent", hjust = 0.5, vjust = 0.5, halign = 0.5,
+                 box.colour = "transparent") +
+    scale_x_continuous(expand = expansion(add = c(1, 1)), 
+                       breaks = seq.default(1940, 2024, 4))+
+    scale_y_continuous(expand = expansion(add = c(0, 0.02)),
+                       limits = c(0,1),
+                       labels = scales::percent_format(accuracy = 1),
+                       breaks = scales::pretty_breaks(6))+
+    labs(title = paste0(
+      "Сентябрьские дни без дождей ",
+      wrap_fa_solids(text = '&#xf185; ', color = "#FFFFB3", 24),
+      "в г.Обнинск (1940-2024)"),
+      subtitle = 'Данные: open-meteo.com. (&horbar;) показаны тренды.', 
+      caption = regina_caption_dark, 
+      x = NULL,  y = "% дней без дождя") + 
+    dark_theme_right + 
+    theme(legend.text = element_markdown())
+   
+  ggsave(gr3, filename = xfilename, width = 28, height = 12, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+```
+
+О-ля-ля, сентябрь в Обнинске становится не только теплее, [см. первую часть](https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/){target="_blank"}, но и суше. В следующее после дождливого 2013-ого десятилетие (2014-2023) было лишь 2 года, когда доля дней без дождя была ниже 50%. В предыдущие 7 десятилетий из наблюдаемого периода дождливые сентябрьские дни случались чаще.        
+
+***
+
+### Мокрые дни
+
+На иллюстрациях ниже показано как изменялся процент сентябрьских дней, в которые наблюдались дожди с указанной интенсивностью. 
+
+Верхние 2 графика привязаны к суммарному суточному объему осадков. Эту метрику мы рассчитали как сумму почасовых показателей -- естественно, полученные значения могут не совпадать с фактическим объёмом выпавших за сутки осадков, но это не препятствует использованию метрики для посчета дней (можно считать, что складывая почасовые значения, мы в среднем немного завысили показатели для всех дней).
+
+Нижние 2 графика отражают частоту дней с указанной интенсивностью дождя (слева -- в сутках был хотя бы 1 час с  интенсивностью 1 мм или больше, справа -- в течение суток было минимум 4 последовательных часа с интенсивностью 0.5 мм или больше).
+
+На наш взгляд, приведённые графики показательны тем, что игнорируют дни с моросью, и учитывают более серьёзные осадки, которые (по нашему предположению) способны оказывать влияние на накопление воды многолетними растениями и урожаи будущего года. 
+
+```{r chart_rain3, message=FALSE, warning=FALSE}
+int_breaks <- function(x, n) {
+  l <- pretty(x, n)
+  l[abs(l %% 1) < 1e-08] 
+}
+
+xfilename <- paste0(dir_charts, "rain_obninsk_aggr_rains.png")
+if(!file.exists(xfilename)){
+  # share of days when sum > 3 mm
+  prec31 <- all_meteo |> 
+    summarize(.by = c(year, day), rain_sum = sum(rain)) |> 
+    mutate(cat = "a") |> 
+    summarize(.by = c(year, cat), n_days = sum(rain_sum>3)/n_distinct(day))
+  
+  # share of days when sum > 10 mm
+  prec32 <- all_meteo |> 
+    summarize(.by = c(year, day), rain_sum = sum(rain)) |> 
+    mutate(cat = "b") |> summarize(.by = c(year, cat), n_days = sum(rain_sum>8)/n_distinct(day))
+
+  # share of days when hour volume > 1 mm
+  prec33 <- all_meteo |> 
+    summarize(.by = c(year, day), rain_max = max(rain)) |> 
+    mutate(cat = "c") |> summarize(.by = c(year, cat), n_days = sum(rain_max > 1)/n_distinct(day))
+  
+  # share of days when hour volume > 0.5 mm & consecutive >= 4
+  hurdle <- 0.5
+  all_meteo <- all_meteo |> arrange(year, day, hour) 
+  all_meteo$x <- sequence(rle(all_meteo$rain >= hurdle)$lengths)
+  
+  prec34 <- all_meteo |>
+    summarize(.by = c(year, day), rain_con = sum(rain >= hurdle & x >= 4)) |> 
+    mutate(cat = "d") |> 
+    summarize(.by = c(year, cat), n_days = sum(rain_con > 0)/n_distinct(day))  
+
+ch <- bind_rows(prec31, prec32, prec33, prec34) |> ggplot() +
+  geom_line(aes(x = year, y = n_days, group = cat, color = cat), 
+            linetype = 1, linewidth = 0.4, alpha = 0.6) + 
+  with_blur(
+     geom_point(aes(x = year, y = n_days), fill = "grey90", size = 2, shape = 21),
+     sigma = unit(1.5, 'mm')) +
+  geom_smooth(aes(x = year, y = n_days), color = "white", 
+                formula = 'y ~ x', method = "loess",  linewidth = 0.4, linetype = 5)+
+  geom_point(aes(x = year, y = n_days, fill = cat), 
+             size = 1.6, stroke = 0.2, color = "grey10", shape = 21) + 
+  facet_wrap(~ cat, scales = "free_x",
+             labeller = as_labeller(c("a" = "суточный объём осадков > 3 мм", 
+                                    "b" = "суточный объём осадков > 10 мм", 
+                                    "c" = "минимум 1 час с 1+ мм в час", 
+                                    "d" = "минимум 4 часа с 0.5+ мм в час"))) + 
+  scale_x_continuous(expand = expansion(add = c(1, 2)), 
+                       breaks = seq.default(1940, 2024, 4))+
+  scale_y_continuous(expand = expansion(add = c(0.02, 0.02)),
+                       labels = scales::percent_format(accuracy = 1),
+                       breaks = scales::pretty_breaks(6)) +
+  scale_color_manual(values = c("a" = "#C3D878FF", "b" = "#58A787FF", 
+                                "c" = "#BAD6F9FF", "d" = "#FBC2A9FF")) +
+     scale_fill_manual(values = c("a" = "#C3D878FF", "b" = "#58A787FF", 
+                                "c" = "#BAD6F9FF", "d" = "#FBC2A9FF")) +
+  guides(color = "none", fill = "none")+
+  labs(title = "Сентябрьские дни и интенсивность дождя",
+      subtitle = 'Данные: open-meteo.com. Суточный объём осадков рассчитан как сумма часовых показателей и может не совпадать с фактическим объёмом. (&horbar;) показаны тренды.', 
+      caption = regina_caption_dark, 
+      x = NULL,  y = "% дней с указанной интенсивностью дождя") + 
+  dark_theme_right + 
+  theme(legend.text = element_markdown())
+   
+  ggsave(ch, filename = xfilename, width = 28, height = 16, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename)  
+  
+```
+
+И что мы видим? Начиная с 80-ых годов доля дней с добротными дождями снижается.
+
+Значит ли это, что Калужская область будет постепенно превращаться в Оренбургскую?
+
+Надеемся, что у настоящих учёных есть не только ответ на этот вопрос, но и какие-нибудь конкретные предложения.
+
+***
+
+Продолжение следут... 
+
+***
+
+Нравятся наши материалы?
+
+👉  `r fa("fab fa-telegram", fill = "#24A1DE")` [@Regina_Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"} 
+
+👉  `r fa("fab fa-vk", fill = "#447bba")` [@reginaobninsklab](https://vk.com/reginaobninsklab){target="_blank"}    
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Глобальное потепление и сентябрьская погода в г. Обнинск  (Часть 2. Осадки). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/. - Дата публикации: 23 сентября 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales', 'ggfx')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Pedersen T (2022). _ggfx: Pixel Filters for 'ggplot2' and 'grid'_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=ggfx>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.
