@@ -7,7 +7,19 @@
     <description>"Блог лаборатории анализа данных Regina Lab (Обнинск)."
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 23 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 28 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Надёжность сведений о погоде в г.Обнинск (Часть 3. Источники данных)</title>
+      <link>https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources</link>
+      <description>Можно ли доверять сервисам вроде open-meteo.com, которые показывают температуру с точностью до десятых градуса в любой географической точке на карте? Мы провели сравнительный анализ данных open-meteo.com, которые рассчитывают с помощью теоретических моделей, с экспериментальными сведениями, собранными ФГБУ НПО Тайфун.</description>
+      <category>обнинск</category>
+      <category>тайфун</category>
+      <category>климат</category>
+      <category>погода</category>
+      <guid>https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources</guid>
+      <pubDate>Sat, 28 Sep 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources/images/wind_rose_typhoon.png" medium="image" type="image/png" width="2755" height="1673"/>
+    </item>
     <item>
       <title>Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 2. Осадки)</title>
       <link>https://reginaobninsklab.github.io/posts/obninsk-climate-part2-rains</link>
@@ -231,18 +243,6 @@
       <guid>https://reginaobninsklab.github.io/posts/kaluga-gender-gia</guid>
       <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
       <media:content url="https://reginaobninsklab.github.io/posts/kaluga-gender-gia/images/gia_genders.png" medium="image" type="image/png" width="2116" height="1587"/>
-    </item>
-    <item>
-      <title>Открытый рейтинг школ Калужской области (часть 1)</title>
-      <link>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</link>
-      <description>Попытка оценить эффективность образовательных учреждений по результатам сдачи ЕГЭ в 2019-2023 гг. Материал содержит интерактивные таблицы с показателями школ и рейтингами.</description>
-      <category>школы</category>
-      <category>ЕГЭ</category>
-      <category>ГИА</category>
-      <category>образование</category>
-      <guid>https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1</guid>
-      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/images/school_rank_map.png" medium="image" type="image/png" width="2116" height="1587"/>
     </item>
   </channel>
 </rss>

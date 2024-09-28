@@ -1,0 +1,509 @@
+---
+title: "Надёжность сведений о погоде в г.Обнинск (Часть 3. Источники данных)"
+description: |
+  Можно ли доверять сервисам вроде open-meteo.com, которые показывают температуру с точностью до десятых градуса в любой географической точке на карте? Мы провели сравнительный анализ данных open-meteo.com, которые рассчитывают с помощью теоретических моделей, с экспериментальными сведениями, собранными ФГБУ НПО Тайфун.
+date: 2024-09-28
+categories:
+  - обнинск
+  - тайфун
+  - климат
+  - погода
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: false
+    highlight: kate
+    highlight_downlit: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+preview: images/wind_rose_typhoon.png
+citation: false
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::knit_hooks$set(
+  inline = function(x) {if(!is.numeric(x)){ x } else { prettyNum(round(x,0), big.mark=".") } }
+  )
+
+Sys.setlocale("LC_CTYPE","russian")
+Sys.setlocale("LC_COLLATE","russian")
+Sys.setlocale("LC_TIME", "russian")
+
+list("dplyr", "readr", "tidyr", "purrr", "stringr", "DT", "fontawesome", 
+     "scales", "ggplot2", "ggtext", "showtext") |>
+  purrr::walk(~suppressWarnings(suppressPackageStartupMessages(
+    library(.x, character.only = TRUE, quietly = T))))
+
+onedrive <- Sys.getenv("OneDrive")
+dir <- paste0(onedrive, "/ODCity/meteo/")
+dir_data <- paste0(dir, "data/")
+dir_charts <- paste0(getwd(), "/images/")
+if(!dir.exists(dir_charts)){ dir.create(dir_charts) }
+
+options(readr.show_col_types = FALSE, readr.show_progress = FALSE)
+
+options(DT.options = list(
+  pageLength = 10, lengthMenu = c(5, 10, 15, 20, 25), 
+  # language = jsonlite::fromJSON(paste0(Sys.getenv("OneDrive"), '/SysHomeDocs/Russian.json'), flatten = T)
+  language = list(url = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/Russian.json')))
+
+make_url <- function(url, text){ paste0('<a href="', url, '" target="_blank">', text, '</a>') }
+
+table_caption_css <- 'caption-side: bottom; font-family: Play; font-stretch: condensed;color: #999999; text-align: left;'
+
+source(paste0(dir, "styles.R"), encoding = "UTF-8")
+```
+
+```{js zoom-jquery, echo = FALSE}
+ $(document).ready(function() {
+    $('body').prepend('<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>');
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src')).css({width: '100%'});
+      $('.zoomDiv').css({opacity: '1', width: 'auto', border: '1px solid white', borderRadius: '5px', position: 'fixed', top: '50%', left: '50%', marginRight: '-50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 50px #888888', zIndex: '50', overflow: 'auto', maxHeight: '100%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'}); 
+    });
+  });
+```
+
+```{r data, message=FALSE, warning=FALSE}
+cities <- readxl::read_xlsx(paste0(dir, "cities.xlsx"))
+
+all_meteo <- list.files(dir_data, full.names = T, pattern = cities$wikidata[2]) |> 
+  map_df(~arrow::read_parquet(.x)) |> 
+  mutate(year = as.numeric(str_extract(time, "^\\d{4}")), 
+         day = as.numeric(str_extract(time, "\\d{2}(?=T)")),
+         hour = as.numeric(str_extract(time, "(?<=T)\\d{2}"))) |>
+  # fix 00 and 24 problem to the correct dates
+  mutate(day = ifelse(hour == "00" & (day+1)==lead(day,1), lead(day,1), day)) |> 
+  select(-time) |> 
+  filter(!is.na(temperature_2m) & !is.na(relative_humidity_2m)) |> 
+  filter(year %in% 2008:2023) |> 
+  distinct() |>
+  relocate(city, year, day, hour) |> 
+  arrange(city, year, day, hour)
+
+typh <- paste0(dir, "/vmm/typhoon_data_2008_2023.parquet") |> 
+  arrow::open_dataset() |> 
+  filter(month == 9) |> 
+  collect()
+```
+
+Наши публикации о климатических изменениях в городе Обнинск ([часть 1](https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/){target="_blank"}, [часть 2](https://reginaobninsklab.github.io/posts/obninsk-climate-part2-rains/){target="_blank"}) привлекли внимание настоящих ученых-метеорологов, которые нам указали на то, что [open-meteo.com](https://open-meteo.com){target="_blank"} предоставляют не реальные измерения, а смоделированные данные. Да-да, когда вводишь координаты родной деревни и получаешь скорость ветра на высоте 10 метров в полдень 3 сентября 1950-ого года, стоит спросить себя, кто же её там измерял?  
+
+Нам (жителям Обнинска) немного проще -- у нас есть вышка и институты, поэтому мы взялись искать "живые" данные. На сайте ВНИИГМИ-МЦД сведений об обнинской погоде мы не нашли (но отправили запросы и будем ждать, вдруг поделятся), а вот на [сайте Иниститута экспериментальной меторологии](http://www.vmm310.ru/ru/10-minute.asp){target="_blank"} ФГБУ "НПО "Тайфун" мы обнаружили архивы показателей за 2008-2023 годы. И в данных Open Meteo, и в архивах НПО "Тайфун" присутствуют температуры на высоте 2 метра, что открывает уникальную возможность для сравнения. 
+
+### Данные НПО Тайфун
+
+Несколько замечаний о данных для тех, кто решит их обрабатывать:
+
+1. в названиях 3-х файлов есть символы на кириллице
+
+2. данные представлены в виде вводного текста (~ 10 строк) и столбцов, разделенных какой-то комбинацией из пробелов и отступов.
+
+3. начиная с какого-то года в данных появляется +1 столбец (time UTC)
+
+4. отсутствующие значения в столбцах заменены определенными "кодами", описанными в вводном тексте. Но начиная с какого-то года, коды немного меняются :)      
+
+По этим причинами мы решили поделиться скриптом ([R скрипт](https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources/scripts/typhoon_vmm_data.R){target="_blank"}) для тех, кто захочет объединить архивные данные.
+
+> В данных НПО Тайфун в 200 строках (< 1.8%) отсутствовали показатели температур на высоте 2 метра. При сравнении температур эти часы не учитывались (исключались также из данных Open Meteo). 
+
+***
+
+### Сравнение температур
+
+```{r}
+temp <- all_meteo |> 
+  select(year, day, hour, temp_open = temperature_2m) |> 
+  left_join(typh |> select(year, day, hour, temp_typh = temp_2m),
+            by = join_by(year, day, hour)) |> 
+  mutate(delta = temp_open - temp_typh) |> 
+  mutate(.by = c(year, day),
+         med_open = median(temp_open), 
+         med_typh = median(temp_typh),
+         mean_open = mean(temp_open), 
+         mean_typh = mean(temp_typh),
+         delta_max = max(delta, na.rm = T),
+         delta_min = min(delta, na.rm = T),
+         delta_med = median(delta, na.rm = T), 
+         delta_abs_med = median(abs(delta), na.rm = T))
+```
+
+На рисунке ниже показана почасовая разность между показаниями температуры на высоте 2 метра по данным Open Meteo и НПО Тайфун. 
+
+Примечательным нам показалось то, что практически в каждые сутки были такие часы, когда Open Meteo показывал более высокую температуру (оранжевая линия), но также были и часы, когда Open Meteo показывал более низкую температуру (синяя линия ниже оси Х). Например, 5 сентября 2008 года разница температур колебалась от -3<sup>o</sup>С до +3<sup>o</sup>С. 
+
+```{r}
+xfilename <- paste0(dir_charts,"/open_typhoon.png")
+if(!file.exists(xfilename)){
+ch <- temp |> 
+  ggplot() + 
+  geom_line(aes(x = as.factor(day), y = delta_max, group = year), color = "#ff5c00", linewidth = 0.3) + 
+  geom_line(aes(x = as.factor(day), y = delta_min, group = year), color = "#0DD6D6", linewidth = 0.3) + 
+  geom_point(aes(x = as.factor(day), y = delta_max), color = "#ff5c00", shape = 21, size = 0.9, fill = "white") + 
+  geom_point(aes(x = as.factor(day), y = delta_min), color = "#0DD6D6", shape = 21, size = 0.9, fill = "white") + 
+  geom_boxplot(aes(x = as.factor(day), y = delta), outlier.colour = NA,
+               size = 0.05, color = "white", fill = "grey80", alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "grey10", linewidth = 0.35) + 
+  geom_line(aes(x = as.factor(day), y = delta_med, group = year), color = "white", linewidth = 0.4) + 
+  scale_x_discrete(breaks = c("1", "5", "9", "13", "17", "21", "25", "29"))+
+  scale_y_continuous(expand = expansion(add = c(0, 0)), breaks = scales::pretty_breaks(6))+
+  facet_wrap(~year, ncol = 4) + 
+  labs(title = "Разница между показаниями Т(<sup>o</sup>С) в Open Meteo и НПО Тайфун",
+      subtitle = paste0('Источники данных: open-meteo.com, typhoon-tower.obninsk.org | Показатель: температура на высоте 2 метра | Диапазон: дни сентября в 2008-2023 гг. | Место: г.Обнинск<br/>',
+                        'Линиями показаны максимальное (',
+                        wrap_text("&ndash;", color = "#ff5c00", 16), "), минимальное (", 
+                        wrap_text("&ndash;", color = "#0DD6D6", 16), 
+                        ') и медианное (',
+                        wrap_text("&ndash;", color = "white", 16), 
+                        ') значения разности температур (Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub>) в сутки.<br/>Сравнивались значения Т(<sup>o</sup>С) для одного и того же часа. Коробка иллюстрирует разброс значений для разности температур.'),
+      caption = regina_caption_dark, 
+      x = "День сентября",  
+      y = "Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub>, (<sup>o</sup>С)") + 
+    dark_theme_right + 
+    theme(legend.text = element_markdown(), 
+          plot.subtitle = element_markdown(),
+          axis.title.y = element_markdown())
+   
+  ggsave(ch, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename) 
+```
+
+Мы предположили, что разница температур зависит от времени суток. На иллюстрации показан разброс значений величины Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub>, (<sup>o</sup>С) в разные часы суток. Действительно, чаще всего температура по данным НПО Тайфун была выше той, что показывал сервис Open Meteo, в дневные часы. Ранним утром и поздним вечером температура по данным Open Meteo  почти всегда была выше. Интересно также то, что разница была выразительне в более тёплые годы, а в холодные (в 2013, 2016, 2021, 2022) значения Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub> имели меньший размах.
+
+```{r}
+xfilename <- paste0(dir_charts,"/open_typhoon_by_hour.png")
+if(!file.exists(xfilename)){
+ch <- temp  |>
+  filter(!is.na(delta)) |> 
+  mutate(.by = c(year, hour), 
+         delta_mean_hour = mean(delta, na.rm = T),
+         delta_med_hour = median(delta, na.rm = T)) |> 
+  ggplot() + 
+  geom_boxplot(aes(x = as.factor(hour), y = delta),  outlier.size = 0.6,
+               outlier.color = "#78c679", outlier.fill = "white", 
+               outlier.stroke = 0.2, outlier.shape = 21,
+               size = 0.25, color = "#78c679", fill = "#78c679", alpha = 0.7) +
+  facet_wrap(~year, ncol = 4) +
+  geom_hline(yintercept = 0, color = "grey10", linewidth = 0.35) +
+  geom_line(aes(x = as.factor(hour), y = delta_med_hour, group = year), 
+            color = "white", linewidth = 0.4) + 
+  scale_x_discrete(breaks = c("3", "6", "9", "12", "15", "18", "21", "24"))+
+  scale_y_continuous(expand = expansion(add = c(0, 0)), breaks = scales::pretty_breaks(6))+
+  facet_wrap(~year, ncol = 4) + 
+  labs(title = "Разница между показаниями Т(<sup>o</sup>С) в Open Meteo и НПО Тайфун",
+      subtitle = paste0('Источники данных: open-meteo.com, typhoon-tower.obninsk.org | Показатель: температура на высоте 2 метра | Диапазон: дни сентября в 2008-2023 гг. | Место: г.Обнинск<br/>',
+      'Показан разброс значений и медиана (',
+      wrap_text("&ndash;", color = "white", 16), 
+      ') для разницы температур (Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub>) в разные часы дней сентября.'),
+      caption = regina_caption_dark, 
+      x = "Час суток",  
+      y = "Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub> (<sup>o</sup>С)") + 
+    dark_theme_right + 
+    theme(legend.text = element_markdown(), 
+          plot.subtitle = element_markdown(),
+          axis.title.y = element_markdown())
+   
+  ggsave(ch, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename) 
+```
+
+На иллюстрации ниже показана динамика разницы температур для некоторых дней. На верхней панели -- для тех дней, когда разница отличалась максимальным размахом, на нижней -- когда минимальным. 
+
+```{r}
+n_cases <- 7
+
+xyy <- bind_rows(
+    temp |> filter(!is.na(mean_typh)) |>  
+      mutate(k = delta_max - delta_min) |> 
+      arrange(desc(k)) |>
+      slice_max(k, n = 24 * n_cases) |> 
+      mutate(date = as.Date(paste0(year, "-09-", day))) |> 
+      mutate(date = format(date, "%d.%m.%Y")) |> 
+      mutate(d = wrap_text(date, "#fffffe", 13)),
+    temp |> filter(!is.na(mean_typh)) |>  
+      mutate(k = delta_max - delta_min) |> 
+      arrange(desc(k)) |>
+      slice_min(k, n = 24 * n_cases) |>
+      filter(row_number() <= 24 * n_cases) |> 
+      mutate(date = as.Date(paste0(year, "-09-", day))) |> 
+      mutate(date = format(date, "%d.%m.%Y")) |> 
+      mutate(d = wrap_text(date, "#ffffff", 13))
+) 
+
+xfilename <- paste0(dir_charts,"/open_typhoon_cases.png")
+if(!file.exists(xfilename)){
+ch <- xyy  |>
+  ggplot() + 
+  geom_bar(aes(x = as.factor(hour), y = delta, fill = delta),
+           stat = "identity", linewidth = 0.1, color = "grey40", alpha = 0.9) +
+  facet_wrap(~ reorder(d, desc(k)), ncol = z, scales = "free_x") +
+  geom_hline(yintercept = 0, color = "grey10", linewidth = 0.35) +
+  scale_fill_gradient2(low = "#0DD6D6", midpoint = 0, mid = "grey90", high = "#ff5c00",
+                       limits = c(-6,7.5),
+                       name = "Разница<br/>Т(<sup>o</sup>С)") + 
+  scale_x_discrete(breaks = c("3", "6", "9", "12", "15", "18", "21", "24"))+
+  scale_y_continuous(expand = expansion(add = c(0.5, 0.5)), breaks = scales::pretty_breaks(6))+
+  labs(title = "Разница между показаниями Т(<sup>o</sup>С) в Open Meteo и НПО Тайфун",
+      subtitle = paste0('Источники данных: open-meteo.com, typhoon-tower.obninsk.org | Показатель: температура на высоте 2 метра | Диапазон: дни сентября в 2008-2023 гг. | Место: г.Обнинск<br/>',
+      'Показаны примеры дней с максимальной (верхняя панель) и минимальной (нижняя панель) разницей температур Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub>'),
+      caption = regina_caption_dark, 
+      x = "Час суток",  
+      y = "Т<sub>Open Meteo</sub> &ndash; T<sub>НПО Тайфун</sub> (<sup>o</sup>С)") + 
+    dark_theme_right + 
+  guides(fill = guide_legend(reverse = T))+
+    theme(legend.text = element_markdown(),
+          legend.title = element_markdown(),
+          plot.subtitle = element_markdown(),
+          strip.text = element_markdown(),
+          panel.spacing.y = unit(1, 'cm'),
+          axis.title.y = element_markdown())
+   
+  ggsave(ch, filename = xfilename, width = 28, height = 18, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename) 
+```
+
+> На что это похоже? Если бы имело место только завышение температуры по данным НПО Тайфун, мы бы предположили, что в теплые солнечные часы термоизмерительные приборы НПО Тайфун слегка &#x1f92d; перегреваются. Но так как есть и часы с обратной разницей температур, наверное, разница обусловлена моделями Open Meteo.
+
+***
+
+### Сравнение скорости ветра
+
+В архивах, скачаннах с сайта ИЭМ ФГБУ НПО "Тайфун", есть показания для скорости и направления ветра на высоте 8 метров, в данных Open Meteo -- на высоте 10 метров. По этой причине мы ограничимся сравнением среднесуточных значений для скорости ветра.
+
+```{r}
+winds <- all_meteo |> select(year, day, hour, ws_open = wind_speed_10m, wd_open = wind_direction_10m) |> 
+  left_join(typh |> select(year, day, hour, ws_typh = wind_speed_8m, wd_typh = wind_dir_8m),
+            by = join_by(year, day, hour)) |> 
+  filter(!is.na(ws_typh)) |> 
+  mutate(ws_open = ws_open*1000/3600) |>
+  mutate(delta = ws_open - ws_typh)
+```
+
+```{r}
+typhoon_color <- "#C3AD1A"
+open_color <- "#C891D9"
+
+xfilename <- paste0(dir_charts,"/wind_typhoon.png")
+if(!file.exists(xfilename)){
+winds1 <- winds |> 
+  summarize(.by = c(year, day),
+            delta_max = max(delta),
+            delta_min = min(delta),
+            across(c("ws_open", "ws_typh"), ~mean(.x))) 
+
+  ch <- winds1 |> 
+    ggplot() + 
+    geom_line(aes(x = as.factor(day), y = ws_open, group = year), color = open_color, linewidth = 0.3) + 
+    geom_line(aes(x = as.factor(day), y = ws_typh, group = year), color = typhoon_color, linewidth = 0.3) + 
+    geom_point(aes(x = as.factor(day), y = ws_open), color = open_color, shape = 21, size = 0.9, fill = "white") + 
+    geom_point(aes(x = as.factor(day), y = ws_typh), color = typhoon_color, shape = 21, size = 0.9, fill = "white") + 
+    scale_x_discrete(breaks = c("1", "5", "9", "13", "17", "21", "25", "29"))+
+    scale_y_continuous(expand = expansion(add = c(0, 0)),
+                       limits = c(0,NA), 
+                       breaks = scales::pretty_breaks(6))+
+    facet_wrap(~year, ncol = 4) + 
+    labs(title = paste0("Среднесуточная скорость ветра по данным ",
+                  wrap_text("Open Meteo", color = open_color, 30),
+                  ' (10 м) и ',
+                  wrap_text("НПО Тайфун", color = typhoon_color, 30), ' (8 м)'),
+        subtitle = paste0('Источники данных: open-meteo.com, typhoon-tower.obninsk.org | Диапазон: дни сентября в 2008-2023 гг. | Место: г.Обнинск'),
+        caption = regina_caption_dark, 
+        x = "День сентября",  
+        y = "Среднесуточная скорость ветра, м/с") + 
+      dark_theme_right + 
+      theme(legend.text = element_markdown(), 
+            panel.spacing.x = unit(0.5, 'cm'),
+            plot.subtitle = element_markdown(),
+            axis.title.y = element_markdown())
+     
+    ggsave(ch, filename = xfilename, width = 28, height = 21, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename) 
+```
+
+Среднесуточные значения Open Meteo были всегда выше, чем аналогичные показатели для данных НПО Тайфун. Связано ли это с разницей в 2 метра или иными причинами -- сказать сложно, но профили изменений достаточно похожи. 19 сентября 2022 года был очень ветренным днём по данным как Open Meteo, так и НПО Тайфун.
+
+А как обстоит дело с направлениями ветра?
+
+***
+
+### Сравнение направлений ветра
+
+Если скорость ветра на высоте 8 и 10 метров, очевидно, могут различаться, то направления (по нашему предположению) должны совпадать. 
+
+И тут, как говорится, ой...
+
+```{r windrose}
+xfilename <- paste0(dir_charts,"/wind_rose_typhoon.png")
+if(!file.exists(xfilename)){
+# getting a dataframe with the columns ws (wind_speed) and wd(wind_direction)
+winds2 <- winds |> select(-delta) |> 
+  filter(!is.na(wd_typh) & !is.na(wd_open)) |> 
+  pivot_longer(starts_with("w"), names_to = c(".value", "src"), names_pattern = "(.*)_(.*)") |> 
+  filter(!is.na(wd) & !is.na(ws)) |> filter(ws>0) |> 
+  distinct() |> 
+  mutate(dir_cat = NA_character_)
+# direction and breaks
+dirres <- 22.5
+dir_breaks <- tibble(
+  from = c(0, seq(dirres/2, 360-dirres/2, by = dirres)),
+  to = c(seq(dirres/2, 360-dirres/2, by = dirres), 360.0001))
+  
+if(dirres == 22.5){
+  dir_labels <- c("С", "ССВ", "СВ", "ВСВ","В", "ВЮВ", "ЮВ", "ЮЮВ", 
+                  "Ю", "ЮЮЗ", "ЮЗ", "ЗЮЗ", "З", "ЗСЗ", "СЗ", "ССЗ")}
+if(dirres == 45){
+  dir_labels <- c("С", "СВ", "В",  "ЮВ", "Ю", "ЮЗ", "З", "СЗ")}
+
+dir_breaks$dir <- c(dir_labels, dir_labels[1])
+# assigning
+for (i in 1:nrow(dir_breaks)){
+  winds2$dir_cat <- ifelse(winds2$wd >= dir_breaks$from[i] & winds2$wd < dir_breaks$to[i],
+                           dir_breaks$dir[i], winds2$dir_cat)
+}
+winds2$dir_cat <- factor(winds2$dir_cat, 
+                         levels = dir_breaks$dir[1:(nrow(dir_breaks)-1)])
+# ------------------------------ speed categories -----------------------
+wind_speed_step <- 3
+spdseq <- seq(0, ceiling(max(winds2$ws)/wind_speed_step)*wind_speed_step, wind_speed_step)
+spd.breaks <- spdseq
+spd.labels <- paste0(c(spdseq[1:length(spdseq)-1]), '-', c(spdseq[2:length(spdseq)]))    
+winds2$spd.binned <- cut(x = winds2$ws, breaks = spd.breaks, labels = spd.labels)
+winds2$spd.binned <- factor(winds2$spd.binned, levels = rev(spd.labels))
+# ------------------------------------------
+clrs <- colorRampPalette(c(colorspace::lighten("yellow",0.5),
+                           colorspace::lighten("#7Cfbf3", 0.5),
+                           colorspace::lighten("#41b6c4",0.2), 
+                           colorspace::lighten("#225ea8",0.1)))(length(spd.labels)) |> rev()
+# building the chart
+ch <- winds2 |> ggplot() +
+  geom_bar(aes(x = dir_cat, fill = spd.binned), width = 0.85, linewidth = 0.15, color = "grey20") + 
+  facet_wrap(~src, 
+             labeller = as_labeller(c("open" = wrap_text("Open Meteo (10 м)", color = open_color, 24),
+                                      "typh" = wrap_text("НПО Тайфун (8 м)", color = typhoon_color, 24))))+
+  scale_x_discrete(drop = FALSE, labels = waiver()) +
+  scale_y_continuous(expand = expansion(add = c(0,1))) +
+  coord_polar(start = -((dirres/2)/360) * 2*pi) +
+  scale_fill_manual(name = "Скорость\nветра (м/с)", values = clrs, drop = F) +
+  guides(fill = guide_legend())+
+  labs(title = paste0("Направления ветра по данным ",
+                  wrap_text("Open Meteo", color = open_color, 30), ' (10 м) и ',
+                  wrap_text("НПО Тайфун", color = typhoon_color, 30), ' (8 м)'),
+        subtitle = paste0('Источники данных: open-meteo.com, typhoon-tower.obninsk.org | Диапазон: дни сентября в 2008-2023 гг. | Место: г.Обнинск<br/>',
+              'Высота цветного сектора отражает количество часов в сентябре с ветром указанной силы (см. легенду) в данном диапазоне направлений.'),
+        caption = regina_caption_dark, y = NULL) + 
+      dark_theme_right + 
+      theme(legend.text = element_markdown(), 
+            axis.title = element_blank(), axis.text.y = element_blank(),
+            axis.text.x = element_text(size = 18, family = "Sofia", color = "grey70"),
+            strip.text = element_markdown(size = 26, margin = margin(3, 0, 0.2, 0,'mm')),
+            axis.ticks.y = element_blank(), axis.line = element_blank(),
+            panel.grid.major = element_line(colour="grey85"),
+            axis.title.y = element_markdown())
+     
+    ggsave(ch, filename = xfilename, width = 28, height = 17, units = "cm", dpi = 250)
+}
+knitr::include_graphics(xfilename) 
+```
+
+Модели Open Meteo показывают, что ветер примерно с равной частотой дул с северо-запада и юго-запада, но по данным НПО Тайфун юго-западные ветра случались гораздо чаще. И ещё одно весьма популярное "по факту" направление ветра -- ВСВ, прямо из [экологического аппендикса](https://obninsk.name/news35886.htm){target="_blank"}. Кто знает, может лучше б ветер дул так, как Open Meteo придумывает, а?
+
+***
+
+Мы бы хотели к розе ветров добавить и показатели качества воздуха. Ведь у нас в городе есть станции мониторинга, которые чего-то там транслируют на сайт [https://air.giskaluga.ru](https://air.giskaluga.ru){target="_blank"}, но владельцы сайта данные для скачивания не публикуют, как и региональное министерство. Но это -- отдельный разговор. 
+
+***
+
+> Данные
+
+***
+
+Нравятся наши материалы?
+
+👉  `r fa("fab fa-telegram", fill = "#24A1DE")` [@Regina_Lab](https://t.me/+lviW66SN9gQ1YTky){target="_blank"} 
+
+👉  `r fa("fab fa-vk", fill = "#447bba")` [@reginaobninsklab](https://vk.com/reginaobninsklab){target="_blank"}    
+
+### Поделиться {.appendix}
+
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-icon-color="unset">
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_vk"></a>
+<a class="a2a_button_odnoklassniki"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_livejournal"></a>
+<a class="a2a_button_mastodon"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_viber"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+### Ссылка для цитирования {.appendix}
+
+Надёжность сведений о погоде в г.Обнинск (Часть 3. Источники данных). // Блог Regina Lab. - 2024. - URL: https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources/. - Дата публикации: 29 сентября 2024 г.
+
+### Права {.appendix}
+
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные могут использоваться на условиях публичной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
+
+### Отказ от ответственности {.appendix}
+
+[См. соответствующий раздел](https://reginaobninsklab.github.io/about.html#warranty){target="_blank"} на странице "О проекте".
+
+### Софт {.appendix}
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+pkgs <- c('dplyr', 'readr', 'tidyr', 'purrr', 'stringr', 'ggplot2', 'knitr', 'DT', 'rmarkdown', 'scales')
+
+do.call('c',lapply(pkgs, citation)) %>% sort()
+```
+
+Allaire J, Xie Y, Dervieux C, McPherson J, Luraschi J, Ushey K, Atkins A, Wickham H, Cheng J, Chang W,
+Iannone R (2023). _rmarkdown: Dynamic Documents for R_. R package version 2.22,
+<https://github.com/rstudio/rmarkdown>.
+
+Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version
+1.5.0, <https://CRAN.R-project.org/package=stringr>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R
+package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>.
+
+Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.1,
+<https://CRAN.R-project.org/package=purrr>.
+
+Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5,
+<https://CRAN.R-project.org/package=readr>.
+
+Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1,
+<https://CRAN.R-project.org/package=tidyr>.
+
+Xie Y (2023). _knitr: A General-Purpose Package for Dynamic Report Generation in R_. R package version
+1.43, <https://yihui.org/knitr/>.
+
+Xie Y (2015). _Dynamic Documents with R and knitr_, 2nd edition. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 978-1498716963, <https://yihui.org/knitr/>.
+
+Xie Y (2014). “knitr: A Comprehensive Tool for Reproducible Research in R.” In Stodden V, Leisch F, Peng RD
+(eds.), _Implementing Reproducible Computational Research_. Chapman and Hall/CRC. ISBN 978-1466561595.
+
+Xie Y, Cheng J, Tan X (2024). _DT: A Wrapper of the JavaScript Library 'DataTables'_. R package version 0.33,
+<https://CRAN.R-project.org/package=DT>.
+
+Xie Y, Allaire J, Grolemund G (2018). _R Markdown: The Definitive Guide_. Chapman and Hall/CRC, Boca Raton,
+Florida. ISBN 9781138359338, <https://bookdown.org/yihui/rmarkdown>.
+
+Xie Y, Dervieux C, Riederer E (2020). _R Markdown Cookbook_. Chapman and Hall/CRC, Boca Raton, Florida.
+ISBN 9780367563837, <https://bookdown.org/yihui/rmarkdown-cookbook>.

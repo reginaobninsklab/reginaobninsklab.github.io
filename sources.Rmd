@@ -19,13 +19,13 @@ output:
 >
 > 2. Региональный реестр: https://uatk.admoblkaluga.ru/page/reestr-razresheniy/ [XML]
 
-Наши материалы ([#такси](https://reginaobninsklab.github.io/#category:%D1%82%D0%B0%D0%BA%D1%81%D0%B8)):
+Наши материалы ([#такси](https://reginaobninsklab.github.io/#category:%D1%82%D0%B0%D0%BA%D1%81%D0%B8){target="_blank"}):
 
-- [Такси Калужской области (часть 1)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/)
+- [Такси Калужской области (часть 1)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part1/){target="_blank"}
 
-- [Такси Калужской области (часть 2)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/)
+- [Такси Калужской области (часть 2)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part2/){target="_blank"}
 
-- [Такси Калужской области (часть 3)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part3/)
+- [Такси Калужской области (часть 3)](https://reginaobninsklab.github.io/posts/kaluga-taxi-part3/){target="_blank"}
 
 ### Школы
 
@@ -33,11 +33,11 @@ output:
 >
 > 2. Всероссийская олимпиада школьников Калужской области: http://vsosh-kaluga.ru/ [🙈]
 
-Наши материалы ([#школы](https://reginaobninsklab.github.io/#category:%D1%88%D0%BA%D0%BE%D0%BB%D1%8B)):
+Наши материалы ([#школы](https://reginaobninsklab.github.io/#category:%D1%88%D0%BA%D0%BE%D0%BB%D1%8B){target="_blank"}):
 
-- [Открытый рейтинг школ Калужской области (часть 1)](https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/)
+- [Открытый рейтинг школ Калужской области (часть 1)](https://reginaobninsklab.github.io/posts/kaluga-schools-rank-part1/){target="_blank"}
 
-- [Какие предметы ЕГЭ выбирают девушки и юноши Калужской области?](https://reginaobninsklab.github.io/posts/kaluga-gender-gia/)
+- [Какие предметы ЕГЭ выбирают девушки и юноши Калужской области?](https://reginaobninsklab.github.io/posts/kaluga-gender-gia/){target="_blank"}
 
 ### ДТП
 
@@ -60,6 +60,16 @@ output:
 ### Климат
 
 > Open Meteo https://open-meteo.com/en/docs/historical-weather-api [API]
+>
+> Архив метеорологических данных с 2008 по 2023 г. Институт экспериментальной метеорологии ФГБУ НПО "Тайфун" http://www.vmm310.ru/ru/daily_flow.asp [txt]. Скрипт R для чтения [R](https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources/scripts/typhoon_vmm_data.R){target="_blank"} 
+
+Наши материалы ([#климат](https://reginaobninsklab.github.io/index.html#category:%D0%BA%D0%BB%D0%B8%D0%BC%D0%B0%D1%82)):
+
+- [Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 1. Температура)](https://reginaobninsklab.github.io/posts/obninsk-climate-part1-temp/){target="_blank"}
+
+- [Глобальное потепление и сентябрьская погода в г. Обнинск (Часть 2. Осадки)](https://reginaobninsklab.github.io/posts/obninsk-climate-part2-rains/){target="_blank"}
+
+- [Надёжность сведений о погоде в г.Обнинск (Часть 3. Источники данных)](https://reginaobninsklab.github.io/posts/obninsk-climate-part3-sources/){target="_blank"}
 
 ### Государственный надзор
 
@@ -101,16 +111,16 @@ output:
 
 ### СМИ
 
-Наши материалы ([#сми](https://reginaobninsklab.github.io/#category:%D1%81%D0%BC%D0%B8))
+Наши материалы ([#сми](https://reginaobninsklab.github.io/#category:%D1%81%D0%BC%D0%B8){target="_blank"})
 
 ### Telegram
 
-Наши материалы ([#телеграм](https://reginaobninsklab.github.io/#category:%D1%82%D0%B5%D0%BB%D0%B5%D0%B3%D1%80%D0%B0%D0%BC))
+Наши материалы ([#телеграм](https://reginaobninsklab.github.io/#category:%D1%82%D0%B5%D0%BB%D0%B5%D0%B3%D1%80%D0%B0%D0%BC){target="_blank"})
 
 
 ## Использование {.appendix}
 
-Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные, могут использоваться на условиях бесплатной неисключительной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru).
+Если не указано иное, то статья целиком и составляющие её текст, иллюстрации и данные, могут использоваться на условиях бесплатной неисключительной лицензии [Creative Commons CC BY 4.0 Deed Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ru){target="_blank"}.
 
 ## Поделиться {.appendix}
 
